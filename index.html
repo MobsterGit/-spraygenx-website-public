@@ -16,7 +16,7 @@ img{display:block;max-width:100%}
 .shell{width:min(1220px,calc(100% - 34px));margin:auto}
 .top-note{background:#020914;color:#d7e6f7;text-align:center;padding:8px 16px;font-size:.86rem;font-weight:800;letter-spacing:.02em}
 .nav-wrap{position:sticky;top:0;z-index:50;background:#07172b;box-shadow:0 12px 35px rgba(0,0,0,.25)}
-.nav{width:min(1220px,calc(100% - 34px));margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 0}
+.nav{width:min(1220px,calc(100% - 34px));margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 0;background:#07172b}
 .brand{display:flex;align-items:center;min-width:0;flex:0 0 auto}
 .brand-logo{display:block;width:420px;height:auto;max-width:58vw;object-fit:contain;object-position:left center;transform:none}
 .links{display:flex;align-items:center;gap:23px;color:#f3f7fb;text-transform:uppercase;font-size:.76rem;font-weight:900;letter-spacing:.045em}
@@ -99,13 +99,15 @@ blockquote{margin:0;color:#253244;font-size:1.28rem;line-height:1.55}
 footer{background:#020914;color:#b9c7d7;padding:30px 18px;text-align:center;font-size:.9rem}
 @media(max-width:1050px){.links{display:none}.mobile-menu{display:block}.phone{display:none}.hero-inner{grid-template-columns:1fr}.hero-card{justify-self:start;align-self:start}.services{grid-template-columns:repeat(2,1fr)}.work-grid,.review-row,.cta-grid{grid-template-columns:1fr}.projects{grid-template-columns:1fr}.contact-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.top-note{font-size:.72rem;line-height:1.25;padding:7px 12px}.nav{padding:0}.brand-logo{width:320px;height:auto;max-width:calc(100vw - 120px);transform:none}.nav-actions .btn{display:none}.hero{min-height:650px;background-position:center}.hero-inner{width:min(100% - 34px,1220px);min-height:650px;padding:42px 0;align-content:end}.hero h1{font-size:clamp(2.35rem,11.2vw,3.45rem);letter-spacing:-.035em;line-height:.96}.hero p{font-size:1rem}.hero-actions{display:grid;grid-template-columns:1fr}.btn{width:100%;padding-left:12px;padding-right:12px}.hero-card{padding:18px;border-radius:18px}.stats{grid-template-columns:repeat(2,1fr)}.stat{border-bottom:1px solid rgba(255,255,255,.14)}section{padding:56px 0}.services{grid-template-columns:1fr}.photo-panel{min-height:310px}.project img{height:210px}.contact-grid{grid-template-columns:1fr}.contact-item{border-right:0;border-bottom:1px solid rgba(255,255,255,.12)}}
+/* Hard final header override for GitHub Pages/browser cache conflicts */
+.top-note{background:#020914!important;color:#d7e6f7!important}.nav-wrap,.nav-wrap .nav{background:#07172b!important;background-color:#07172b!important}.links,.links a,.phone,.mobile-menu{color:#fff!important}.mobile-panel{background:#061325!important}.mobile-panel a{color:#fff!important;background:rgba(255,255,255,.04)!important}
 </style>
 </head>
 <body>
 <div class="top-note">Commercial & Residential Painting • Industrial Refinishing • Northeast Ohio</div>
 <header class="nav-wrap">
 <nav class="nav">
-<a class="brand" href="index.html" aria-label="Spray GenX home"><img class="brand-logo" src="images/Logo-SprayGenxLLC.PNG?v=20260623b" alt="Spray GenX LLC" decoding="async"></a>
+<a class="brand" href="index.html" aria-label="Spray GenX home"><img class="brand-logo" src="images/Logo-SprayGenxLLC.PNG?v=20260623c" alt="Spray GenX LLC" decoding="async"></a>
 <div class="links"><a href="index.html">Home</a><a href="services.html">Services</a><a href="gallery.html">Projects</a><a href="about.html">About</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a></div>
 <div class="nav-actions"><a class="btn" href="contact.html">Request an Estimate</a><a class="phone" href="tel:+13306208199">330.620.8199</a><button class="mobile-menu" id="mobileMenuButton" type="button" aria-label="Open menu" aria-expanded="false">☰</button></div>
 </nav>
