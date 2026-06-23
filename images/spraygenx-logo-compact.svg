@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 180" role="img" aria-labelledby="title desc">
+  <title id="title">Spray GenX compact logo</title>
+  <desc id="desc">Compact Spray GenX stacked wordmark for dark website header.</desc>
+  <g font-family="Arial Black, Impact, Arial, sans-serif" font-weight="900">
+    <text x="8" y="68" font-size="64" letter-spacing="-3" fill="#ffffff">SPRAY</text>
+    <text x="8" y="142" font-size="72" letter-spacing="-3" fill="#ffffff">GEN</text>
+    <text x="185" y="142" font-size="76" letter-spacing="-3" fill="#27a9e1">X</text>
+  </g>
+  <g transform="translate(265 58) scale(.46)" fill="#ffffff">
+    <path d="M45 6h98c13 0 23 10 23 23v22h-36V41H55c-14 0-26 12-26 26v12H-8V66C-8 33 13 6 45 6z"/>
+    <path d="M127 52h63c14 0 25 11 25 25v20h-39V86h-49z"/>
+    <path d="M8 88h188c15 0 27 12 27 27v28H0V96c0-4 4-8 8-8z"/>
+    <path d="M82 139h84l34 100c4 12-5 25-18 25h-35c-8 0-16-6-19-14L82 139z"/>
+    <path d="M43 139h48l-16 76c-3 13-14 22-28 22H22c-10 0-18-10-16-20z"/>
+    <path d="M203 110h38c12 0 21 9 21 21v13h-59z"/>
+    <path d="M262 119h42c9 0 16 7 16 16s-7 16-16 16h-42z"/>
+  </g>
+  <g fill="#27a9e1" opacity=".95">
+    <circle cx="248" cy="82" r="4"/>
+    <circle cx="232" cy="76" r="3.2"/>
+    <circle cx="217" cy="72" r="2.6"/>
+  </g>
+</svg>
