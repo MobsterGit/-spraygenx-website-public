@@ -1,52 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 245" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" role="img" aria-labelledby="title desc">
   <title id="title">Spray GenX Professional Coatings</title>
-  <desc id="desc">Spray GenX logo with airless spray gun, one-direction spray swoosh, and professional coatings text.</desc>
+  <desc id="desc">Spray GenX logo with contractor-style spray gun and one-direction swoosh.</desc>
   <defs>
-    <linearGradient id="blueGrad" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#004fb8"/>
-      <stop offset="0.55" stop-color="#0b65d8"/>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0757c8"/>
       <stop offset="1" stop-color="#27a9e1"/>
-    </linearGradient>
-    <linearGradient id="silverGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="0.48" stop-color="#d7dde6"/>
-      <stop offset="1" stop-color="#8f9aaa"/>
     </linearGradient>
   </defs>
 
-  <!-- one-direction spray/swoosh from nozzle -->
-  <path d="M126 64 C260 4 520 5 720 74" fill="none" stroke="url(#blueGrad)" stroke-width="14" stroke-linecap="round"/>
-  <path d="M127 75 C278 22 523 25 704 89" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity=".92"/>
-  <path d="M128 87 C285 44 515 49 685 104" fill="none" stroke="#0b0f17" stroke-width="7" stroke-linecap="round" opacity=".65"/>
-  <path d="M122 70 C169 57 207 48 250 40" fill="none" stroke="#27a9e1" stroke-width="3" opacity=".9"/>
+  <!-- spray/swoosh: one direction from gun nozzle -->
+  <path d="M118 56 C245 8 475 13 608 61" fill="none" stroke="url(#blue)" stroke-width="12" stroke-linecap="round"/>
+  <path d="M120 68 C252 30 470 34 590 78" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity=".92"/>
+  <path d="M122 80 C255 51 462 54 574 91" fill="none" stroke="#05070b" stroke-width="5" stroke-linecap="round" opacity=".9"/>
 
-  <!-- simplified airless spray gun, left-facing body spraying right -->
-  <g transform="translate(32 38) rotate(-6 52 66)" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M47 23 h48 c9 0 16 7 16 16 v21 h-31 v-9 h-34 c-12 0-22 10-22 22 v4 h-27 v-10 c0-25 20-44 44-44z" fill="url(#silverGrad)" stroke="#111827" stroke-width="3"/>
-    <path d="M91 54 h41 c10 0 18 8 18 18 v15 h-32 v-8 h-27z" fill="url(#silverGrad)" stroke="#111827" stroke-width="3"/>
-    <path d="M5 82 h121 c13 0 23 10 23 23 v17 h-147 v-34 c0-3 2-6 3-6z" fill="url(#silverGrad)" stroke="#111827" stroke-width="3"/>
-    <path d="M56 119 h55 l27 80 c3 9-4 18-13 18 h-24 c-7 0-12-4-14-10 l-31-88z" fill="url(#silverGrad)" stroke="#111827" stroke-width="3"/>
-    <path d="M34 119 h34 l-12 57 c-2 10-11 17-21 17 h-15 c-8 0-14-8-12-16z" fill="url(#silverGrad)" stroke="#111827" stroke-width="3"/>
-    <path d="M131 97 h25 c9 0 16 7 16 16 v9 h-41z" fill="url(#silverGrad)" stroke="#111827" stroke-width="3"/>
-    <path d="M172 102 h34 c7 0 13 6 13 13 s-6 13-13 13 h-34z" fill="url(#silverGrad)" stroke="#111827" stroke-width="3"/>
-    <path d="M218 92 l25-17 v78 l-25-17z" fill="#0b65d8" stroke="#082b57" stroke-width="3"/>
-    <path d="M215 103 h16" stroke="#27a9e1" stroke-width="4"/>
-    <path d="M79 121 c-11 16-24 22-39 18" fill="none" stroke="#111827" stroke-width="5"/>
-    <path d="M42 135 c-4 38 10 62 45 73" fill="none" stroke="#d7dde6" stroke-width="5"/>
-    <circle cx="97" cy="103" r="7" fill="#111827" opacity=".72"/>
+  <!-- simplified airless contractor spray gun -->
+  <g transform="translate(18 28) rotate(-7 55 55)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M27 30h50c10 0 18 8 18 18v16H63v-8H28c-14 0-24 10-24 24v8" stroke="#ffffff" stroke-width="9"/>
+    <path d="M70 63h47c10 0 18 8 18 18v12H70z" stroke="#ffffff" stroke-width="9"/>
+    <path d="M7 94h112c11 0 20 9 20 20v14H7z" stroke="#ffffff" stroke-width="9"/>
+    <path d="M54 126h48l24 72c2 7-3 14-10 14H92c-6 0-11-4-13-10z" stroke="#ffffff" stroke-width="9"/>
+    <path d="M34 126h32l-10 48c-2 10-10 17-20 17H20z" stroke="#ffffff" stroke-width="9"/>
+    <path d="M124 103h28c9 0 16 7 16 16v9h-44z" stroke="#ffffff" stroke-width="8"/>
+    <path d="M168 109h34" stroke="#ffffff" stroke-width="10"/>
+    <path d="M202 98l30-17v65l-30-17z" fill="#0b65d8" stroke="#27a9e1" stroke-width="4"/>
+    <path d="M93 132c-12 15-27 19-43 14" stroke="#ffffff" stroke-width="6"/>
+    <path d="M42 145c-2 28 12 47 42 56" stroke="#ffffff" stroke-width="5" opacity=".85"/>
   </g>
 
-  <!-- wordmark -->
+  <!-- wordmark, flat reliable website version -->
   <g font-family="Arial Black, Impact, Arial, sans-serif" font-weight="900" font-style="italic">
-    <text x="210" y="126" font-size="77" letter-spacing="-4" fill="url(#silverGrad)">SPRAY</text>
-    <text x="176" y="195" font-size="88" letter-spacing="-5" fill="url(#blueGrad)">GEN</text>
-    <text x="448" y="195" font-size="88" letter-spacing="-5" fill="url(#silverGrad)">X</text>
+    <text x="145" y="99" font-size="58" letter-spacing="-3" fill="#ffffff">SPRAY</text>
+    <text x="145" y="153" font-size="65" letter-spacing="-4" fill="#0b65d8">GEN</text>
+    <text x="348" y="153" font-size="65" letter-spacing="-4" fill="#e8edf5">X</text>
   </g>
 
-  <!-- tagline -->
-  <g font-family="Arial, Helvetica, sans-serif" font-weight="900" letter-spacing="7" fill="#ffffff">
-    <line x1="160" y1="218" x2="230" y2="218" stroke="#0b65d8" stroke-width="4"/>
-    <text x="250" y="224" font-size="18">PROFESSIONAL COATINGS</text>
-    <line x1="550" y1="218" x2="620" y2="218" stroke="#0b65d8" stroke-width="4"/>
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="900" letter-spacing="4" fill="#ffffff" opacity=".92">
+    <text x="150" y="174" font-size="13">PROFESSIONAL COATINGS</text>
   </g>
 </svg>
