@@ -1,0 +1,37 @@
+name: Process Gallery Images
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'upload-inbox/**'
+      - 'tools/process_gallery.py'
+      - 'requirements.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  process-gallery:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Process gallery images
+        run: python tools/process_gallery.py
+
+      - name: Commit processed gallery files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Process uploaded gallery images
+          file_pattern: images/projects/** projects/projects.json
