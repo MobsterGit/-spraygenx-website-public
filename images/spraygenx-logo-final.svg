@@ -1,40 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
   <title id="title">Spray GenX Professional Coatings</title>
-  <desc id="desc">Spray GenX logo with contractor-style spray gun and one-direction swoosh.</desc>
-  <defs>
-    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#0757c8"/>
-      <stop offset="1" stop-color="#27a9e1"/>
-    </linearGradient>
-  </defs>
-
-  <!-- spray/swoosh: one direction from gun nozzle -->
-  <path d="M118 56 C245 8 475 13 608 61" fill="none" stroke="url(#blue)" stroke-width="12" stroke-linecap="round"/>
-  <path d="M120 68 C252 30 470 34 590 78" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity=".92"/>
-  <path d="M122 80 C255 51 462 54 574 91" fill="none" stroke="#05070b" stroke-width="5" stroke-linecap="round" opacity=".9"/>
-
-  <!-- simplified airless contractor spray gun -->
-  <g transform="translate(18 28) rotate(-7 55 55)" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M27 30h50c10 0 18 8 18 18v16H63v-8H28c-14 0-24 10-24 24v8" stroke="#ffffff" stroke-width="9"/>
-    <path d="M70 63h47c10 0 18 8 18 18v12H70z" stroke="#ffffff" stroke-width="9"/>
-    <path d="M7 94h112c11 0 20 9 20 20v14H7z" stroke="#ffffff" stroke-width="9"/>
-    <path d="M54 126h48l24 72c2 7-3 14-10 14H92c-6 0-11-4-13-10z" stroke="#ffffff" stroke-width="9"/>
-    <path d="M34 126h32l-10 48c-2 10-10 17-20 17H20z" stroke="#ffffff" stroke-width="9"/>
-    <path d="M124 103h28c9 0 16 7 16 16v9h-44z" stroke="#ffffff" stroke-width="8"/>
-    <path d="M168 109h34" stroke="#ffffff" stroke-width="10"/>
-    <path d="M202 98l30-17v65l-30-17z" fill="#0b65d8" stroke="#27a9e1" stroke-width="4"/>
-    <path d="M93 132c-12 15-27 19-43 14" stroke="#ffffff" stroke-width="6"/>
-    <path d="M42 145c-2 28 12 47 42 56" stroke="#ffffff" stroke-width="5" opacity=".85"/>
-  </g>
-
-  <!-- wordmark, flat reliable website version -->
-  <g font-family="Arial Black, Impact, Arial, sans-serif" font-weight="900" font-style="italic">
-    <text x="145" y="99" font-size="58" letter-spacing="-3" fill="#ffffff">SPRAY</text>
-    <text x="145" y="153" font-size="65" letter-spacing="-4" fill="#0b65d8">GEN</text>
-    <text x="348" y="153" font-size="65" letter-spacing="-4" fill="#e8edf5">X</text>
-  </g>
-
-  <g font-family="Arial, Helvetica, sans-serif" font-weight="900" letter-spacing="4" fill="#ffffff" opacity=".92">
-    <text x="150" y="174" font-size="13">PROFESSIONAL COATINGS</text>
-  </g>
+  <desc id="desc">Website header wrapper for the uploaded Spray GenX transparent PNG logo.</desc>
+  <image href="spraygenx-logo.png" x="0" y="0" width="1200" height="520" preserveAspectRatio="xMidYMid meet"/>
 </svg>
