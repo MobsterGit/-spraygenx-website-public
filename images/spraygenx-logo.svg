@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 310" role="img" aria-labelledby="title desc">
+  <title id="title">Spray GenX LLC logo</title>
+  <desc id="desc">Spray GenX wordmark with blue X and simplified spray gun icon.</desc>
+  <rect width="980" height="310" fill="#ffffff"/>
+  <g fill="#231f20">
+    <text x="22" y="132" font-family="Arial Black, Impact, Arial, sans-serif" font-size="132" font-weight="900" letter-spacing="-7">SPRAY</text>
+    <text x="22" y="270" font-family="Arial, Helvetica, sans-serif" font-size="132" font-weight="400" letter-spacing="1">GEN</text>
+  </g>
+  <text x="520" y="270" font-family="Arial Black, Impact, Arial, sans-serif" font-size="136" font-weight="900" fill="#27a9e1">X</text>
+  <g transform="translate(710 42) scale(1.05)" fill="#231f20">
+    <path d="M68 16h78c11 0 20 9 20 20v24h-34V47H68c-13 0-24 11-24 24v24h-32V72c0-31 25-56 56-56z"/>
+    <path d="M132 60h61c14 0 26 12 26 26v18h-38V93h-49z"/>
+    <path d="M24 95h168c14 0 26 12 26 26v26H18v-46c0-3 3-6 6-6z"/>
+    <path d="M89 145h77l33 102c4 12-5 24-18 24h-32c-8 0-15-5-18-13l-42-113z"/>
+    <path d="M52 145h45l-15 72c-3 13-14 22-27 22H32c-10 0-17-9-15-19z"/>
+    <path d="M201 116h34c11 0 20 9 20 20v12h-54z"/>
+    <path d="M255 124h38c8 0 15 7 15 15s-7 15-15 15h-38z"/>
+    <path d="M-8 108h28v35H-8c-10 0-18-8-18-18s8-17 18-17z"/>
+    <circle cx="112" cy="123" r="13" fill="#ffffff" opacity=".95"/>
+    <path d="M152 166c26 4 48 19 58 42l-28 12c-8-15-20-23-36-26z" fill="#ffffff" opacity=".95"/>
+  </g>
+  <g fill="#27a9e1" opacity=".9">
+    <circle cx="706" cy="114" r="5"/>
+    <circle cx="685" cy="106" r="4"/>
+    <circle cx="666" cy="99" r="3.4"/>
+    <circle cx="649" cy="94" r="2.8"/>
+  </g>
+</svg>
