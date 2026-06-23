@@ -105,7 +105,7 @@ footer{background:#020914;color:#b9c7d7;padding:30px 18px;text-align:center;font
 <div class="top-note">Commercial & Residential Painting • Industrial Refinishing • Northeast Ohio</div>
 <header class="nav-wrap">
 <nav class="nav">
-<a class="brand" href="index.html" aria-label="Spray GenX home"><img class="brand-logo" src="images/spraygenx-logo.png?v=8" alt="Spray GenX LLC" width="250" height="52" decoding="async"></a>
+<a class="brand" href="index.html" aria-label="Spray GenX home"><img class="brand-logo" src="images/spraygenx-logo-true-transparent-no-outline.png" alt="Spray GenX LLC" width="250" height="52" decoding="async"></a>
 <div class="links"><a href="index.html">Home</a><a href="services.html">Services</a><a href="gallery.html">Projects</a><a href="about.html">About</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a></div>
 <div class="nav-actions"><a class="btn" href="contact.html">Request an Estimate</a><a class="phone" href="tel:+13306208199">330.620.8199</a><button class="mobile-menu" id="mobileMenuButton" type="button" aria-label="Open menu" aria-expanded="false">☰</button></div>
 </nav>
@@ -124,7 +124,7 @@ footer{background:#020914;color:#b9c7d7;padding:30px 18px;text-align:center;font
 <section><div class="shell"><div class="section-head"><div class="eyebrow">Project Proof</div><h2>Commercial, exterior, industrial, and residential finish work.</h2><p>A quick look at the kind of work Spray GenX is built to handle.</p></div><div class="projects"><a class="project" href="gallery.html"><img src="images/lift-exterior-painting.jpg" alt="Exterior lift painting project"><div><b>Exterior lift work</b><span>High-reach exterior painting and coating support.</span></div></a><a class="project" href="gallery.html"><img src="images/commercial-open-deck-ceiling.jpg" alt="Commercial open deck ceiling coating"><div><b>Commercial ceilings</b><span>Large-surface spray production and open deck coating.</span></div></a><a class="project" href="gallery.html"><img src="images/industrial-blue-equipment.jpg" alt="Industrial equipment refinishing"><div><b>Industrial refinishing</b><span>Equipment coating, prep, masking, and specialty spray finishes.</span></div></a></div></div></section>
 <section class="split"><div class="shell review-row"><div class="rating-box"><div class="eyebrow">Customer Feedback</div><div class="rating">5.0</div><div class="stars">★★★★★</div><p>Archived Google reviews on Birdeye mention detail, honesty, craftsmanship, and careful work.</p><p style="margin-top:20px"><a class="btn light" href="reviews.html">Read Reviews</a></p></div><div class="quote-box"><blockquote>“Thorough, detail oriented and honest. Does not cut corners and makes sure the job is done right.”</blockquote><footer>Customer review archived on Birdeye</footer></div></div></section>
 <section class="cta"><div class="shell cta-grid"><div><h2>Have a project that needs priced cleanly?</h2><p>Send the address, photos, rough measurements, access concerns, timing needs, and the finish goal.</p></div><a class="btn light" href="contact.html">Request an Estimate →</a></div></section>
-<section class="contact-bar"><div class="shell contact-grid"><div class="contact-item"><b>Call Today</b><a href="tel:+13306208199">330.620.8199</a></div><div class="contact-item"><b>Email</b><a href="#" id="homeEmailLink">Email Spray GenX</a></div><div class="contact-item"><b>Service Area</b><span>Cleveland • Akron • Medina • Wadsworth • Canton</span></div><div class="contact-item"><b>Specialties</b><span>Painting • Refinishing • Commercial Coatings</span></div></div></section>
+<section class="contact-bar"><div class="shell contact-grid"><div class="contact-item"><b>Call Today</b><a href="tel:+13306208199">330.620.8199</a></div><div class="contact-item"><b>Email</b><a href="contact.html">Email Spray GenX</a></div><div class="contact-item"><b>Service Area</b><span>Cleveland • Akron • Medina • Wadsworth • Canton</span></div><div class="contact-item"><b>Specialties</b><span>Painting • Refinishing • Commercial Coatings</span></div></div></section>
 </main>
 <footer>© <span id="year"></span> Spray GenX LLC. Professional painting • refinishing • commercial coatings</footer>
 <script>
@@ -132,7 +132,6 @@ document.getElementById('year').textContent=new Date().getFullYear();
 const menuButton=document.getElementById('mobileMenuButton');const mobilePanel=document.getElementById('mobilePanel');
 menuButton.addEventListener('click',()=>{const isOpen=mobilePanel.classList.toggle('open');menuButton.setAttribute('aria-expanded',isOpen?'true':'false');menuButton.textContent=isOpen?'×':'☰'});
 mobilePanel.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{mobilePanel.classList.remove('open');menuButton.setAttribute('aria-expanded','false');menuButton.textContent='☰'}));
-const emailAddress='Spray'+'GenX'+'@'+'gmail'+'.com';document.getElementById('homeEmailLink').addEventListener('click',(event)=>{event.preventDefault();window.location.href='mailto:'+emailAddress+'?subject='+encodeURIComponent('Estimate Request')});
 </script>
 </body>
 </html>
