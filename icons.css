@@ -1,1 +1,21 @@
-.svg-icon{width:1em;height:1em;display:inline-block;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}.ico,.card-icon,.pin{display:inline-flex;align-items:center;justify-content:center}.card-icon{margin-bottom:12px}.pin .svg-icon{width:1em;height:1em}
+.svg-icon{width:1em;height:1em;display:inline-block;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}.ico,.pin{display:inline-flex;align-items:center;justify-content:center}.card-icon{display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#1f8dff}.pin .svg-icon{width:1em;height:1em}
+
+@media(max-width:640px){
+  .card-icon{width:34px;height:34px;margin:0 auto 9px;font-size:1.45rem;line-height:1}
+  .soft .grid-3{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .soft .grid-3 .service-card{min-height:106px;padding:15px 8px;font-size:.86rem;line-height:1.12;letter-spacing:.01em}
+  .proof-panel{padding:24px 20px}
+  .proof-panel h2{font-size:1.55rem;line-height:1.03;letter-spacing:-.025em;margin-bottom:10px}
+  .proof-panel p{line-height:1.34}
+  .photo-panel{min-height:220px}
+  .dark .section-head .btn{margin-top:10px}
+  .project-card h3{font-size:1.14rem;line-height:1;letter-spacing:.02em;margin-top:10px}
+  .project-card p{font-size:.86rem;line-height:1.2}
+  .project-card img{height:148px}
+  .map-card,.card{overflow:hidden}
+}
+
+@media(max-width:380px){
+  .soft .grid-3 .service-card{font-size:.8rem;min-height:100px}
+  .project-card h3{font-size:1.05rem}
+}
