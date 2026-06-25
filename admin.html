@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio Upload Admin | Spray GenX LLC</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="brand.css">
+<style>
+.admin-wrap{min-height:100vh;background:#f5f8fc}.admin-hero{background:linear-gradient(135deg,#061325,#0b65d8);color:#fff;padding:42px 0}.admin-hero h1{margin:0;font-size:clamp(2rem,7vw,4rem);line-height:.95;text-transform:uppercase;letter-spacing:-.045em}.admin-hero p{color:#eaf4ff;max-width:780px;margin:16px 0 0}.admin-panel{padding:34px 0 64px}.admin-card{background:#fff;border:1px solid #dfe7f0;border-radius:10px;box-shadow:0 18px 55px rgba(4,16,31,.12);padding:24px;margin-bottom:20px}.admin-card h2{font-size:1.55rem;margin-bottom:8px}.admin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.category-btn{border:2px solid #dfe7f0;background:#fff;border-radius:10px;padding:18px;text-align:left;font-weight:900;color:#07172b;cursor:pointer;min-height:84px}.category-btn span{display:block;color:#5d6978;font-size:.82rem;margin-top:5px}.category-btn.active{border-color:#0b65d8;box-shadow:0 0 0 4px rgba(11,101,216,.12)}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.full{grid-column:1/-1}.upload-drop{border:2px dashed #bcd6f4;background:#f8fbff;border-radius:10px;padding:22px;text-align:center}.upload-drop input{background:#fff}.preview-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.preview-item{border:1px solid #dfe7f0;border-radius:8px;background:#fff;overflow:hidden}.preview-item img{width:100%;height:110px;object-fit:cover}.preview-item div{padding:8px;font-size:.72rem;color:#5d6978;word-break:break-word}.status-box{background:#061325;color:#d5e4f5;border-radius:8px;padding:16px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86rem;white-space:pre-wrap;min-height:90px}.small-note{font-size:.9rem;color:#5d6978;margin-top:12px}.danger-note{background:#fff7e6;border:1px solid #ffd34f;border-radius:8px;padding:14px;color:#5b4300;font-weight:800}.admin-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.admin-actions .btn{cursor:pointer}.btn.secondary{background:#fff;color:#0b65d8}.hidden{display:none}@media(max-width:760px){.admin-grid,.form-grid,.preview-list{grid-template-columns:1fr}.admin-card{padding:18px}.preview-item img{height:170px}}
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+<section class="admin-hero"><div class="shell"><div class="section-label">Spray GenX Admin</div><h1>Portfolio Upload</h1><p>Select a category, add job details, choose photos from your iPhone, and prepare them for the portfolio pipeline.</p></div></section>
+<main class="admin-panel"><div class="shell">
+<div class="admin-card danger-note">First build: this page is the upload interface foundation. The final secure upload connection needs either a small serverless function or GitHub app authentication before it can push files into the repository automatically. Do not paste a permanent GitHub token into a public page.</div>
+<div class="admin-card"><h2>1. Choose Category</h2><p>Pick where these photos belong.</p><div class="admin-grid" id="categoryGrid"></div></div>
+<div class="admin-card"><h2>2. Project Details</h2><p>Use as much or as little as you know. These details will become captions and gallery data later.</p><div class="form-grid"><label>Project Name<input id="projectName" placeholder="Drug Mart Distribution Center"></label><label>City / Location<input id="projectCity" placeholder="Medina, Ohio"></label><label>Year<input id="projectYear" placeholder="2026"></label><label>Surface / Scope<input id="projectScope" placeholder="Open deck ceiling coating"></label><label class="full">Short Description<textarea id="projectDescription" placeholder="Brief notes about prep, coating system, access, square footage, or result."></textarea></label></div></div>
+<div class="admin-card"><h2>3. Choose Photos</h2><div class="upload-drop"><input id="photoInput" type="file" accept="image/*" multiple><p class="small-note">On iPhone, tap Choose Files or Photo Library and select multiple project photos.</p></div><div class="preview-list" id="previewList"></div></div>
+<div class="admin-card"><h2>4. Prepare Upload</h2><div class="admin-actions"><button class="btn" id="prepareBtn" type="button">Prepare Upload Package</button><button class="btn secondary" id="clearBtn" type="button">Clear</button></div><p class="small-note">This creates the file naming plan and project metadata. The next step will connect this button to automatic GitHub upload/processing.</p><div class="status-box" id="statusBox">Waiting for photos...</div></div>
+</div></main>
+</div>
+<script>
+const categories=[
+  {id:'commercial-ceilings',label:'Commercial & Industrial Ceilings',path:'images-upload/commercial-ceilings'},
+  {id:'commercial-interiors',label:'Commercial Interiors',path:'images-upload/commercial-interiors'},
+  {id:'block-metal',label:'Exterior Block & Metal',path:'images-upload/block-metal'},
+  {id:'machinery',label:'Industrial Machinery & Cranes',path:'images-upload/machinery'},
+  {id:'epoxy',label:'Epoxy Floors',path:'images-upload/epoxy'},
+  {id:'residential',label:'Residential Interior & Exterior',path:'images-upload/residential'},
+  {id:'restoration',label:'Historic & Restoration',path:'images-upload/restoration'}
+];
+let selected=categories[0];
+const grid=document.getElementById('categoryGrid');
+const input=document.getElementById('photoInput');
+const previews=document.getElementById('previewList');
+const statusBox=document.getElementById('statusBox');
+function slugify(value){return (value||'project').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'project'}
+function renderCategories(){grid.innerHTML='';categories.forEach(cat=>{const btn=document.createElement('button');btn.type='button';btn.className='category-btn'+(cat.id===selected.id?' active':'');btn.innerHTML=cat.label+'<span>'+cat.path+'</span>';btn.onclick=()=>{selected=cat;renderCategories();};grid.appendChild(btn);});}
+function renderPreviews(){previews.innerHTML='';[...input.files].slice(0,24).forEach(file=>{const item=document.createElement('div');item.className='preview-item';const img=document.createElement('img');img.src=URL.createObjectURL(file);const cap=document.createElement('div');cap.textContent=file.name;item.appendChild(img);item.appendChild(cap);previews.appendChild(item);});statusBox.textContent=input.files.length?`${input.files.length} photo(s) selected.`:'Waiting for photos...';}
+function buildPlan(){const project=slugify(document.getElementById('projectName').value);const city=slugify(document.getElementById('projectCity').value);const scope=slugify(document.getElementById('projectScope').value);const year=slugify(document.getElementById('projectYear').value);const base=[year,city,project,scope].filter(Boolean).join('-');const files=[...input.files].map((file,i)=>{const ext=(file.name.split('.').pop()||'jpg').toLowerCase();return `${selected.path}/${base}-${String(i+1).padStart(3,'0')}.${ext}`});const meta={category:selected.id,categoryLabel:selected.label,projectName:document.getElementById('projectName').value,city:document.getElementById('projectCity').value,year:document.getElementById('projectYear').value,scope:document.getElementById('projectScope').value,description:document.getElementById('projectDescription').value,photoCount:input.files.length,targetFolder:selected.path,plannedFiles:files};statusBox.textContent=JSON.stringify(meta,null,2);}
+document.getElementById('prepareBtn').onclick=buildPlan;document.getElementById('clearBtn').onclick=()=>{input.value='';previews.innerHTML='';statusBox.textContent='Waiting for photos...';};input.addEventListener('change',renderPreviews);renderCategories();
+</script>
+</body>
+</html>
