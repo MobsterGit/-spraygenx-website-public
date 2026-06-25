@@ -1,0 +1,67 @@
+{
+  "categories": [
+    {
+      "id": "commercial-ceilings",
+      "label": "Commercial Ceilings",
+      "headline": "Open deck ceilings, structural steel, and overhead production painting.",
+      "visible": true,
+      "sort": 10
+    },
+    {
+      "id": "commercial-interiors",
+      "label": "Commercial Interiors",
+      "headline": "Retail, offices, churches, schools, tenant spaces, and occupied work.",
+      "visible": true,
+      "sort": 20
+    },
+    {
+      "id": "commercial-drywall",
+      "label": "Commercial Drywall",
+      "headline": "Drywall repairs, finishing, prep, and commercial wall systems.",
+      "visible": true,
+      "sort": 30
+    },
+    {
+      "id": "dado-lines",
+      "label": "Commercial Dado & Lines",
+      "headline": "Dado lines, accent breaks, corridors, facilities, and clean commercial layout work.",
+      "visible": true,
+      "sort": 40
+    },
+    {
+      "id": "block-metal",
+      "label": "Block & Metal",
+      "headline": "Masonry, block, metal buildings, and exterior coating systems.",
+      "visible": true,
+      "sort": 50
+    },
+    {
+      "id": "machinery",
+      "label": "Machinery & Cranes",
+      "headline": "Equipment, machinery, crane systems, and industrial refinishing.",
+      "visible": true,
+      "sort": 60
+    },
+    {
+      "id": "epoxy",
+      "label": "Epoxy Floors",
+      "headline": "Concrete preparation, primers, coatings, and durable floor systems.",
+      "visible": true,
+      "sort": 70
+    },
+    {
+      "id": "residential",
+      "label": "Residential",
+      "headline": "Homes, trim, doors, cabinets, exteriors, and detail finishes.",
+      "visible": true,
+      "sort": 80
+    },
+    {
+      "id": "restoration",
+      "label": "Restoration",
+      "headline": "Specialty prep, repairs, repainting, and restoration-minded finishes.",
+      "visible": true,
+      "sort": 90
+    }
+  ]
+}
