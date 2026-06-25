@@ -11,6 +11,15 @@
       "title": "Scriptable Test Project",
       "description": "This test project was added from Scriptable to confirm GitHub write access.",
       "images": []
+    },
+    {
+      "category": "commercial-ceilings",
+      "title": "Commercial Black Ceiling",
+      "description": "Paint Exposed Wood to Flat Black",
+      "cover": "images/portfolio/commercial-ceilings/commercial-black-ceiling-001.jpg",
+      "images": [
+        "images/portfolio/commercial-ceilings/commercial-black-ceiling-001.jpg"
+      ]
     }
   ]
 }
