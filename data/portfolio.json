@@ -1,33 +1,51 @@
 {
   "projects": [
     {
+      "id": "scriptable-test-project-1",
       "category": "commercial-interiors",
       "title": "Scriptable Test Project",
       "description": "This test project was added from Scriptable to confirm GitHub write access.",
+      "visible": true,
+      "cover": "",
       "images": []
     },
     {
+      "id": "scriptable-test-project-2",
       "category": "commercial-interiors",
       "title": "Scriptable Test Project",
       "description": "This test project was added from Scriptable to confirm GitHub write access.",
+      "visible": true,
+      "cover": "",
       "images": []
     },
     {
+      "id": "commercial-black-ceiling-3",
       "category": "commercial-ceilings",
-      "title": "Commercial Black Ceiling",
+      "title": "Commercial Black Ceiling Soray",
       "description": "Paint Exposed Wood to Flat Black",
+      "visible": true,
       "cover": "images/portfolio/commercial-ceilings/commercial-black-ceiling-001.jpg",
       "images": [
-        "images/portfolio/commercial-ceilings/commercial-black-ceiling-001.jpg"
+        {
+          "path": "images/portfolio/commercial-ceilings/commercial-black-ceiling-001.jpg",
+          "visible": true,
+          "caption": ""
+        }
       ]
     },
     {
+      "id": "commercial-flat-black-4",
       "category": "commercial-ceilings",
       "title": "Commercial Flat Black",
       "description": "Carwash Ceiling - corrugated decking and beans",
+      "visible": true,
       "cover": "images/portfolio/commercial-ceilings/commercial-flat-black-001.jpg",
       "images": [
-        "images/portfolio/commercial-ceilings/commercial-flat-black-001.jpg"
+        {
+          "path": "images/portfolio/commercial-ceilings/commercial-flat-black-001.jpg",
+          "visible": true,
+          "caption": ""
+        }
       ]
     }
   ]
