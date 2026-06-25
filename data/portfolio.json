@@ -20,6 +20,15 @@
       "images": [
         "images/portfolio/commercial-ceilings/commercial-black-ceiling-001.jpg"
       ]
+    },
+    {
+      "category": "commercial-ceilings",
+      "title": "Commercial Flat Black",
+      "description": "Carwash Ceiling - corrugated decking and beans",
+      "cover": "images/portfolio/commercial-ceilings/commercial-flat-black-001.jpg",
+      "images": [
+        "images/portfolio/commercial-ceilings/commercial-flat-black-001.jpg"
+      ]
     }
   ]
 }
