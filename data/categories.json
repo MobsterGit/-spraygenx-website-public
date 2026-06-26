@@ -69,6 +69,13 @@
       "headline": "Residential Interiors",
       "visible": true,
       "sort": 100
+    },
+    {
+      "id": "governemt",
+      "label": "Governemt",
+      "headline": "Governemt",
+      "visible": true,
+      "sort": 110
     }
   ]
 }
