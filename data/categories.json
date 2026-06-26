@@ -46,7 +46,7 @@
       "id": "epoxy",
       "label": "Epoxy Floors",
       "headline": "Concrete preparation, primers, coatings, and durable floor systems.",
-      "visible": false,
+      "visible": true,
       "sort": 70
     },
     {
