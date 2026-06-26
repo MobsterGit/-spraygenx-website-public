@@ -6,8 +6,14 @@
       "title": "Car Wash - Loxon",
       "description": "Durable Water Resistant Masonry Coating",
       "visible": true,
-      "cover": "",
-      "images": []
+      "cover": "images/portfolio/commercial-interiors/car-wash-loxon-20260626003034-001.jpg",
+      "images": [
+        {
+          "path": "images/portfolio/commercial-interiors/car-wash-loxon-20260626003034-001.jpg",
+          "visible": true,
+          "caption": ""
+        }
+      ]
     },
     {
       "id": "scriptable-test-project-2",
