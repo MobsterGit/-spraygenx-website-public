@@ -11,9 +11,10 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
 .back-to-top.visible{opacity:.4;pointer-events:auto;transform:translateY(0)}
 .back-to-top.visible:hover,.back-to-top.visible:active,.back-to-top.visible:focus{opacity:1;background:#1f8dff}
 .back-to-top:focus{outline:3px solid rgba(31,141,255,.35);outline-offset:3px}
-.portfolio-card{border-color:#061325!important}
+.portfolio-card,.category-card{border-color:#d8e2ec!important;border-radius:0!important}
+.stat-box,.card,.proof-panel{border-color:#d8e2ec!important;border-radius:0!important}
 .portfolio-preview{gap:1px!important;background:#061325!important}
-.preview-tile{border-color:#061325!important}
+.preview-tile{border-color:#d8e2ec!important}
 .project-card img{border-color:#061325!important}
 .lightbox-thumbs img{border-color:#061325!important}.lightbox-thumbs img.active{border-color:#1f8dff!important}
 .map-art{right:34px!important;bottom:26px!important}
