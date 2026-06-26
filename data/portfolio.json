@@ -119,6 +119,21 @@
           "caption": ""
         }
       ]
+    },
+    {
+      "id": "master-bedroom-transformation-20260626121232",
+      "category": "residential-interiors",
+      "title": "Master Bedroom Transformation",
+      "description": "A complete master bedroom repaint that transformed an outdated space into a clean, modern retreat. The project included professional surface preparation, wallpaper border removal, drywall repairs, premium interior paint application, and a rich accent wall to create depth and contrast. The existing woodwork was preserved and complemented by the new color palette, resulting in a fresh, contemporary finish with crisp lines and a show-ready appearance.",
+      "visible": true,
+      "cover": "images/portfolio/residential-interiors/master-bedroom-transformation-20260626121231-001.jpg",
+      "images": [
+        {
+          "path": "images/portfolio/residential-interiors/master-bedroom-transformation-20260626121231-001.jpg",
+          "visible": true,
+          "caption": ""
+        }
+      ]
     }
   ]
 }
