@@ -36,8 +36,14 @@
       "title": "Churches",
       "description": "A dramatic makeover, Five39 Chirch",
       "visible": true,
-      "cover": "",
-      "images": []
+      "cover": "images/portfolio/commercial-interiors/churches-20260626100421-001.jpg",
+      "images": [
+        {
+          "path": "images/portfolio/commercial-interiors/churches-20260626100421-001.jpg",
+          "visible": true,
+          "caption": ""
+        }
+      ]
     },
     {
       "id": "commercial-black-ceiling-3",
