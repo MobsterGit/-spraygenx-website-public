@@ -1,4 +1,8 @@
 /* Spray GenX launch mobile spacing polish */
+.back-to-top{position:fixed;right:18px;bottom:18px;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:#0b65d8;color:#fff;box-shadow:0 14px 36px rgba(4,16,31,.28);font-size:1.45rem;font-weight:900;line-height:1;display:grid;place-items:center;z-index:9998;opacity:0;pointer-events:none;transform:translateY(14px);transition:opacity .22s ease,transform .22s ease,background .22s ease}
+.back-to-top.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.back-to-top:hover{background:#1f8dff}
+.back-to-top:focus{outline:3px solid rgba(31,141,255,.35);outline-offset:3px}
 @media(max-width:640px){
   .hero-inner{padding:42px 0 46px!important}
   .hero.home .hero-inner{padding:42px 0 150px!important}
@@ -13,6 +17,7 @@
   .card{padding:18px!important}
   .footer{padding:22px 0!important}
   .portfolio-intro .shell{padding-top:0!important;padding-bottom:0!important}
+  .back-to-top{right:14px;bottom:14px;width:48px;height:48px;font-size:1.25rem}
 }
 @media(max-width:380px){
   .hero-inner{padding:36px 0 42px!important}
@@ -20,3 +25,4 @@
   .hero p{font-size:.9rem!important}
   .btn{font-size:.74rem!important}
 }
+@media(prefers-reduced-motion:reduce){.back-to-top{transition:none!important}}
