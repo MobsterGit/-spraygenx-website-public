@@ -1,0 +1,22 @@
+/* Spray GenX launch mobile spacing polish */
+@media(max-width:640px){
+  .hero-inner{padding:42px 0 46px!important}
+  .hero.home .hero-inner{padding:42px 0 150px!important}
+  .eyebrow,.section-label{margin-bottom:7px!important}
+  .hero h1,.page-title{margin-bottom:12px!important;line-height:.91!important}
+  .blue-line{margin-bottom:15px!important;height:3px!important}
+  .hero p{margin-bottom:20px!important;line-height:1.34!important}
+  .actions{gap:8px!important}
+  .btn{min-height:44px!important}
+  section{padding:40px 0!important}
+  .section-head{margin-bottom:14px!important}
+  .card{padding:18px!important}
+  .footer{padding:22px 0!important}
+  .portfolio-intro .shell{padding-top:0!important;padding-bottom:0!important}
+}
+@media(max-width:380px){
+  .hero-inner{padding:36px 0 42px!important}
+  .hero.home .hero-inner{padding:36px 0 140px!important}
+  .hero p{font-size:.9rem!important}
+  .btn{font-size:.74rem!important}
+}
