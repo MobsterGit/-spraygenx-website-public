@@ -1,4 +1,10 @@
 /* Spray GenX launch mobile spacing polish */
+:root{--ink:#061325}
+.top-note{font-weight:500!important;letter-spacing:.005em!important;color:rgba(255,255,255,.82)!important}
+.eyebrow,.section-label{letter-spacing:.075em!important;font-weight:800!important}
+.hero h1,.page-title,.section-head h2,h2,.card h3{color:#061325}
+.hero h1,.page-title{letter-spacing:-.065em!important}
+.dark h2,.dark h3,.blue h2,.blue p{color:#fff!important}
 .back-to-top{position:fixed;right:18px;bottom:18px;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:#0b65d8;color:#fff;box-shadow:0 14px 36px rgba(4,16,31,.28);font-size:1.45rem;font-weight:900;line-height:1;display:grid;place-items:center;z-index:9998;opacity:0;pointer-events:none;transform:translateY(14px);transition:opacity .22s ease,transform .22s ease,background .22s ease}
 .back-to-top.visible{opacity:.4;pointer-events:auto;transform:translateY(0)}
 .back-to-top.visible:hover,.back-to-top.visible:active,.back-to-top.visible:focus{opacity:1;background:#1f8dff}
@@ -8,11 +14,14 @@
 .preview-tile{border-color:#061325!important}
 .project-card img{border-color:#061325!important}
 .lightbox-thumbs img{border-color:#061325!important}.lightbox-thumbs img.active{border-color:#1f8dff!important}
+.map-art{right:34px!important;bottom:26px!important}
+.p1{right:132px!important;bottom:108px!important}.p2{right:92px!important;bottom:138px!important}.p3{right:108px!important;bottom:70px!important}
 @media(max-width:640px){
+  .top-note{font-size:.7rem!important;font-weight:500!important;letter-spacing:0!important}
   .hero-inner{padding:34px 0 42px!important}
   .hero.home .hero-inner{padding:34px 0 132px!important}
-  .eyebrow,.section-label{margin-bottom:6px!important}
-  .hero h1,.page-title{margin-bottom:10px!important;line-height:.9!important}
+  .eyebrow,.section-label{margin-bottom:6px!important;letter-spacing:.09em!important;font-weight:800!important}
+  .hero h1,.page-title{margin-bottom:10px!important;line-height:.9!important;letter-spacing:-.055em!important}
   .blue-line{margin-bottom:13px!important;height:3px!important}
   .hero p{margin-bottom:16px!important;line-height:1.32!important}
   .actions{gap:8px!important}
@@ -23,6 +32,8 @@
   .footer{padding:22px 0!important}
   .portfolio-intro .shell{padding-top:0!important;padding-bottom:0!important}
   .back-to-top{right:14px;bottom:14px;width:48px;height:48px;font-size:1.25rem}
+  .map-art{right:14px!important;bottom:20px!important;width:175px!important;height:145px!important}
+  .p1{right:98px!important;bottom:92px!important}.p2{right:68px!important;bottom:118px!important}.p3{right:82px!important;bottom:58px!important}
 }
 @media(max-width:380px){
   .hero-inner{padding:30px 0 38px!important}
