@@ -4,7 +4,7 @@
       "id": "scriptable-test-project-1",
       "category": "machinery",
       "title": "Car Wash - Loxon",
-      "description": "Durable Water Resistant Masonry Coating",
+      "description": "Durable water-resistant masonry coating.",
       "visible": true,
       "cover": "images/portfolio/commercial-interiors/car-wash-loxon-20260626003034-001.jpg",
       "images": [
@@ -34,7 +34,7 @@
       "id": "scriptable-test-project-2",
       "category": "commercial-interiors",
       "title": "Churches",
-      "description": "A dramatic makeover, Five39 Chirch",
+      "description": "A dramatic makeover at Five39 Church.",
       "visible": true,
       "cover": "images/portfolio/commercial-interiors/churches-20260626100421-001.jpg",
       "images": [
@@ -54,7 +54,7 @@
       "id": "commercial-black-ceiling-3",
       "category": "commercial-ceilings",
       "title": "Commercial Black Ceilings",
-      "description": "One of our specialties - Commercial Flat Black Ceiling - New Construction",
+      "description": "One of our specialties: commercial flat black ceiling finishes for new construction.",
       "visible": true,
       "cover": "images/portfolio/commercial-ceilings/commercial-black-ceiling-001.jpg",
       "images": [
@@ -84,7 +84,7 @@
       "id": "commercial-flat-black-4",
       "category": "commercial-ceilings",
       "title": "Commercial Flat Black",
-      "description": "Carwash Ceiling - corrugated decking and beans",
+      "description": "Car wash ceiling with corrugated decking and beams.",
       "visible": true,
       "cover": "images/portfolio/commercial-ceilings/commercial-flat-black-001.jpg",
       "images": [
@@ -104,7 +104,7 @@
       "id": "commercial-drywall-20260626062051",
       "category": "restoration",
       "title": "Industrial Machines / Cranes",
-      "description": "Steam Cleaning, Hand Tooling, Sanding and Am mm",
+      "description": "Steam cleaning, hand tooling, sanding, and finish coating preparation.",
       "visible": true,
       "cover": "images/portfolio/epoxy/industrial-machines-cranes-20260626072013-005.jpg",
       "images": [
