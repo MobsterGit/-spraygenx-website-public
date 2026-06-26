@@ -1,5 +1,6 @@
 document.querySelectorAll('[data-year]').forEach(el=>{el.textContent=new Date().getFullYear()});
 if(!document.querySelector('link[href="mobile-polish.css"]')){const polish=document.createElement('link');polish.rel='stylesheet';polish.href='mobile-polish.css';document.head.appendChild(polish);}
+fetch('data/site-settings.json?ts='+Date.now()).then(r=>r.ok?r.json():null).then(s=>{if(s&&s.logo){document.querySelectorAll('.brand-logo,.footer-logo').forEach(img=>{img.src=s.logo+'?ts='+Date.now();});}}).catch(()=>{});
 document.querySelectorAll('.socials').forEach(el=>{el.innerHTML='<a href="https://www.facebook.com/spraygenx" target="_blank" rel="noopener" aria-label="Spray GenX on Facebook">f</a>';});
 const menuButton=document.getElementById('mobileMenuButton');
 const mobilePanel=document.getElementById('mobilePanel');
