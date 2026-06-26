@@ -1,4 +1,5 @@
 document.querySelectorAll('[data-year]').forEach(el=>{el.textContent=new Date().getFullYear()});
+if(!document.querySelector('link[href="mobile-polish.css"]')){const polish=document.createElement('link');polish.rel='stylesheet';polish.href='mobile-polish.css';document.head.appendChild(polish);}
 const menuButton=document.getElementById('mobileMenuButton');
 const mobilePanel=document.getElementById('mobilePanel');
 if(menuButton&&mobilePanel){
