@@ -66,14 +66,14 @@
     {
       "id": "residential-interiors",
       "label": "Residential Interiors",
-      "headline": "Residential Interiors",
+      "headline": "Interior repaints, accent walls, drywall repairs, trim, and finished living spaces.",
       "visible": true,
       "sort": 100
     },
     {
       "id": "governemt",
       "label": "Government / State Projects",
-      "headline": "Governemt",
+      "headline": "Government, state, and specialty projects requiring planning, logistics, and field execution.",
       "visible": true,
       "sort": 110
     }
