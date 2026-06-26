@@ -14,6 +14,18 @@ if(menuButton&&mobilePanel){
     menuButton.textContent='☰';
   }));
 }
+const backToTop=document.createElement('button');
+backToTop.className='back-to-top';
+backToTop.type='button';
+backToTop.setAttribute('aria-label','Back to top');
+backToTop.textContent='↑';
+document.body.appendChild(backToTop);
+const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function toggleBackToTop(){backToTop.classList.toggle('visible',window.scrollY>360)}
+window.addEventListener('scroll',toggleBackToTop,{passive:true});
+toggleBackToTop();
+backToTop.addEventListener('click',()=>{window.scrollTo({top:0,behavior:prefersReduced?'auto':'smooth'})});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id&&id.length>1){const target=document.querySelector(id);if(target){e.preventDefault();target.scrollIntoView({behavior:prefersReduced?'auto':'smooth',block:'start'});}}})});
 const emailButton=document.getElementById('emailButton');
 const estimateForm=document.getElementById('estimateForm');
 const emailAddress='Spray'+'GenX'+'@'+'gmail'+'.com';
