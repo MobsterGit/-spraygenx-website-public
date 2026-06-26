@@ -12,8 +12,8 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
 .back-to-top.visible{opacity:.4;pointer-events:auto;transform:translateY(0)}
 .back-to-top.visible:hover,.back-to-top.visible:active,.back-to-top.visible:focus{opacity:1;background:#1f8dff}
 .back-to-top:focus{outline:3px solid rgba(31,141,255,.35);outline-offset:3px}
-.card,.stat-box,.proof-panel,.photo-panel,.portfolio-card,.category-card,.portfolio-preview,.preview-tile,.project-card img,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.btn,.phone-btn,.mobile-panel a,.lightbox-main img,.lightbox-thumbs img{border-radius:var(--sgx-radius)!important}
-.portfolio-card,.category-card,.stat-box,.card,.contact-list a,.contact-list button,.contact-list div,input,textarea,select{border-color:var(--sgx-soft-line)!important}
+.card,.stat-box,.proof-panel,.photo-panel,.portfolio-card,.category-card,.portfolio-preview,.preview-tile,.project-card img,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.btn,.phone-btn,.mobile-panel a,.portfolio-anchor-list a,.lightbox-main img,.lightbox-thumbs img{border-radius:var(--sgx-radius)!important}
+.portfolio-card,.category-card,.stat-box,.card,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.portfolio-anchor-list a{border-color:var(--sgx-soft-line)!important}
 .proof-panel{border-top:1px solid var(--sgx-soft-line)!important;border-right:1px solid var(--sgx-soft-line)!important;border-bottom:1px solid var(--sgx-soft-line)!important;border-left:4px solid #0b65d8!important}
 .portfolio-preview{gap:1px!important;background:var(--sgx-soft-line-2)!important;border-bottom:1px solid var(--sgx-soft-line)!important}
 .preview-tile{border-color:var(--sgx-soft-line)!important}
