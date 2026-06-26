@@ -62,6 +62,13 @@
       "headline": "Specialty prep, repairs, repainting, and restoration-minded finishes.",
       "visible": true,
       "sort": 90
+    },
+    {
+      "id": "residential-interiors",
+      "label": "Residential Interiors",
+      "headline": "Residential Interiors",
+      "visible": true,
+      "sort": 100
     }
   ]
 }
