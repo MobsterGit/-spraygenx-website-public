@@ -1,7 +1,13 @@
 document.querySelectorAll('[data-year]').forEach(el=>{el.textContent=new Date().getFullYear()});
 if(!document.querySelector('link[href^="mobile-polish.css"]')){const polish=document.createElement('link');polish.rel='stylesheet';polish.href='mobile-polish.css?ts='+Date.now();document.head.appendChild(polish);}
+if(!document.querySelector('link[rel="icon"]')){const fav=document.createElement('link');fav.rel='icon';fav.type='image/svg+xml';fav.href='favicon.svg';document.head.appendChild(fav);}
+(function(){const id='G-XN257ZSZ7H';if(window.__sgxGaLoaded)return;window.__sgxGaLoaded=true;window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;gtag('js',new Date());gtag('config',id);const ga=document.createElement('script');ga.async=true;ga.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(ga);})();
 fetch('data/site-settings.json?ts='+Date.now()).then(r=>r.ok?r.json():null).then(s=>{if(s&&s.logo){document.querySelectorAll('.brand-logo,.footer-logo').forEach(img=>{img.src=s.logo+'?ts='+Date.now();});}}).catch(()=>{});
 document.querySelectorAll('.socials').forEach(el=>{el.innerHTML='<a href="https://www.facebook.com/spraygenx" target="_blank" rel="noopener" aria-label="Spray GenX on Facebook">f</a>';});
+const shareUrl=location.origin+location.pathname;
+const shareText='Spray GenX LLC - Commercial, residential, and industrial painting in Northeast Ohio.';
+function trackEvent(name,params){if(window.gtag)window.gtag('event',name,params||{});}
+function shareSprayGenX(){trackEvent('share_click',{page_title:document.title,page_location:location.href});if(navigator.share){navigator.share({title:document.title,text:shareText,url:shareUrl}).catch(()=>{});return;}const subject=encodeURIComponent('Spray GenX LLC');const body=encodeURIComponent(shareText+'\n\n'+shareUrl);window.location.href='mailto:?subject='+subject+'&body='+body;}
 const menuButton=document.getElementById('mobileMenuButton');
 const mobilePanel=document.getElementById('mobilePanel');
 if(menuButton&&mobilePanel){
@@ -16,6 +22,13 @@ if(menuButton&&mobilePanel){
     menuButton.textContent='☰';
   }));
 }
+const shareButton=document.createElement('button');
+shareButton.className='share-site-button';
+shareButton.type='button';
+shareButton.setAttribute('aria-label','Share Spray GenX');
+shareButton.innerHTML='<svg class="svg-icon" aria-hidden="true"><use href="icons.svg#i-share"></use></svg><span>Share</span>';
+document.body.appendChild(shareButton);
+shareButton.addEventListener('click',shareSprayGenX);
 const backToTop=document.createElement('button');
 backToTop.className='back-to-top';
 backToTop.type='button';
@@ -31,5 +44,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
 const emailButton=document.getElementById('emailButton');
 const estimateForm=document.getElementById('estimateForm');
 const emailAddress='Spray'+'GenX'+'@'+'gmail'+'.com';
-if(emailButton){emailButton.addEventListener('click',()=>{window.location.href='mailto:'+emailAddress+'?subject='+encodeURIComponent('Estimate Request')});}
-if(estimateForm){estimateForm.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(e.currentTarget);const body=['Name: '+(d.get('name')||''),'Phone: '+(d.get('phone')||''),'Project Address: '+(d.get('address')||''),'Project Type: '+(d.get('type')||''),'','Project Details:',d.get('details')||'','','Photos can be attached to this email.'].join('\n');window.location.href='mailto:'+emailAddress+'?subject='+encodeURIComponent('Spray GenX Estimate Request')+'&body='+encodeURIComponent(body);});}
+if(emailButton){emailButton.addEventListener('click',()=>{trackEvent('email_click',{page_location:location.href});window.location.href='mailto:'+emailAddress+'?subject='+encodeURIComponent('Estimate Request')});}
+if(estimateForm){estimateForm.addEventListener('submit',e=>{e.preventDefault();trackEvent('estimate_form_submit',{page_location:location.href});const d=new FormData(e.currentTarget);const body=['Name: '+(d.get('name')||''),'Phone: '+(d.get('phone')||''),'Project Address: '+(d.get('address')||''),'Project Type: '+(d.get('type')||''),'','Project Details:',d.get('details')||'','','Photos can be attached to this email.'].join('\n');window.location.href='mailto:'+emailAddress+'?subject='+encodeURIComponent('Spray GenX Estimate Request')+'&body='+encodeURIComponent(body);});}
+document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.addEventListener('click',()=>trackEvent('phone_click',{page_location:location.href})));
