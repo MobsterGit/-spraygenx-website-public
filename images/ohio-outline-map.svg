@@ -1,7 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 760" fill="none" role="img" aria-label="Ohio outline map">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 760" fill="none" role="img" aria-label="Ohio outline map with Northeast Ohio service markers">
   <style>
     .county{stroke:#DDE1E6;stroke-width:2;stroke-opacity:.48}
     .outline{stroke:#C9CDD3;stroke-width:6;stroke-linejoin:round;stroke-linecap:round;fill:rgba(255,255,255,.04)}
+    .marker-body{fill:#4e95f6;stroke:#fff;stroke-width:6}
+    .marker-core{fill:#fff}
+    .marker-shadow{fill:rgba(7,23,43,.16)}
   </style>
   <g transform="translate(185 92) scale(.72)">
     <g class="county">
@@ -9,5 +12,20 @@
       <line x1="70" y1="150" x2="705" y2="150"/><line x1="70" y1="195" x2="705" y2="195"/><line x1="70" y1="240" x2="705" y2="240"/><line x1="70" y1="285" x2="705" y2="285"/><line x1="70" y1="330" x2="705" y2="330"/><line x1="70" y1="375" x2="705" y2="375"/><line x1="70" y1="420" x2="705" y2="420"/><line x1="70" y1="465" x2="705" y2="465"/><line x1="70" y1="510" x2="705" y2="510"/><line x1="70" y1="555" x2="705" y2="555"/><line x1="70" y1="600" x2="705" y2="600"/>
     </g>
     <polygon class="outline" points="176,105 335,103 337,110 356,108 368,120 385,118 398,132 420,129 431,142 454,135 472,142 492,135 518,134 538,128 555,114 582,111 610,109 631,100 651,84 681,70 716,52 716,250 708,258 714,278 706,296 707,318 694,335 688,358 677,377 660,392 648,414 627,431 609,445 594,466 574,478 558,500 537,501 522,516 529,536 514,550 500,537 485,551 490,569 472,581 458,566 445,584 432,623 407,628 394,608 375,620 356,612 346,594 325,596 306,606 284,597 271,608 250,603 232,587 212,592 196,576 176,578 163,559 143,560 129,543 110,542 98,523 88,533 72,517 53,520 53,106"/>
+    <ellipse class="marker-shadow" cx="560" cy="180" rx="18" ry="8"/>
+    <g transform="translate(560 152)">
+      <path class="marker-body" d="M0 0c-18 0-32 14-32 32 0 25 32 63 32 63s32-38 32-63C32 14 18 0 0 0z"/>
+      <circle class="marker-core" cx="0" cy="32" r="11"/>
+    </g>
+    <ellipse class="marker-shadow" cx="612" cy="214" rx="18" ry="8"/>
+    <g transform="translate(612 186) scale(.96)">
+      <path class="marker-body" d="M0 0c-18 0-32 14-32 32 0 25 32 63 32 63s32-38 32-63C32 14 18 0 0 0z"/>
+      <circle class="marker-core" cx="0" cy="32" r="11"/>
+    </g>
+    <ellipse class="marker-shadow" cx="520" cy="246" rx="18" ry="8"/>
+    <g transform="translate(520 218) scale(.92)">
+      <path class="marker-body" d="M0 0c-18 0-32 14-32 32 0 25 32 63 32 63s32-38 32-63C32 14 18 0 0 0z"/>
+      <circle class="marker-core" cx="0" cy="32" r="11"/>
+    </g>
   </g>
 </svg>
