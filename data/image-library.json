@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "updated": "2026-06-27",
+  "notes": "Bulk image library for Spray GenX job photos. Scriptable/AI uploads will add image blocks here and the public photo-library.html page will render them.",
+  "categories": [
+    { "id": "commercial-ceilings", "label": "Commercial Ceilings", "sort": 10 },
+    { "id": "commercial-interiors", "label": "Commercial Interiors", "sort": 20 },
+    { "id": "residential-interiors", "label": "Residential Interiors", "sort": 30 },
+    { "id": "exteriors", "label": "Exterior Painting", "sort": 40 },
+    { "id": "machinery-cranes", "label": "Machinery & Cranes", "sort": 50 },
+    { "id": "drywall-restoration", "label": "Drywall & Restoration", "sort": 60 },
+    { "id": "before-after", "label": "Before & After", "sort": 70 },
+    { "id": "jobsite-process", "label": "Jobsite & Process", "sort": 80 },
+    { "id": "uncategorized", "label": "Uncategorized", "sort": 999 }
+  ],
+  "blocks": []
+}
