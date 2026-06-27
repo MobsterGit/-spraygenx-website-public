@@ -12,10 +12,10 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
 .back-to-top.visible{opacity:.4;pointer-events:auto;transform:translateY(0)}
 .back-to-top.visible:hover,.back-to-top.visible:active,.back-to-top.visible:focus{opacity:1;background:#1f8dff}
 .back-to-top:focus{outline:3px solid rgba(31,141,255,.35);outline-offset:3px}
-.share-site-button{position:fixed;left:18px;bottom:18px;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;max-width:48px!important;max-height:48px!important;border-radius:50%!important;border:1px solid rgba(255,255,255,.22);background:#061325;color:#fff;box-shadow:0 10px 26px rgba(4,16,31,.24);display:grid!important;place-items:center!important;padding:0!important;font-size:1.05rem!important;z-index:9998;opacity:.42;transition:opacity .22s ease,background .22s ease,transform .22s ease}
+.share-site-button{position:fixed;left:18px;bottom:18px;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;max-width:48px!important;max-height:48px!important;border-radius:50%!important;border:1px solid rgba(255,255,255,.22);background:#061325;color:#fff;box-shadow:0 10px 26px rgba(4,16,31,.24);display:grid!important;place-items:center!important;padding:0!important;font-size:1.05rem!important;z-index:9998;opacity:.42;transition:opacity .22s ease,background .22s ease,transform .22s ease;overflow:hidden!important}
 .share-site-button span{display:none!important}
 .share-site-button:hover,.share-site-button:active,.share-site-button:focus{opacity:1;background:#0b65d8;transform:translateY(-1px)}
-.share-site-button .svg-icon{font-size:1.05rem}
+.share-site-button .svg-icon{display:block!important;width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;max-width:18px!important;max-height:18px!important;font-size:18px!important;line-height:1!important}
 .card,.stat-box,.proof-panel,.photo-panel,.portfolio-card,.category-card,.portfolio-preview,.preview-tile,.project-card img,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.btn,.phone-btn,.mobile-panel a,.portfolio-anchor-list a,.lightbox-main img,.lightbox-thumbs img{border-radius:var(--sgx-radius)!important}
 .portfolio-card,.category-card,.stat-box,.card,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.portfolio-anchor-list a{border-color:var(--sgx-soft-line)!important}
 .proof-panel{border-top:1px solid var(--sgx-soft-line)!important;border-right:1px solid var(--sgx-soft-line)!important;border-bottom:1px solid var(--sgx-soft-line)!important;border-left:4px solid #0b65d8!important}
@@ -39,9 +39,9 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
   .footer{padding:22px 0!important}
   .portfolio-intro .shell{padding-top:0!important;padding-bottom:0!important}
   .back-to-top{right:14px;bottom:14px;width:48px;height:48px;font-size:1.25rem}
-  .share-site-button{left:14px;bottom:14px;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important}
-  .map-art{right:14px!important;bottom:20px!important;width:175px!important;height:145px!important}
-  .p1{right:98px!important;bottom:92px!important}.p2{right:68px!important;bottom:118px!important}.p3{right:82px!important;bottom:58px!important}
+  .share-site-button{left:14px;bottom:14px;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;max-width:42px!important;max-height:42px!important;opacity:.32!important}
+  .share-site-button .svg-icon{width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;max-width:16px!important;max-height:16px!important;font-size:16px!important}
+  .map-art,.p1,.p2,.p3{display:none!important}
 }
 @media(max-width:380px){
   .hero p{font-size:.9rem!important}
