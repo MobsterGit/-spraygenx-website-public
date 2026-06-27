@@ -39,9 +39,8 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
   .footer{padding:22px 0!important}
   .portfolio-intro .shell{padding-top:0!important;padding-bottom:0!important}
   .back-to-top{right:14px;bottom:14px;width:48px;height:48px;font-size:1.25rem}
-  .share-site-button{left:14px;bottom:14px;width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;max-width:42px!important;max-height:42px!important;opacity:.32!important}
-  .share-site-button .svg-icon{width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;max-width:16px!important;max-height:16px!important;font-size:16px!important}
-  .map-art,.p1,.p2,.p3{display:none!important}
+  .share-site-button{display:none!important}
+  .map-art,.pin,.p1,.p2,.p3{display:none!important}
 }
 @media(max-width:380px){
   .hero p{font-size:.9rem!important}
