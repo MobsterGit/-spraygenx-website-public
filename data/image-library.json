@@ -239,6 +239,86 @@
           "visible": true
         }
       ]
+    },
+    {
+      "id": "2026-06-27-20260627193318",
+      "title": "2026 06 27",
+      "category": "residential-interiors",
+      "date": "2026-06-27",
+      "summary": "Completed Spray GenX painting project.",
+      "tags": [
+        "painting",
+        "refinishing",
+        "completed work"
+      ],
+      "visible": true,
+      "images": [
+        {
+          "path": "images/converted/2026-06-27/2026-06-19-15-22-35-20260627192932-014-b07e41dd1f.jpg",
+          "caption": "Residential Interior 001",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/fe1ad99f-d1f2-4c37-9ab3-57101bd666d1-20260627192932-002-9ba808cbca.jpg",
+          "caption": "Residential Interior 002",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-0018-20260627192932-011-0cdc133e42.jpg",
+          "caption": "Residential Interior 003",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-0703-20260627192932-012-0b37f0af46.jpg",
+          "caption": "Residential Interior 004",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-0707-20260627192932-013-a1231d1af9.jpg",
+          "caption": "Residential Interior 005",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-0866-20260627192932-003-0d648cc45e.jpg",
+          "caption": "Residential Interior 006",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-1128-20260627192932-005-b8ea244eb4.jpg",
+          "caption": "Residential Interior 007",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-1129-20260627192932-004-33543438ae.jpg",
+          "caption": "Residential Interior 008",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-1199-20260627192932-006-285d677bc1.jpg",
+          "caption": "Residential Interior 009",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-1651-20260627192932-007-e59c7316a5.jpg",
+          "caption": "Residential Interior 010",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-1653-20260627192932-009-01590ca537.jpg",
+          "caption": "Residential Interior 011",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-1691-20260627192932-008-b44ea5f4a4.jpg",
+          "caption": "Residential Interior 012",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-1693-20260627192932-010-4cf8c9afe8.jpg",
+          "caption": "Residential Interior 013",
+          "visible": true
+        }
+      ]
     }
   ]
 }
