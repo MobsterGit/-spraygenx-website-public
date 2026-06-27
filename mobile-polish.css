@@ -12,7 +12,8 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
 .back-to-top.visible{opacity:.4;pointer-events:auto;transform:translateY(0)}
 .back-to-top.visible:hover,.back-to-top.visible:active,.back-to-top.visible:focus{opacity:1;background:#1f8dff}
 .back-to-top:focus{outline:3px solid rgba(31,141,255,.35);outline-offset:3px}
-.share-site-button{position:fixed;left:18px;bottom:18px;min-height:52px;border-radius:999px!important;border:1px solid rgba(255,255,255,.22);background:#061325;color:#fff;box-shadow:0 14px 36px rgba(4,16,31,.28);display:inline-flex;align-items:center;gap:8px;padding:0 16px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;font-size:.78rem;z-index:9998;opacity:.72;transition:opacity .22s ease,background .22s ease,transform .22s ease}
+.share-site-button{position:fixed;left:18px;bottom:18px;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;max-width:48px!important;max-height:48px!important;border-radius:50%!important;border:1px solid rgba(255,255,255,.22);background:#061325;color:#fff;box-shadow:0 10px 26px rgba(4,16,31,.24);display:grid!important;place-items:center!important;padding:0!important;font-size:1.05rem!important;z-index:9998;opacity:.42;transition:opacity .22s ease,background .22s ease,transform .22s ease}
+.share-site-button span{display:none!important}
 .share-site-button:hover,.share-site-button:active,.share-site-button:focus{opacity:1;background:#0b65d8;transform:translateY(-1px)}
 .share-site-button .svg-icon{font-size:1.05rem}
 .card,.stat-box,.proof-panel,.photo-panel,.portfolio-card,.category-card,.portfolio-preview,.preview-tile,.project-card img,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.btn,.phone-btn,.mobile-panel a,.portfolio-anchor-list a,.lightbox-main img,.lightbox-thumbs img{border-radius:var(--sgx-radius)!important}
@@ -38,14 +39,12 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
   .footer{padding:22px 0!important}
   .portfolio-intro .shell{padding-top:0!important;padding-bottom:0!important}
   .back-to-top{right:14px;bottom:14px;width:48px;height:48px;font-size:1.25rem}
-  .share-site-button{left:14px;bottom:14px;min-height:48px;padding:0 14px;font-size:.72rem}
+  .share-site-button{left:14px;bottom:14px;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important}
   .map-art{right:14px!important;bottom:20px!important;width:175px!important;height:145px!important}
   .p1{right:98px!important;bottom:92px!important}.p2{right:68px!important;bottom:118px!important}.p3{right:82px!important;bottom:58px!important}
 }
 @media(max-width:380px){
   .hero p{font-size:.9rem!important}
   .btn{font-size:.74rem!important}
-  .share-site-button span{display:none}
-  .share-site-button{width:48px;padding:0;justify-content:center}
 }
 @media(prefers-reduced-motion:reduce){.back-to-top,.share-site-button{transition:none!important}}
