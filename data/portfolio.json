@@ -184,6 +184,21 @@
           "caption": ""
         }
       ]
+    },
+    {
+      "id": "wadsworth-ohio-home-transformation-20260627141739",
+      "category": "residential",
+      "title": "Wadsworth, Ohio Home Transformation",
+      "description": "This Wadsworth, Ohio home was transformed from a basic white ranch into a warm, custom-finished home with much more character, curb appeal, and personality. For our customer Terri, Spray GenX completed a full home refresh that included exterior color upgrades, custom-finished porch columns, handcrafted wood shutters, and interior board-and-batten wall accents. The finished package brought the interior and exterior together with clean lines, richer colors, and custom details that made the home feel more polished, personal, and complete while still preserving the comfort and charm of the original ranch-style layout.",
+      "visible": true,
+      "cover": "images/portfolio/residential/wadsworth-ohio-home-transformation-20260627141737-001.jpg",
+      "images": [
+        {
+          "path": "images/portfolio/residential/wadsworth-ohio-home-transformation-20260627141737-001.jpg",
+          "visible": true,
+          "caption": ""
+        }
+      ]
     }
   ]
 }
