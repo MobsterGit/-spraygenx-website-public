@@ -149,6 +149,51 @@
           "visible": true
         }
       ]
+    },
+    {
+      "id": "commercial-black-ceiling-20260627190522",
+      "title": "Commercial Black Ceiling",
+      "category": "commercial-ceilings",
+      "date": "2026-06-27",
+      "summary": "Completed Spray GenX painting project.",
+      "tags": [
+        "painting",
+        "refinishing",
+        "completed work"
+      ],
+      "visible": true,
+      "images": [
+        {
+          "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-001.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-002.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-003.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-004.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-005.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-006.jpg",
+          "caption": "",
+          "visible": true
+        }
+      ]
     }
   ]
 }
