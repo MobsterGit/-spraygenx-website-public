@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-27T18:45:49+00:00",
+  "updated": "2026-06-27T19:10:48+00:00",
   "images": [
     {
       "source": "images/inbox/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004.png",
@@ -36,6 +36,24 @@
       "source_ext": "png",
       "converted_ext": "jpg",
       "converted_at": "2026-06-27T18:45:49+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-0771-20260627191028-002.heic",
+      "converted": "images/converted/2026-06-27/img-0771-20260627191028-002-1844502203.jpg",
+      "sha256": "1844502203664fb136bc0cebbf3af884bb0ee75f68dcd1d6b4c063a7a20bff5d",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:10:47+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-0781-20260627191028-003.heic",
+      "converted": "images/converted/2026-06-27/img-0781-20260627191028-003-365bc7abb7.jpg",
+      "sha256": "365bc7abb7f0cae495c9ea7f13ed3b411ef1e20d8a36627fec0f231f001150fe",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:10:48+00:00",
       "status": "converted"
     }
   ]
