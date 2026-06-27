@@ -1,5 +1,5 @@
 /* Spray GenX launch mobile spacing polish */
-:root{--sgx-radius:4px;--sgx-soft-line:#d8e2ec;--sgx-soft-line-2:#cfdbe8}
+:root{--sgx-radius:4px;--sgx-soft-line:#e6edf4;--sgx-soft-line-2:#eef3f8}
 .top-note{font-weight:500!important;letter-spacing:.005em!important;color:rgba(255,255,255,.82)!important}
 section:not(.hero) .section-label{letter-spacing:.075em!important;font-weight:800!important}
 section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .card h3{color:#061325}
@@ -16,15 +16,20 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
 .share-site-button span{display:none!important}
 .share-site-button:hover,.share-site-button:active,.share-site-button:focus{opacity:1;background:#0b65d8;transform:translateY(-1px)}
 .share-site-button .svg-icon{display:block!important;width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;max-width:18px!important;max-height:18px!important;font-size:18px!important;line-height:1!important}
-.card,.stat-box,.proof-panel,.photo-panel,.portfolio-card,.category-card,.portfolio-preview,.preview-tile,.project-card img,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.btn,.phone-btn,.mobile-panel a,.portfolio-anchor-list a,.lightbox-main img,.lightbox-thumbs img{border-radius:var(--sgx-radius)!important}
-.portfolio-card,.category-card,.stat-box,.card,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.portfolio-anchor-list a{border-color:var(--sgx-soft-line)!important}
+.card,.stat-box,.proof-panel,.photo-panel,.portfolio-card,.category-card,.portfolio-preview,.preview-tile,.project-card img,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.btn,.phone-btn,.mobile-panel a,.portfolio-anchor-list a,.lightbox-main img,.lightbox-thumbs img,.library-block,.library-preview,.library-preview img,.pill,.library-tags span{border-radius:var(--sgx-radius)!important}
+.portfolio-card,.category-card,.stat-box,.card,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.portfolio-anchor-list a,.library-block,.pill,.library-tags span{border-color:var(--sgx-soft-line)!important}
 .proof-panel{border-top:1px solid var(--sgx-soft-line)!important;border-right:1px solid var(--sgx-soft-line)!important;border-bottom:1px solid var(--sgx-soft-line)!important;border-left:4px solid #0b65d8!important}
 .portfolio-preview{gap:1px!important;background:var(--sgx-soft-line-2)!important;border-bottom:1px solid var(--sgx-soft-line)!important}
 .preview-tile{border-color:var(--sgx-soft-line)!important}
 .portfolio-card{box-shadow:0 10px 28px rgba(7,23,43,.07)!important}
 .category-card{box-shadow:0 10px 28px rgba(7,23,43,.06)!important}
-.project-card img{border-color:var(--sgx-soft-line)!important}
+.project-card img{border-color:rgba(230,237,244,.55)!important}
 .lightbox-thumbs img{border-color:var(--sgx-soft-line)!important}.lightbox-thumbs img.active{border-color:#1f8dff!important}
+.library-preview{gap:0!important;background:#061325!important;border-bottom:1px solid var(--sgx-soft-line)!important}
+.library-preview>div+div{border-left:1px solid rgba(230,237,244,.55)!important}
+.library-preview img{border:0!important}
+.pill,.library-tags span{background:#f8fbff!important}
+.footer-inline-links{display:inline-flex;align-items:center;gap:8px;margin-left:8px;flex-wrap:wrap}.footer-inline-links a{color:#d5e4f5;text-decoration:none}.footer-inline-links a:hover{color:#fff}.footer-inline-links span{opacity:.65}
 .map-art{right:34px!important;bottom:26px!important}
 .p1{right:132px!important;bottom:108px!important}.p2{right:92px!important;bottom:138px!important}.p3{right:108px!important;bottom:70px!important}
 @media(max-width:640px){
@@ -37,6 +42,7 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
   .section-head{margin-bottom:14px!important}
   .card{padding:18px!important}
   .footer{padding:22px 0!important}
+  .footer-inline-links{justify-content:center;margin-left:0;margin-top:6px;width:100%;gap:7px 10px}
   .portfolio-intro .shell{padding-top:0!important;padding-bottom:0!important}
   .back-to-top{right:14px;bottom:14px;width:48px;height:48px;font-size:1.25rem}
   .share-site-button{display:none!important}
