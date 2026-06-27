@@ -194,6 +194,51 @@
           "visible": true
         }
       ]
+    },
+    {
+      "id": "2026-06-27-20260627191729",
+      "title": "2026 06 27",
+      "category": "commercial-ceilings",
+      "date": "2026-06-27",
+      "summary": "Completed Spray GenX painting project.",
+      "tags": [
+        "painting",
+        "refinishing",
+        "completed work"
+      ],
+      "visible": true,
+      "images": [
+        {
+          "path": "images/converted/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004-44af5c2cf3.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/2026-03-16-08-54-20-1-20260627184528-003-caa8c9ccf0.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/2026-03-16-08-55-44-1-20260627184528-002-802495aecb.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/2026-03-16-08-58-51-1-20260627184528-001-5270d4dafe.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-0771-20260627191028-002-1844502203.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/converted/2026-06-27/img-0781-20260627191028-003-365bc7abb7.jpg",
+          "caption": "",
+          "visible": true
+        }
+      ]
     }
   ]
 }
