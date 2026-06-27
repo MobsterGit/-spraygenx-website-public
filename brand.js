@@ -1,4 +1,5 @@
 document.querySelectorAll('[data-year]').forEach(el=>{el.textContent=new Date().getFullYear()});
+document.querySelectorAll('.top-note').forEach(el=>{el.textContent='Commercial - Residential - Industrial Painting and Refinishing • Northeast Ohio'});
 if(!document.querySelector('link[href^="mobile-polish.css"]')){const polish=document.createElement('link');polish.rel='stylesheet';polish.href='mobile-polish.css?ts='+Date.now();document.head.appendChild(polish);}
 if(!document.querySelector('link[rel="icon"]')){const fav=document.createElement('link');fav.rel='icon';fav.type='image/svg+xml';fav.href='favicon.svg';document.head.appendChild(fav);}
 (function(){const id='G-XN257ZSZ7H';if(window.__sgxGaLoaded)return;window.__sgxGaLoaded=true;window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;gtag('js',new Date());gtag('config',id);const ga=document.createElement('script');ga.async=true;ga.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(ga);})();
