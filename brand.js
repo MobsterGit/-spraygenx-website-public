@@ -3,7 +3,8 @@ if(!document.querySelector('link[href^="mobile-polish.css"]')){const polish=docu
 if(!document.querySelector('link[rel="icon"]')){const fav=document.createElement('link');fav.rel='icon';fav.type='image/svg+xml';fav.href='favicon.svg';document.head.appendChild(fav);}
 (function(){const id='G-XN257ZSZ7H';if(window.__sgxGaLoaded)return;window.__sgxGaLoaded=true;window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.gtag=gtag;gtag('js',new Date());gtag('config',id);const ga=document.createElement('script');ga.async=true;ga.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(ga);})();
 fetch('data/site-settings.json?ts='+Date.now()).then(r=>r.ok?r.json():null).then(s=>{if(s&&s.logo){document.querySelectorAll('.brand-logo,.footer-logo').forEach(img=>{img.src=s.logo+'?ts='+Date.now();});}}).catch(()=>{});
-document.querySelectorAll('.socials').forEach(el=>{el.innerHTML='<a href="gallery.html">Portfolio</a><a href="photo-library.html">Image Library</a><a href="https://www.facebook.com/spraygenx" target="_blank" rel="noopener" aria-label="Spray GenX on Facebook">f</a>';});
+document.querySelectorAll('.footer-grid').forEach(grid=>{const copy=grid.children&&grid.children[1];if(copy&&!copy.querySelector('.footer-inline-links')){copy.insertAdjacentHTML('beforeend',' <span class="footer-inline-links"><span>•</span><a href="gallery.html">Portfolio</a><span>•</span><a href="photo-library.html">Image Library</a></span>');}});
+document.querySelectorAll('.socials').forEach(el=>{el.innerHTML='<a href="https://www.facebook.com/spraygenx" target="_blank" rel="noopener" aria-label="Spray GenX on Facebook">f</a>';});
 const shareUrl=location.origin+location.pathname;
 const shareText='Spray GenX LLC - Commercial, residential, and industrial painting in Northeast Ohio.';
 function trackEvent(name,params){if(window.gtag)window.gtag('event',name,params||{});}
