@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-27T19:10:48+00:00",
+  "updated": "2026-06-27T19:30:45+00:00",
   "images": [
     {
       "source": "images/inbox/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004.png",
@@ -54,6 +54,123 @@
       "source_ext": "heic",
       "converted_ext": "jpg",
       "converted_at": "2026-06-27T19:10:48+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/2026-06-19-15-22-35-20260627192932-014.png",
+      "converted": "images/converted/2026-06-27/2026-06-19-15-22-35-20260627192932-014-b07e41dd1f.jpg",
+      "sha256": "b07e41dd1f0b088324268220b3d87b8bb21e7a9d508d893c5f836b6da9bb2202",
+      "source_ext": "png",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:37+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/fe1ad99f-d1f2-4c37-9ab3-57101bd666d1-20260627192932-002.png",
+      "converted": "images/converted/2026-06-27/fe1ad99f-d1f2-4c37-9ab3-57101bd666d1-20260627192932-002-9ba808cbca.jpg",
+      "sha256": "9ba808cbca32d14a31ea2d80e64566d1afd3eb8896b4ab4f32f6be752d32f831",
+      "source_ext": "png",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:37+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-0018-20260627192932-011.heic",
+      "converted": "images/converted/2026-06-27/img-0018-20260627192932-011-0cdc133e42.jpg",
+      "sha256": "0cdc133e42f84bd2e25af4b34336d31f1355526d54f85d93a9469d5a80d457bf",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:38+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-0703-20260627192932-012.heic",
+      "converted": "images/converted/2026-06-27/img-0703-20260627192932-012-0b37f0af46.jpg",
+      "sha256": "0b37f0af465f94c55eba3833c86379f646eb1a5dcb7104f0a0fb1f4730470693",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:38+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-0707-20260627192932-013.heic",
+      "converted": "images/converted/2026-06-27/img-0707-20260627192932-013-a1231d1af9.jpg",
+      "sha256": "a1231d1af95c5addb6d712d25334ec3ffa4186e98397f94f1530e19341efc187",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:39+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-0866-20260627192932-003.heic",
+      "converted": "images/converted/2026-06-27/img-0866-20260627192932-003-0d648cc45e.jpg",
+      "sha256": "0d648cc45ec6e30a504767afffdf7610efaad41c1eb135ba9496e69ec4700f73",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:40+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-1128-20260627192932-005.heic",
+      "converted": "images/converted/2026-06-27/img-1128-20260627192932-005-b8ea244eb4.jpg",
+      "sha256": "b8ea244eb4328597fc42c9974a5e5a63ab8713d11401f0186a1013cf2511b3b4",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:41+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-1129-20260627192932-004.heic",
+      "converted": "images/converted/2026-06-27/img-1129-20260627192932-004-33543438ae.jpg",
+      "sha256": "33543438ae027b989e605c698a254fa3288f6f07b2f47630487323157868518f",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:41+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-1199-20260627192932-006.heic",
+      "converted": "images/converted/2026-06-27/img-1199-20260627192932-006-285d677bc1.jpg",
+      "sha256": "285d677bc18657243a55c2892ceff220de5481dcfc5ffa667187d0c89d58b45f",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:42+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-1651-20260627192932-007.heic",
+      "converted": "images/converted/2026-06-27/img-1651-20260627192932-007-e59c7316a5.jpg",
+      "sha256": "e59c7316a5624126930501bd0f102183dc7778ea5458d01c71fce92cf13dd74c",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:43+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-1653-20260627192932-009.heic",
+      "converted": "images/converted/2026-06-27/img-1653-20260627192932-009-01590ca537.jpg",
+      "sha256": "01590ca537ae57d4a0d5d482b84090171748b7736aba17d6b1e7059ab151d0ca",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:44+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-1691-20260627192932-008.heic",
+      "converted": "images/converted/2026-06-27/img-1691-20260627192932-008-b44ea5f4a4.jpg",
+      "sha256": "b44ea5f4a445fe347e1a8004cd61715840102e541ca03bc7208cd5c5d053d479",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:44+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/img-1693-20260627192932-010.heic",
+      "converted": "images/converted/2026-06-27/img-1693-20260627192932-010-4cf8c9afe8.jpg",
+      "sha256": "4cf8c9afe8d40e11f46f3b499d80c91da87d1df7bc561304309621304a55dbca",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-27T19:30:45+00:00",
       "status": "converted"
     }
   ]
