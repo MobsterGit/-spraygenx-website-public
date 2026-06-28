@@ -45,7 +45,7 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
   :root{--sgx-body-lh:1.46;--sgx-heading-lh:1.04;--sgx-tight-lh:1.12;--sgx-pad-xs:10px;--sgx-pad-sm:20px;--sgx-pad-md:32px;--sgx-pad-lg:40px;--sgx-pad-xl:52px}
   .top-note{font-size:.7rem!important;font-weight:500!important;letter-spacing:0!important;line-height:1.18!important}
   .site-header .nav{min-height:0!important;padding-top:var(--sgx-pad-sm)!important;padding-bottom:var(--sgx-pad-sm)!important}.mobile-menu{font-size:1.36rem!important;line-height:1!important}
-  .mobile-panel a{font-size:1.05rem!important;line-height:1.12!important;letter-spacing:.035em!important;padding:14px 20px!important}
+  .mobile-panel a{font-size:.86rem!important;line-height:1.12!important;letter-spacing:.035em!important;padding:12px 18px!important}
   .hero.home .hero-bg{object-position:66% center!important}
   .hero.home .hero-inner{padding-top:20px!important;padding-bottom:112px!important}
   .hero.home .hero-inner h1{font-size:clamp(2.1rem,9.5vw,2.85rem)!important;line-height:.96!important;max-width:none!important;letter-spacing:-.035em!important;margin-bottom:var(--sgx-pad-xs)!important}
