@@ -2,7 +2,7 @@
 :root{--sgx-radius:4px;--sgx-soft-line:#e6edf4;--sgx-soft-line-2:#eef3f8;--sgx-font:Arial,Helvetica,sans-serif;--sgx-body-lh:1.55;--sgx-heading-lh:.98;--sgx-tight-lh:1.15}
 html,body{font-family:var(--sgx-font)!important;line-height:var(--sgx-body-lh)!important}body,p,.lead,.muted,li,input,textarea,select,label,.footer,.contact-list a,.contact-list button,.contact-list div{font-family:var(--sgx-font)!important;line-height:var(--sgx-body-lh)!important}h1,h2,h3,h4,h5,h6,.page-title,.hero h1,.section-head h2,.library-block h2,.portfolio-card h2,.category-card h2,.card h3,.project-card h3{font-family:var(--sgx-font)!important;line-height:var(--sgx-heading-lh)!important}.eyebrow,.section-label,.btn,.phone-btn,.links,.mobile-panel a,.pill,.library-tags span,.top-note{font-family:var(--sgx-font)!important;line-height:var(--sgx-tight-lh)!important}
 .top-note{font-weight:500!important;letter-spacing:.005em!important;color:rgba(255,255,255,.82)!important}
-.site-header .nav{min-height:104px!important}.brand-logo{width:340px!important;max-width:36vw!important}.phone-btn{min-height:42px!important;padding:0 14px!important}.hero:not(.home) .hero-inner{padding:74px 0!important}.hero:not(.home) h1,.hero:not(.home) .page-title{font-size:clamp(2.7rem,5vw,4.7rem)!important;line-height:.94!important;letter-spacing:-.045em!important;max-width:940px!important}
+.site-header .nav{min-height:96px!important}.phone-btn{min-height:42px!important;padding:0 14px!important}.hero:not(.home) .hero-inner{padding:62px 0!important}.hero:not(.home) h1,.hero:not(.home) .page-title{font-size:clamp(2.35rem,4vw,3.7rem)!important;line-height:.96!important;letter-spacing:-.04em!important;max-width:860px!important}
 section:not(.hero) .section-label{letter-spacing:.075em!important;font-weight:800!important}
 section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .card h3{color:#061325}.cred-head h2{color:#9fd4ff!important}.cred-head p{color:#f2f8ff!important}.cred-note{color:#d9ecff!important;opacity:.92!important}
 .dark h2,.dark h3,.blue h2,.blue p{color:#fff!important}
@@ -38,15 +38,15 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
 .map-art{right:34px!important;bottom:26px!important}
 .p1{right:132px!important;bottom:108px!important}.p2{right:92px!important;bottom:138px!important}.p3{right:108px!important;bottom:70px!important}
 @media(min-width:900px){:root{--sgx-body-lh:1.58;--sgx-heading-lh:1.02}.hero.home .hero-inner p{line-height:1.56!important}.lead{line-height:1.58!important}}
-@media(max-width:1100px){.site-header .nav{min-height:82px!important}.brand-logo{width:270px!important;max-width:calc(100vw - 92px)!important}}
+@media(max-width:1100px){.site-header .nav{min-height:76px!important}}
 @media(max-width:640px){
   :root{--sgx-body-lh:1.46;--sgx-heading-lh:1.04;--sgx-tight-lh:1.12}
   .top-note{font-size:.7rem!important;font-weight:500!important;letter-spacing:0!important}
-  .site-header .nav{min-height:72px!important}.brand-logo{width:236px!important;max-width:calc(100vw - 86px)!important}.mobile-menu{font-size:1.65rem!important}
+  .site-header .nav{min-height:64px!important}.mobile-menu{font-size:1.65rem!important}
   .hero.home .hero-bg{object-position:66% center!important}
   .hero.home .hero-inner{padding:34px 0 146px!important}
   .hero.home .hero-inner h1{font-size:clamp(2.1rem,9.5vw,2.85rem)!important;line-height:.96!important;max-width:none!important;letter-spacing:-.035em!important;margin-bottom:12px!important}
-  .hero:not(.home) .hero-inner{padding:52px 0!important}.hero:not(.home) h1,.hero:not(.home) .page-title{font-size:clamp(2.15rem,10.5vw,3.1rem)!important;line-height:.96!important;letter-spacing:-.035em!important}
+  .hero:not(.home) .hero-inner{padding:42px 0!important}.hero:not(.home) h1,.hero:not(.home) .page-title{font-size:clamp(1.9rem,8.6vw,2.65rem)!important;line-height:.98!important;letter-spacing:-.032em!important}
   .hero.home .hero-inner p,.hero.home .actions{max-width:none!important}
   .hero.home .hero-inner p{line-height:1.38!important;margin-bottom:18px!important}
   .hero.home .blue-line{margin-bottom:16px!important}
