@@ -47,13 +47,13 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
   .site-header .nav{min-height:0!important;padding-top:var(--sgx-pad-sm)!important;padding-bottom:var(--sgx-pad-sm)!important}.mobile-menu{font-size:1.36rem!important;line-height:1!important}
   .mobile-panel a{font-size:1.05rem!important;line-height:1.12!important;letter-spacing:.035em!important;padding:14px 20px!important}
   .hero.home .hero-bg{object-position:66% center!important}
-  .hero.home .hero-inner{padding-top:var(--sgx-pad-md)!important;padding-bottom:142px!important}
+  .hero.home .hero-inner{padding-top:20px!important;padding-bottom:112px!important}
   .hero.home .hero-inner h1{font-size:clamp(2.1rem,9.5vw,2.85rem)!important;line-height:.96!important;max-width:none!important;letter-spacing:-.035em!important;margin-bottom:var(--sgx-pad-xs)!important}
   .hero:not(.home) .hero-inner{padding-top:var(--sgx-pad-sm)!important;padding-bottom:var(--sgx-pad-sm)!important}.hero:not(.home) h1,.hero:not(.home) .page-title{font-size:clamp(1.9rem,8.6vw,2.65rem)!important;line-height:.98!important;letter-spacing:-.032em!important}
   .hero.home .hero-inner p,.hero.home .actions{max-width:none!important}
   .hero.home .hero-inner p{line-height:1.38!important;margin-bottom:var(--sgx-pad-sm)!important}
   .hero.home .blue-line{margin-bottom:var(--sgx-pad-sm)!important}
-  .hero-stats{bottom:var(--sgx-pad-xs)!important}
+  .hero-stats{bottom:8px!important}
   .hero-stat{padding:10px 12px!important}
   section:not(.hero){padding-top:var(--sgx-pad-lg)!important;padding-bottom:var(--sgx-pad-lg)!important}
   .cred-band{padding-top:28px!important;padding-bottom:30px!important}.cred-head{margin-bottom:14px!important}.cred-head h2{font-size:1.62rem!important;line-height:1.02!important;letter-spacing:-.035em!important}.cred-head p{font-size:.9rem!important;line-height:1.42!important}.cred-grid{gap:8px!important}.cred-chip{padding:6px 8px!important;gap:8px!important;font-size:.66rem!important;line-height:1.06!important;min-height:0!important}.cred-chip .card-icon{font-size:1rem!important}.cred-note{font-size:.6rem!important;line-height:1.18!important;margin-top:8px!important}
