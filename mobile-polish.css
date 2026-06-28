@@ -41,9 +41,13 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
   :root{--sgx-body-lh:1.46;--sgx-heading-lh:1.04;--sgx-tight-lh:1.12}
   .top-note{font-size:.7rem!important;font-weight:500!important;letter-spacing:0!important}
   .hero.home .hero-bg{object-position:66% center!important}
-  .hero.home .hero-inner h1{font-size:clamp(2.1rem,9.5vw,2.85rem)!important;line-height:.96!important;max-width:none!important;letter-spacing:-.035em!important}
+  .hero.home .hero-inner{padding:34px 0 146px!important}
+  .hero.home .hero-inner h1{font-size:clamp(2.1rem,9.5vw,2.85rem)!important;line-height:.96!important;max-width:none!important;letter-spacing:-.035em!important;margin-bottom:12px!important}
   .hero.home .hero-inner p,.hero.home .actions{max-width:none!important}
-  .hero.home .hero-inner p{line-height:1.44!important}
+  .hero.home .hero-inner p{line-height:1.38!important;margin-bottom:18px!important}
+  .hero.home .blue-line{margin-bottom:16px!important}
+  .hero-stats{bottom:10px!important}
+  .hero-stat{padding:9px 10px!important}
   section:not(.hero) .section-label{margin-bottom:6px!important;letter-spacing:.09em!important;font-weight:800!important}
   section{padding:40px 0!important}
   .section-head{margin-bottom:14px!important}
