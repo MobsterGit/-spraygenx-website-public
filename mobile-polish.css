@@ -17,6 +17,7 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
 .share-site-button span{display:none!important}
 .share-site-button:hover,.share-site-button:active,.share-site-button:focus{opacity:1;background:#0b65d8;transform:translateY(-1px)}
 .share-site-button .svg-icon{display:block!important;width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;max-width:18px!important;max-height:18px!important;font-size:18px!important;line-height:1!important}
+@media(min-width:1101px){.service-card{min-height:190px!important;padding:34px 26px!important;font-size:1.22rem!important;letter-spacing:-.015em!important;box-shadow:0 16px 42px rgba(7,23,43,.08)!important}.service-card .card-icon{font-size:3.15rem!important;margin-bottom:24px!important;color:#1f8dff!important}.service-card .svg-icon{width:1em!important;height:1em!important}.service-card:hover{transform:translateY(-2px);box-shadow:0 22px 54px rgba(7,23,43,.12)!important}}
 .card,.stat-box,.proof-panel,.photo-panel,.portfolio-card,.category-card,.portfolio-preview,.preview-tile,.project-card img,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.btn,.phone-btn,.mobile-panel a,.portfolio-anchor-list a,.lightbox-main img,.lightbox-thumbs img,.library-block,.library-preview,.library-preview img,.pill,.library-tags span{border-radius:var(--sgx-radius)!important}
 .portfolio-card,.category-card,.stat-box,.card,.contact-list a,.contact-list button,.contact-list div,input,textarea,select,.portfolio-anchor-list a,.library-block,.pill,.library-tags span{border-color:var(--sgx-soft-line)!important}
 .proof-panel{border-top:1px solid var(--sgx-soft-line)!important;border-right:1px solid var(--sgx-soft-line)!important;border-bottom:1px solid var(--sgx-soft-line)!important;border-left:4px solid #0b65d8!important}
@@ -59,4 +60,4 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
   .hero p{font-size:.9rem!important}
   .btn{font-size:.74rem!important}
 }
-@media(prefers-reduced-motion:reduce){.back-to-top,.share-site-button{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.back-to-top,.share-site-button,.service-card{transition:none!important}}
