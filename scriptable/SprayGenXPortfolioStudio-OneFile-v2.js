@@ -1,4 +1,4 @@
-// Spray GenX Portfolio Studio — One File v2.0
+// Spray GenX Portfolio Studio — One File v2.1
 // Private Scriptable control panel. Replace only GITHUB_TOKEN yourself.
 // No Keychain, no token prompts, no hidden auth behavior.
 
@@ -24,6 +24,7 @@ function titleCase(v){return String(v||"").replace(/[-_]/g," ").replace(/\b\w/g,
 function unique(a){return [...new Set(a.filter(Boolean))]}
 function b64(s){return Data.fromString(s).toBase64String()}
 function decode(s){return Data.fromBase64String(String(s||"").replace(/\n/g,"")).toRawString()}
+function fileExt(path){let p=String(path||"").toLowerCase();if(p.endsWith(".jpg")||p.endsWith(".jpeg"))return"jpg";if(p.endsWith(".png"))return"png";return""}
 
 async function alertMsg(title,msg){let a=new Alert();a.title=title;a.message=msg||"";a.addAction("OK");await a.present()}
 async function confirm(title,msg,yes="Yes"){let a=new Alert();a.title=title;a.message=msg||"";a.addDestructiveAction(yes);a.addCancelAction("Cancel");return await a.presentAlert()===0}
@@ -69,6 +70,30 @@ async function pickCategory(multi=false,current=[]){
   while(true){let item=await choose(multi?"Add Category":"Choose Category",cats.map(c=>({label:(current.includes(c.id)||chosen.includes(c.id)?"✓ ":"")+c.label,id:c.id})));if(!item)break;chosen.push(item.id);if(!multi)break;if(!await confirm("Add Another Category?","Add another category to this same block?","Add More"))break}
   return multi?unique([...current,...chosen]):(chosen[0]||current[0]||"uncategorized");
 }
+async function pickFiles(){
+  let paths=[],seen=new Set();
+  while(paths.length<MAX_BATCH){
+    let picked;try{picked=await DocumentPicker.openFile(["public.jpeg","public.jpg","public.png"],true)}catch(e){picked=await DocumentPicker.openFile()}
+    let arr=Array.isArray(picked)?picked:[picked];
+    for(let p of arr){if(!p||seen.has(p))continue;seen.add(p);paths.push(p);if(paths.length>=MAX_BATCH)break}
+    if(arr.length>1||paths.length>=MAX_BATCH)break;
+    if(!await confirm("Add More Images?",`${paths.length} image(s) selected. Add more to this same block?`,`Add More`))break;
+  }
+  let bad=paths.filter(p=>!fileExt(p));
+  if(bad.length)throw new Error("Only JPG, JPEG, or PNG files are supported in this direct upload flow. Use the converted image flow for HEIC/mixed files.");
+  let fm=FileManager.local();
+  return paths.map(p=>({path:p,ext:fileExt(p),data:fm.read(p)}));
+}
+async function uploadImagesForBlock(b){
+  let items=await pickFiles(); if(!items.length)return [];
+  let base=slug(b.title), time=stamp(), cat=b.category||"uncategorized", uploaded=[];
+  for(let i=0;i<items.length;i++){
+    let n=String((b.images||[]).length+i+1).padStart(3,"0"), repoPath=`images/library/${cat}/${base}-${time}-${n}.${items[i].ext}`;
+    await putBinary(repoPath,items[i].data,`Studio upload image: ${b.title} ${n}`);
+    uploaded.push({path:repoPath,caption:"",alt:b.title,visible:true,role:(!b.cover&&i===0)?"cover":""});
+  }
+  return uploaded;
+}
 async function editBlock(existing=null){
   let b=existing?JSON.parse(JSON.stringify(existing)):{title:"",summary:"Completed Spray GenX project.",customer:"",location:"",date:today(),category:"uncategorized",categories:[],tags:[],weight:25,status:"draft",siteLocations:DEFAULT_VIEWS.slice(),images:[],cover:""};
   let vals=await askMany(existing?"Edit Image Block":"New Image Block","Enter once. Reuse everywhere.",[
@@ -81,10 +106,11 @@ async function editBlock(existing=null){
   b.id=b.id||`${slug(b.title)}-${stamp()}`; b.slug=slug(b.title); b.cover=b.cover||(b.images[0]&&b.images[0].path)||"";
   return b;
 }
-async function newBlock(){let b=await editBlock(null);if(!b)return;LIB.json.blocks.unshift(b);await saveLibrary(`Studio add image block: ${b.title}`);await alertMsg("Saved",`${b.title}\n\nImage Block created.`)}
+async function newBlock(){let b=await editBlock(null);if(!b)return;if(await confirm("Upload Images Now?","Select JPG/PNG files and attach them to this Image Block.","Upload Images")){let imgs=await uploadImagesForBlock(b);b.images.push(...imgs);if(!b.cover&&imgs[0])b.cover=imgs[0].path}LIB.json.blocks.unshift(b);await saveLibrary(`Studio add image block: ${b.title}`);await alertMsg("Saved",`${b.title}\n\nImage Block created with ${b.images.length} image(s).`)}
 async function chooseBlock(){let blocks=LIB.json.blocks||[];let item=await choose("Image Blocks",blocks.map((b,i)=>({label:`${b.title} — ${categoryLabel(b.category)} — ${b.images.length} img`,i})));return item?blocks[item.i]:null}
-async function manageBlock(){let b=await chooseBlock();if(!b)return;let act=await choose(b.title,["Edit Block","View Images / Paths","Hide / Show","Copy Block JSON","Health"].map(x=>({label:x,id:x})));if(!act)return;
+async function manageBlock(){let b=await chooseBlock();if(!b)return;let act=await choose(b.title,["Edit Block","Upload / Add Images","View Images / Paths","Hide / Show","Copy Block JSON","Health"].map(x=>({label:x,id:x})));if(!act)return;
   if(act.id==="Edit Block"){let nb=await editBlock(b);if(!nb)return;Object.assign(b,nb);await saveLibrary(`Studio edit image block: ${b.title}`)}
+  if(act.id==="Upload / Add Images"){let imgs=await uploadImagesForBlock(b);b.images.push(...imgs);if(!b.cover&&imgs[0])b.cover=imgs[0].path;await saveLibrary(`Studio add images to block: ${b.title}`);await alertMsg("Images Added",`${imgs.length} image(s) uploaded.`)}
   if(act.id==="View Images / Paths"){await alertMsg(b.title,b.images.map((im,i)=>`${i+1}. ${im.visible===false?"[hidden] ":""}${imgPath(im)}`).join("\n")||"No images")}
   if(act.id==="Hide / Show"){b.visible=b.visible===false?true:false;b.status=b.visible?"published":"hidden";await saveLibrary(`Studio toggle image block: ${b.title}`)}
   if(act.id==="Copy Block JSON"){Pasteboard.copy(JSON.stringify(b,null,2));await alertMsg("Copied","Block JSON copied to clipboard.")}
