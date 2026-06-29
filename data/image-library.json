@@ -52,361 +52,642 @@
   "blocks": [
     {
       "id": "commercial-black-ceiling-20260627162306",
+      "slug": "commercial-black-ceiling",
       "title": "Commercial Black Ceiling",
-      "category": "commercial-ceilings",
-      "date": "2026-06-27",
       "summary": "Completed Spray GenX painting project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-06-27",
+      "category": "commercial-ceilings",
+      "categories": [
+        "commercial-ceilings"
+      ],
       "tags": [
         "painting",
         "refinishing",
         "completed work"
       ],
+      "status": "published",
       "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/library/commercial-ceilings/commercial-black-ceiling-20260627162306-001.jpg",
       "images": [
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627162306-001.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         }
       ]
     },
     {
       "id": "commercial-black-ceiling-20260627162429",
+      "slug": "commercial-black-ceiling",
       "title": "Commercial Black Ceiling",
-      "category": "commercial-ceilings",
-      "date": "2026-06-27",
       "summary": "Completed Spray GenX painting project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-06-27",
+      "category": "commercial-ceilings",
+      "categories": [
+        "commercial-ceilings"
+      ],
       "tags": [
         "painting",
         "refinishing",
         "completed work"
       ],
+      "status": "published",
       "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/library/commercial-ceilings/commercial-black-ceiling-20260627162429-001.jpg",
       "images": [
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627162429-001.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         }
       ]
     },
     {
       "id": "commercial-black-ceiling-20260627162551",
+      "slug": "commercial-black-ceiling",
       "title": "Commercial Black Ceiling",
-      "category": "commercial-ceilings",
-      "date": "2026-06-27",
       "summary": "Completed Spray GenX painting project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-06-27",
+      "category": "commercial-ceilings",
+      "categories": [
+        "commercial-ceilings"
+      ],
       "tags": [
         "painting",
         "refinishing",
         "completed work"
       ],
+      "status": "published",
       "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/library/commercial-ceilings/commercial-black-ceiling-20260627162551-001.jpg",
       "images": [
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627162551-001.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         }
       ]
     },
     {
       "id": "commercial-black-ceiling-20260627174502",
+      "slug": "commercial-black-ceiling",
       "title": "Commercial Black Ceiling",
-      "category": "commercial-ceilings",
-      "date": "2026-06-27",
       "summary": "Completed Spray GenX painting project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-06-27",
+      "category": "commercial-ceilings",
+      "categories": [
+        "commercial-ceilings"
+      ],
       "tags": [
         "painting",
         "refinishing",
         "completed work"
       ],
+      "status": "published",
       "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-001.jpg",
       "images": [
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-001.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-002.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-003.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-004.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-005.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         }
       ]
     },
     {
       "id": "commercial-black-ceiling-20260627190522",
+      "slug": "commercial-black-ceiling",
       "title": "Commercial Black Ceiling",
-      "category": "commercial-ceilings",
-      "date": "2026-06-27",
       "summary": "Completed Spray GenX painting project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-06-27",
+      "category": "commercial-ceilings",
+      "categories": [
+        "commercial-ceilings"
+      ],
       "tags": [
         "painting",
         "refinishing",
         "completed work"
       ],
+      "status": "published",
       "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-001.jpg",
       "images": [
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-001.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-002.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-003.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-004.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-005.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-006.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Commercial Black Ceiling",
+          "visible": true,
+          "role": ""
         }
       ]
     },
     {
       "id": "2026-06-27-20260627191729",
+      "slug": "2026-06-27",
       "title": "2026 06 27",
-      "category": "commercial-ceilings",
-      "date": "2026-06-27",
       "summary": "Completed Spray GenX painting project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-06-27",
+      "category": "commercial-ceilings",
+      "categories": [
+        "commercial-ceilings"
+      ],
       "tags": [
         "painting",
         "refinishing",
         "completed work"
       ],
+      "status": "published",
       "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/converted/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004-44af5c2cf3.jpg",
       "images": [
         {
           "path": "images/converted/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004-44af5c2cf3.jpg",
           "caption": "",
-          "visible": true
+          "alt": "2026 06 27",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/2026-03-16-08-54-20-1-20260627184528-003-caa8c9ccf0.jpg",
           "caption": "",
-          "visible": true
+          "alt": "2026 06 27",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/2026-03-16-08-55-44-1-20260627184528-002-802495aecb.jpg",
           "caption": "",
-          "visible": true
+          "alt": "2026 06 27",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/2026-03-16-08-58-51-1-20260627184528-001-5270d4dafe.jpg",
           "caption": "",
-          "visible": true
+          "alt": "2026 06 27",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-0771-20260627191028-002-1844502203.jpg",
           "caption": "",
-          "visible": true
+          "alt": "2026 06 27",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-0781-20260627191028-003-365bc7abb7.jpg",
           "caption": "",
-          "visible": true
+          "alt": "2026 06 27",
+          "visible": true,
+          "role": ""
         }
       ]
     },
     {
       "id": "2026-06-27-20260627193318",
+      "slug": "residential-interiors",
       "title": "Residential Interiors",
-      "category": "residential-interiors",
-      "date": "2026-06-27",
       "summary": "Completed Spray GenX residential interior painting project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-06-27",
+      "category": "residential-interiors",
+      "categories": [
+        "residential-interiors"
+      ],
       "tags": [
         "painting",
         "refinishing",
         "completed work"
       ],
+      "status": "published",
       "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/converted/2026-06-27/2026-06-19-15-22-35-20260627192932-014-b07e41dd1f.jpg",
       "images": [
         {
           "path": "images/converted/2026-06-27/2026-06-19-15-22-35-20260627192932-014-b07e41dd1f.jpg",
           "caption": "Residential Interior 001",
-          "visible": true
+          "alt": "Residential Interior 001",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/fe1ad99f-d1f2-4c37-9ab3-57101bd666d1-20260627192932-002-9ba808cbca.jpg",
           "caption": "Residential Interior 002",
-          "visible": true
+          "alt": "Residential Interior 002",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-0018-20260627192932-011-0cdc133e42.jpg",
           "caption": "Residential Interior 003",
-          "visible": true
+          "alt": "Residential Interior 003",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-0703-20260627192932-012-0b37f0af46.jpg",
           "caption": "Residential Interior 004",
-          "visible": true
+          "alt": "Residential Interior 004",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-0707-20260627192932-013-a1231d1af9.jpg",
           "caption": "Residential Interior 005",
-          "visible": true
+          "alt": "Residential Interior 005",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-0866-20260627192932-003-0d648cc45e.jpg",
           "caption": "Residential Interior 006",
-          "visible": true
+          "alt": "Residential Interior 006",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-1128-20260627192932-005-b8ea244eb4.jpg",
           "caption": "Residential Interior 007",
-          "visible": true
+          "alt": "Residential Interior 007",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-1129-20260627192932-004-33543438ae.jpg",
           "caption": "Residential Interior 008",
-          "visible": true
+          "alt": "Residential Interior 008",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-1199-20260627192932-006-285d677bc1.jpg",
           "caption": "Residential Interior 009",
-          "visible": true
+          "alt": "Residential Interior 009",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-1651-20260627192932-007-e59c7316a5.jpg",
           "caption": "Residential Interior 010",
-          "visible": true
+          "alt": "Residential Interior 010",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-1653-20260627192932-009-01590ca537.jpg",
           "caption": "Residential Interior 011",
-          "visible": true
+          "alt": "Residential Interior 011",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-1691-20260627192932-008-b44ea5f4a4.jpg",
           "caption": "Residential Interior 012",
-          "visible": true
+          "alt": "Residential Interior 012",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/2026-06-27/img-1693-20260627192932-010-4cf8c9afe8.jpg",
           "caption": "Residential Interior 013",
-          "visible": true
+          "alt": "Residential Interior 013",
+          "visible": true,
+          "role": ""
         }
       ]
     },
     {
       "id": "weston-inc-advertising-building-sign-20260629062152",
+      "slug": "weston-inc-advertising-building-sign",
       "title": "Weston Inc - Advertising Building Sign",
-      "category": "exteriors",
-      "date": "2026-06-29",
       "summary": "Completed Spray GenX painting project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-06-29",
+      "category": "exteriors",
+      "categories": [
+        "exteriors"
+      ],
       "tags": [
         "painting",
         "refinishing",
         "completed work"
       ],
+      "status": "published",
       "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/converted/batch-3/2022-05-24-23-45-57-20260629061948-009-7fcb4cc340.jpg",
       "images": [
         {
           "path": "images/converted/batch-3/2022-05-24-23-45-57-20260629061948-009-7fcb4cc340.jpg",
           "caption": "Cleveland, Ohio 001",
-          "visible": true
+          "alt": "Cleveland, Ohio 001",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/img-1377-2-20260629061948-010-6a055fc1a9.jpg",
           "caption": "Cleveland, Ohio 002",
-          "visible": true
+          "alt": "Cleveland, Ohio 002",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/img-1381-20260629061948-008-cb3626bf41.jpg",
           "caption": "Cleveland, Ohio 003",
-          "visible": true
+          "alt": "Cleveland, Ohio 003",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/img-1391-20260629061948-011-05343c03b7.jpg",
           "caption": "Cleveland, Ohio 004",
-          "visible": true
+          "alt": "Cleveland, Ohio 004",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/img-1402-2-20260629061948-006-cddc6dc40d.jpg",
           "caption": "Cleveland, Ohio 005",
-          "visible": true
+          "alt": "Cleveland, Ohio 005",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/qvzkmwhlujhurw11ne02tq-20260629061948-003-76ee44467a.jpg",
           "caption": "Cleveland, Ohio 006",
-          "visible": true
+          "alt": "Cleveland, Ohio 006",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/qvzkvxbgt0h2dvq3rg9gbq-20260629061948-005-df2ec8fbee.jpg",
           "caption": "Cleveland, Ohio 007",
-          "visible": true
+          "alt": "Cleveland, Ohio 007",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/qvzlv083x3dzzwtsys10qq-20260629061948-002-474bee3243.jpg",
           "caption": "Cleveland, Ohio 008",
-          "visible": true
+          "alt": "Cleveland, Ohio 008",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/qvzmeurlbte3zlytnedicw-20260629061948-004-f84e40f657.jpg",
           "caption": "Cleveland, Ohio 009",
-          "visible": true
+          "alt": "Cleveland, Ohio 009",
+          "visible": true,
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/qvzmndbda2zoejbvavd1rq-20260629061948-001-8b489c54bc.jpg",
           "caption": "Cleveland, Ohio 010",
-          "visible": true
+          "alt": "Cleveland, Ohio 010",
+          "visible": true,
+          "role": ""
         }
       ]
     },
     {
       "id": "weston-after-20260629101848",
+      "slug": "weston-after",
       "title": "Weston After",
-      "category": "exteriors",
-      "date": "2026-06-29",
       "summary": "Completed Spray GenX painting project.",
+      "customer": "Weston Inc",
+      "location": "Cleveland, Ohio",
+      "date": "2026-06-29",
+      "category": "jobsite-process",
+      "categories": [
+        "jobsite-process",
+        "exteriors",
+        "before-after"
+      ],
       "tags": [
         "painting",
         "refinishing",
         "completed work"
       ],
+      "status": "published",
       "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/converted/weston-after/img-1405-20260629101603-001-22f1a48136.jpg",
       "images": [
         {
           "path": "images/converted/weston-after/img-1405-20260629101603-001-22f1a48136.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Weston After",
+          "visible": true,
+          "role": "cover"
         },
         {
           "path": "images/converted/weston-after/img-1406-20260629101603-002-677f40eb4d.jpg",
           "caption": "",
-          "visible": true
+          "alt": "Weston After",
+          "visible": true,
+          "role": ""
         }
       ]
     }
