@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-27",
+  "updated": "2026-06-29",
   "notes": "Bulk image library for Spray GenX job photos. Scriptable/AI uploads will add image blocks here and the public photo-library.html page will render them.",
   "categories": [
     {
@@ -316,6 +316,71 @@
         {
           "path": "images/converted/2026-06-27/img-1693-20260627192932-010-4cf8c9afe8.jpg",
           "caption": "Residential Interior 013",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "id": "weston-inc-advertising-building-sign-20260629062152",
+      "title": "Weston Inc - Advertising Building Sign",
+      "category": "exteriors",
+      "date": "2026-06-29",
+      "summary": "Completed Spray GenX painting project.",
+      "tags": [
+        "painting",
+        "refinishing",
+        "completed work"
+      ],
+      "visible": true,
+      "images": [
+        {
+          "path": "images/converted/batch-3/2022-05-24-23-45-57-20260629061948-009-7fcb4cc340.jpg",
+          "caption": "Cleveland, Ohio 001",
+          "visible": true
+        },
+        {
+          "path": "images/converted/batch-3/img-1377-2-20260629061948-010-6a055fc1a9.jpg",
+          "caption": "Cleveland, Ohio 002",
+          "visible": true
+        },
+        {
+          "path": "images/converted/batch-3/img-1381-20260629061948-008-cb3626bf41.jpg",
+          "caption": "Cleveland, Ohio 003",
+          "visible": true
+        },
+        {
+          "path": "images/converted/batch-3/img-1391-20260629061948-011-05343c03b7.jpg",
+          "caption": "Cleveland, Ohio 004",
+          "visible": true
+        },
+        {
+          "path": "images/converted/batch-3/img-1402-2-20260629061948-006-cddc6dc40d.jpg",
+          "caption": "Cleveland, Ohio 005",
+          "visible": true
+        },
+        {
+          "path": "images/converted/batch-3/qvzkmwhlujhurw11ne02tq-20260629061948-003-76ee44467a.jpg",
+          "caption": "Cleveland, Ohio 006",
+          "visible": true
+        },
+        {
+          "path": "images/converted/batch-3/qvzkvxbgt0h2dvq3rg9gbq-20260629061948-005-df2ec8fbee.jpg",
+          "caption": "Cleveland, Ohio 007",
+          "visible": true
+        },
+        {
+          "path": "images/converted/batch-3/qvzlv083x3dzzwtsys10qq-20260629061948-002-474bee3243.jpg",
+          "caption": "Cleveland, Ohio 008",
+          "visible": true
+        },
+        {
+          "path": "images/converted/batch-3/qvzmeurlbte3zlytnedicw-20260629061948-004-f84e40f657.jpg",
+          "caption": "Cleveland, Ohio 009",
+          "visible": true
+        },
+        {
+          "path": "images/converted/batch-3/qvzmndbda2zoejbvavd1rq-20260629061948-001-8b489c54bc.jpg",
+          "caption": "Cleveland, Ohio 010",
           "visible": true
         }
       ]
