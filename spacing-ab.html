@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Spray GenX Spacing A/B Test</title>
+<style>
+  *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#061325;color:#fff}.bar{position:sticky;top:0;z-index:10;background:#020914;border-bottom:1px solid rgba(255,255,255,.14);padding:12px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.bar strong{font-size:15px}.bar a,.bar button{border:1px solid rgba(255,255,255,.3);background:#0b65d8;color:#fff;border-radius:4px;padding:9px 12px;font-weight:900;text-decoration:none}.bar button{cursor:pointer}.wrap{display:grid;grid-template-columns:1fr 1fr;gap:1px;height:calc(100vh - 58px)}.pane{background:#fff;min-width:0}.label{position:absolute;margin:10px;background:rgba(2,9,20,.82);color:#fff;padding:7px 10px;border-radius:4px;font-weight:900;font-size:12px;z-index:2}.frame-wrap{position:relative;height:100%}iframe{display:block;width:100%;height:100%;border:0;background:#fff}@media(max-width:900px){.wrap{grid-template-columns:1fr;height:auto}.frame-wrap{height:80vh}}
+</style>
+</head>
+<body>
+<div class="bar"><strong>Spacing A/B Test</strong><div><a href="index.html">A: Current</a><a href="index.html?spacing=natural">B: Natural</a><button id="reloadBtn" type="button">Reload Frames</button></div></div>
+<div class="wrap">
+  <div class="frame-wrap"><div class="label">A — Current brand.css</div><iframe src="index.html" title="Current spacing"></iframe></div>
+  <div class="frame-wrap"><div class="label">B — Natural spacing override</div><iframe id="naturalFrame" src="index.html" title="Natural spacing test"></iframe></div>
+</div>
+<script>
+function injectNatural(){
+  const frame=document.getElementById('naturalFrame');
+  try{
+    const doc=frame.contentDocument || frame.contentWindow.document;
+    if(!doc || doc.getElementById('spacingTestCss')) return;
+    const link=doc.createElement('link');
+    link.id='spacingTestCss';
+    link.rel='stylesheet';
+    link.href='brand-spacing-test.css?v='+Date.now();
+    doc.head.appendChild(link);
+  }catch(e){console.warn(e)}
+}
+document.getElementById('naturalFrame').addEventListener('load',injectNatural);
+document.getElementById('reloadBtn').addEventListener('click',()=>document.querySelectorAll('iframe').forEach(f=>f.contentWindow.location.reload()));
+</script>
+</body>
+</html>
