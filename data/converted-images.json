@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-27T19:30:45+00:00",
+  "updated": "2026-06-29T06:20:26+00:00",
   "images": [
     {
       "source": "images/inbox/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004.png",
@@ -171,6 +171,96 @@
       "source_ext": "heic",
       "converted_ext": "jpg",
       "converted_at": "2026-06-27T19:30:45+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/2022-05-24-23-45-57-20260629061948-009.jpg",
+      "converted": "images/converted/batch-3/2022-05-24-23-45-57-20260629061948-009-7fcb4cc340.jpg",
+      "sha256": "7fcb4cc3406f566d175020acf30456389197af24f415d9611699181bf9ad8e62",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:24+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/img-1377-2-20260629061948-010.heic",
+      "converted": "images/converted/batch-3/img-1377-2-20260629061948-010-6a055fc1a9.jpg",
+      "sha256": "6a055fc1a9434cb57026922b7e556ca34c1130567a742bb7428ea668cf13e9bb",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:24+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/img-1381-20260629061948-008.jpg",
+      "converted": "images/converted/batch-3/img-1381-20260629061948-008-cb3626bf41.jpg",
+      "sha256": "cb3626bf413143b29d766a149e441ee6446af44b7c7164b52c456c14f65680a1",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:25+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/img-1391-20260629061948-011.heic",
+      "converted": "images/converted/batch-3/img-1391-20260629061948-011-05343c03b7.jpg",
+      "sha256": "05343c03b7c43b9a5a22001504a2f1c923b7c56e1b86b759b53e9d169bdf42d1",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:25+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/img-1402-2-20260629061948-006.heic",
+      "converted": "images/converted/batch-3/img-1402-2-20260629061948-006-cddc6dc40d.jpg",
+      "sha256": "cddc6dc40d6e04dbdd68ac44eac61733d9143655b4c8f0a3a3e66a19297769f2",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:26+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/qvzkmwhlujhurw11ne02tq-20260629061948-003.jpg",
+      "converted": "images/converted/batch-3/qvzkmwhlujhurw11ne02tq-20260629061948-003-76ee44467a.jpg",
+      "sha256": "76ee44467a5dd0717a18f8314b151ce2bc292f7700e8b67fbb18e79d2e3331e1",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:26+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/qvzkvxbgt0h2dvq3rg9gbq-20260629061948-005.jpg",
+      "converted": "images/converted/batch-3/qvzkvxbgt0h2dvq3rg9gbq-20260629061948-005-df2ec8fbee.jpg",
+      "sha256": "df2ec8fbeec02286289620ef3f3fb97c6311a3ef7f2c1907630a4c08467f0623",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:26+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/qvzlv083x3dzzwtsys10qq-20260629061948-002.jpg",
+      "converted": "images/converted/batch-3/qvzlv083x3dzzwtsys10qq-20260629061948-002-474bee3243.jpg",
+      "sha256": "474bee32437ffcbd80d064af426cb69fededab91fbd92c054fbe160a1ef3a52b",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:26+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/qvzmeurlbte3zlytnedicw-20260629061948-004.jpg",
+      "converted": "images/converted/batch-3/qvzmeurlbte3zlytnedicw-20260629061948-004-f84e40f657.jpg",
+      "sha256": "f84e40f6571d0d6820bc844fcc2cb3e4d2c861f9e59bdf13af6481bc7cb90130",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:26+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/batch-3/qvzmndbda2zoejbvavd1rq-20260629061948-001.jpg",
+      "converted": "images/converted/batch-3/qvzmndbda2zoejbvavd1rq-20260629061948-001-8b489c54bc.jpg",
+      "sha256": "8b489c54bc75c33929e2420fe08bd407c45bc9b96cd49fe489670faedac48daf",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T06:20:26+00:00",
       "status": "converted"
     }
   ]
