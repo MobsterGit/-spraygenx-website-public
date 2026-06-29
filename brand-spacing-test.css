@@ -1,0 +1,51 @@
+/* Spray GenX spacing A/B override
+   Purpose: test natural/content-driven section heights without touching brand.css.
+   Load this AFTER brand.css on the test page only.
+*/
+
+/* Let major sections size to content. */
+section,
+.hero-inner,
+.hero.home .hero-inner {
+  min-height: 0 !important;
+}
+
+/* Reduce forced hero depth but keep enough reserved space to avoid CLS. */
+.hero-inner {
+  padding-top: clamp(56px, 7vw, 96px) !important;
+  padding-bottom: clamp(56px, 7vw, 96px) !important;
+}
+
+.hero.home .hero-inner {
+  padding-top: clamp(56px, 7vw, 96px) !important;
+  padding-bottom: clamp(120px, 12vw, 150px) !important;
+}
+
+/* Let service cards breathe naturally instead of forcing box height. */
+.service-card {
+  min-height: 0 !important;
+  padding-top: 22px !important;
+  padding-bottom: 22px !important;
+}
+
+/* Keep image ratios stable while testing height behavior. */
+.project-card img {
+  height: auto !important;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.photo-panel,
+.map-card {
+  min-height: 0 !important;
+  aspect-ratio: 16 / 10;
+}
+
+/* Mobile: remove aggressive fixed-feel spacing but keep hero stats room. */
+@media(max-width:640px){
+  section { padding: 38px 0 !important; }
+  .hero-inner { padding: 46px 0 !important; }
+  .hero.home .hero-inner { padding: 46px 0 178px !important; }
+  .service-card { padding-top: 18px !important; padding-bottom: 18px !important; }
+  .photo-panel,.map-card { aspect-ratio: 4 / 3; }
+}
