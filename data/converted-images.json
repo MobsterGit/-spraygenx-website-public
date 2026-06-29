@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-29T06:20:26+00:00",
+  "updated": "2026-06-29T10:16:20+00:00",
   "images": [
     {
       "source": "images/inbox/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004.png",
@@ -261,6 +261,24 @@
       "source_ext": "jpg",
       "converted_ext": "jpg",
       "converted_at": "2026-06-29T06:20:26+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/weston-after/img-1405-20260629101603-001.heic",
+      "converted": "images/converted/weston-after/img-1405-20260629101603-001-22f1a48136.jpg",
+      "sha256": "22f1a4813678f0c86451cf6a3405f461d5bb3f860eafb0c8b132c528e1704368",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T10:16:19+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/weston-after/img-1406-20260629101603-002.heic",
+      "converted": "images/converted/weston-after/img-1406-20260629101603-002-677f40eb4d.jpg",
+      "sha256": "677f40eb4d3cd83baa9a32cf4f2e294ee5f8f40031d26c133a4798c23815a3e9",
+      "source_ext": "heic",
+      "converted_ext": "jpg",
+      "converted_at": "2026-06-29T10:16:20+00:00",
       "status": "converted"
     }
   ]
