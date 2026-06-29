@@ -384,6 +384,31 @@
           "visible": true
         }
       ]
+    },
+    {
+      "id": "weston-after-20260629101848",
+      "title": "Weston After",
+      "category": "exteriors",
+      "date": "2026-06-29",
+      "summary": "Completed Spray GenX painting project.",
+      "tags": [
+        "painting",
+        "refinishing",
+        "completed work"
+      ],
+      "visible": true,
+      "images": [
+        {
+          "path": "images/converted/weston-after/img-1405-20260629101603-001-22f1a48136.jpg",
+          "caption": "",
+          "visible": true
+        },
+        {
+          "path": "images/converted/weston-after/img-1406-20260629101603-002-677f40eb4d.jpg",
+          "caption": "",
+          "visible": true
+        }
+      ]
     }
   ]
 }
