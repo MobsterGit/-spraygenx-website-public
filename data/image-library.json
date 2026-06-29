@@ -51,6 +51,40 @@
   ],
   "blocks": [
     {
+      "title": "Untitled Image Block",
+      "summary": "Completed Spray GenX project.",
+      "customer": "Cambrias Italian Eatery",
+      "location": "Wadsworth, Ohio",
+      "date": "2026-06-29",
+      "category": "uncategorized",
+      "categories": [
+        "uncategorized"
+      ],
+      "tags": [
+        "black ceiling",
+        "drywall taping",
+        "light fixtures and polyurethane bathroom stalls"
+      ],
+      "weight": 25,
+      "status": "draft",
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "images": [],
+      "cover": "",
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "visible": true,
+      "id": "untitled-image-block-20260629160224",
+      "slug": "untitled-image-block"
+    },
+    {
       "id": "commercial-black-ceiling-20260627162306",
       "slug": "commercial-black-ceiling",
       "title": "Commercial Black Ceiling",
