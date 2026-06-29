@@ -51,19 +51,20 @@
   ],
   "blocks": [
     {
-      "title": "Untitled Image Block",
+      "title": "commercial Painting storefront and ceilings",
       "summary": "Completed Spray GenX project.",
-      "customer": "Cambrias Italian Eatery",
-      "location": "Wadsworth, Ohio",
+      "customer": "Cambria's Bistro",
+      "location": "Wadsworth Ohio",
       "date": "2026-06-29",
-      "category": "uncategorized",
+      "category": "commercial-interiors",
       "categories": [
+        "commercial-interiors",
         "uncategorized"
       ],
       "tags": [
-        "black ceiling",
-        "drywall taping",
-        "light fixtures and polyurethane bathroom stalls"
+        "store front",
+        "ceiling",
+        "dryfall"
       ],
       "weight": 25,
       "status": "draft",
@@ -81,8 +82,43 @@
         "search": true
       },
       "visible": true,
+      "id": "commercial-painting-storefront-and-ceilings-20260629160807",
+      "slug": "commercial-painting-storefront-and-ceilings"
+    },
+    {
       "id": "untitled-image-block-20260629160224",
-      "slug": "untitled-image-block"
+      "slug": "untitled-image-block",
+      "title": "Untitled Image Block",
+      "summary": "Completed Spray GenX project.",
+      "customer": "Cambrias Italian Eatery",
+      "location": "Wadsworth, Ohio",
+      "date": "2026-06-29",
+      "category": "uncategorized",
+      "categories": [
+        "uncategorized"
+      ],
+      "tags": [
+        "black ceiling",
+        "drywall taping",
+        "light fixtures and polyurethane bathroom stalls"
+      ],
+      "status": "draft",
+      "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "",
+      "images": []
     },
     {
       "id": "commercial-black-ceiling-20260627162306",
