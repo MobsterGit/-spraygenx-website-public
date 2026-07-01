@@ -9,7 +9,9 @@ const uploadEngine = new UploadEngine({ processor, logger });
 
 const state = {
   step: "upload",
-  published: false
+  published: false,
+  processing: false,
+  loaderLines: ["C:\\PROJECTS> awaiting photos..."]
 };
 
 const els = {};
@@ -25,6 +27,10 @@ function cacheElements() {
   els.fileInput = document.querySelector("#pm-file-input");
   els.browseButtons = document.querySelectorAll("[data-action='browse']");
   els.dropzone = document.querySelector("#pm-dropzone");
+  els.loader = document.querySelector("#pm-loader");
+  els.loaderLines = document.querySelector("#pm-loader-lines");
+  els.loaderStatus = document.querySelector("#pm-loader-status");
+  els.loaderBar = document.querySelector(".pm-retro-bar span");
   els.message = document.querySelector("#pm-message");
   els.progress = document.querySelector("#pm-progress span");
   els.steps = document.querySelectorAll("[data-step]");
@@ -69,13 +75,32 @@ function bindEvents() {
   uploadEngine.addEventListener("items-changed", () => render());
   uploadEngine.addEventListener("cancelled", () => setMessage("", "info"));
   uploadEngine.addEventListener("message", (event) => setMessage(event.detail.text, event.detail.type));
+  uploadEngine.addEventListener("processing-start", (event) => {
+    state.processing = true;
+    state.loaderLines = [
+      "C:\\PROJECTS> photos detected",
+      `C:\\PROJECTS> loading ${event.detail.count} file${event.detail.count === 1 ? "" : "s"}...`
+    ];
+    setLoaderStatus("Booting image pipeline");
+    setLoaderProgress(0);
+    renderLoader();
+  });
   uploadEngine.addEventListener("progress", (event) => {
     const { current, total, fileName } = event.detail;
-    setProgress((current / total) * 100);
-    setMessage(`Processing ${current} of ${total}: ${fileName}`, "info");
+    const percent = (current / total) * 100;
+    setProgress(percent);
+    setLoaderProgress(percent);
+    pushLoaderLine(`C:\\PROJECTS> processing ${current}/${total} :: ${fileName}`);
+    setLoaderStatus("Converting / optimizing / thumbnailing");
+    setMessage(`Preparing ${current} of ${total}: ${fileName}`, "info");
   });
   uploadEngine.addEventListener("processing-complete", (event) => {
+    state.processing = false;
     setProgress(100);
+    setLoaderProgress(100);
+    pushLoaderLine(`C:\\PROJECTS> ${event.detail.total} photo${event.detail.total === 1 ? "" : "s"} ready`);
+    pushLoaderLine("C:\\PROJECTS> cover photo prepared");
+    setLoaderStatus("Ready for review");
     setMessage(`${event.detail.total} photo${event.detail.total === 1 ? "" : "s"} ready.`, "success");
   });
 }
@@ -95,8 +120,12 @@ function cancelSession() {
   uploadEngine.clear();
   state.step = "upload";
   state.published = false;
+  state.processing = false;
+  state.loaderLines = ["C:\\PROJECTS> awaiting photos..."];
   setMessage("", "info");
   setProgress(0);
+  setLoaderProgress(0);
+  setLoaderStatus("Standing by");
   render();
 }
 
@@ -135,6 +164,7 @@ function render() {
 
   els.nextButton.disabled = uploadEngine.items.length === 0;
   renderGrid();
+  renderLoader();
   renderLog();
 }
 
@@ -177,6 +207,27 @@ function renderSummary(payload) {
       <pre>${escapeHtml(JSON.stringify(payload, null, 2))}</pre>
     </details>
   `;
+}
+
+function renderLoader() {
+  if (!els.loader) return;
+  els.loader.hidden = state.loaderLines.length <= 1 && !state.processing && !uploadEngine.items.length;
+  els.loaderLines.textContent = state.loaderLines.slice(-6).join("\n");
+}
+
+function pushLoaderLine(line) {
+  state.loaderLines = [...state.loaderLines, line].slice(-8);
+  renderLoader();
+}
+
+function setLoaderStatus(status) {
+  if (!els.loaderStatus) return;
+  els.loaderStatus.innerHTML = `${escapeHtml(status)}<span class="pm-cursor">_</span>`;
+}
+
+function setLoaderProgress(percent) {
+  if (!els.loaderBar) return;
+  els.loaderBar.style.width = `${Math.max(0, Math.min(100, percent))}%`;
 }
 
 function renderLog() {
