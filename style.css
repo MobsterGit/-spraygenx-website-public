@@ -404,12 +404,11 @@ WHY ANYONE WOULD DO THIS ???
 }
 
 .home-footer-copy {
-  font-size: 1.02rem;
-  line-height: 1.45;
-  font-weight: 800;
-  color: #d5e4f5
+	font-size: 80%;
+	line-height: normal;
+	font-weight: 100;
+	color: #d5e4f5;
 }
-
 .home-footer-socials {
   display: flex;
   gap: 16px;
