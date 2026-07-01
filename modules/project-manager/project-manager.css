@@ -8,6 +8,7 @@
   --pm-line: rgba(148, 163, 184, 0.22);
   --pm-accent: #38bdf8;
   --pm-danger: #ef4444;
+  --pm-terminal: #7cff9b;
   --pm-radius: 22px;
 }
 
@@ -154,6 +155,82 @@ body.project-manager-page {
   transition: width 160ms ease;
 }
 
+.pm-retro-loader {
+  margin-top: 18px;
+}
+
+.pm-retro-loader[hidden] { display: none; }
+
+.pm-retro-screen {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(124, 255, 155, 0.42);
+  border-radius: 18px;
+  padding: 16px;
+  background:
+    linear-gradient(rgba(124, 255, 155, 0.04) 50%, rgba(0, 0, 0, 0.12) 50%),
+    radial-gradient(circle at center, rgba(124, 255, 155, 0.08), rgba(0, 0, 0, 0.62) 74%),
+    #041007;
+  background-size: 100% 4px, 100% 100%, 100% 100%;
+  box-shadow: inset 0 0 28px rgba(124, 255, 155, 0.12), 0 0 28px rgba(124, 255, 155, 0.08);
+  color: var(--pm-terminal);
+  font-family: "Courier New", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  text-shadow: 0 0 8px rgba(124, 255, 155, 0.42);
+}
+
+.pm-retro-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(124,255,155,0.06), transparent);
+  transform: translateX(-100%);
+  animation: pm-scan 2.4s linear infinite;
+}
+
+.pm-retro-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  opacity: 0.82;
+}
+
+.pm-retro-lines {
+  min-height: 92px;
+  margin: 0;
+  white-space: pre-wrap;
+  font: inherit;
+  line-height: 1.45;
+}
+
+.pm-retro-bar {
+  height: 13px;
+  margin-top: 14px;
+  border: 1px solid rgba(124, 255, 155, 0.52);
+  background: rgba(124, 255, 155, 0.06);
+  overflow: hidden;
+}
+
+.pm-retro-bar span {
+  display: block;
+  width: 0%;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, rgba(124,255,155,0.9), rgba(124,255,155,0.9) 10px, rgba(124,255,155,0.55) 10px, rgba(124,255,155,0.55) 14px);
+  transition: width 180ms ease;
+}
+
+.pm-retro-status {
+  margin: 10px 0 0;
+  font-size: 0.82rem;
+}
+
+.pm-cursor {
+  animation: pm-blink 0.86s steps(1, end) infinite;
+}
+
 .pm-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -227,6 +304,22 @@ body.project-manager-page {
   border: 1px solid var(--pm-line);
   border-radius: 18px;
   background: rgba(15, 23, 42, 0.68);
+}
+
+@keyframes pm-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes pm-scan {
+  to { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-retro-screen::after,
+  .pm-cursor {
+    animation: none;
+  }
 }
 
 @media (max-width: 640px) {
