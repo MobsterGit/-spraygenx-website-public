@@ -579,6 +579,289 @@ textarea {
 	gap: 26px;
 }
 
+/* --  HOME FOOTER — MASTER CONTROL Adjust this block only for the entire homepage footer. 
+Keeps typography stable so it does not repaint heavier on load. --*/
+.home-footer-panels {
+	--footer-body: .98rem;
+	--footer-copy: .9rem;
+	--footer-kicker: .78rem;
+	--footer-heavy: 700;
+	--footer-xheavy: 800;
+	padding: 0;
+	background: #061325;
+	color: #fff;
+	font-family: inherit;
+	font-size: var(--footer-body);
+	line-height: 1.42;
+	font-weight: 400
+}
+
+.home-footer-panels *,
+.home-footer-bottom * {
+	box-sizing: border-box
+}
+
+.home-footer-grid {
+	display: grid;
+	grid-template-columns: 1fr 1.08fr .92fr;
+	min-height: 390px
+}
+
+.home-footer-panel {
+	padding: 48px 6.25vw 46px;
+	font-family: inherit;
+	font-size: var(--footer-body);
+	line-height: 1.42;
+	font-weight: 400
+}
+
+.home-footer-reviews {
+	background: #06213d
+}
+
+.home-footer-service {
+	background: #fff;
+	color: #07172b;
+	position: relative;
+	overflow: hidden
+}
+
+.home-footer-actions {
+	background: #178de8;
+	color: #fff
+}
+
+.home-footer-kicker {
+	color: #1f8dff;
+	text-transform: uppercase;
+	letter-spacing: .12em;
+	font-size: var(--footer-kicker);
+	font-weight: var(--footer-xheavy);
+	margin-bottom: 16px
+}
+
+.home-footer-panel h2 {
+	margin: 0 0 24px;
+	color: inherit;
+	text-transform: uppercase;
+	font-family: inherit;
+	font-size: clamp(1.95rem, 3vw, 3rem);
+	line-height: .96;
+	font-weight: var(--footer-xheavy);
+	letter-spacing: -.045em
+}
+
+.home-footer-panel p {
+	margin: 0;
+	color: inherit;
+	font-family: inherit;
+	font-size: var(--footer-body);
+	line-height: 1.42;
+	font-weight: var(--footer-heavy)
+}
+
+.home-footer-stars {
+	display: flex;
+	gap: 14px;
+	margin: 34px 0 28px;
+	color: #ffd34f;
+	font-size: 1.95rem;
+	line-height: 1
+}
+
+.home-footer-outline {
+	display: inline-flex;
+	align-items: center;
+	gap: 16px;
+	min-height: 58px;
+	padding: 0 28px;
+	border: 1px solid rgba(255, 255, 255, .74);
+	color: #fff;
+	font-weight: var(--footer-xheavy);
+	text-transform: uppercase;
+	font-size: .86rem;
+	letter-spacing: .02em
+}
+
+.home-footer-outline strong {
+	font-size: 1.15rem;
+	color: #62b7ff
+}
+
+.home-footer-map {
+	position: absolute;
+	right: 8%;
+	top: 48px;
+	width: 230px;
+	height: 250px;
+	opacity: .98
+}
+
+.home-footer-map:before {
+	content: "";
+	position: absolute;
+	inset: 6px;
+	background: linear-gradient(#dbe3ec 1px, transparent 1px), linear-gradient(90deg, #dbe3ec 1px, transparent 1px);
+	background-size: 52px 52px;
+	border: 1px solid #dbe3ec
+}
+
+.home-footer-ohio {
+	position: absolute;
+	inset: 0;
+	background: url('images/ohio-service-area.png') center/contain no-repeat;
+	filter: drop-shadow(0 12px 18px rgba(7, 23, 43, .14));
+	opacity: .88;
+	z-index: 1
+}
+
+.home-footer-pin {
+	position: absolute;
+	z-index: 2;
+	width: 46px;
+	height: 46px;
+	background: #3997ee;
+	border-radius: 50% 50% 50% 0;
+	transform: rotate(-45deg);
+	box-shadow: 0 14px 22px rgba(20, 115, 210, .26)
+}
+
+.home-footer-pin:after {
+	content: "";
+	position: absolute;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: #fff;
+	left: 16px;
+	top: 16px;
+	box-shadow: 0 0 0 4px rgba(255, 255, 255, .22)
+}
+
+.home-footer-pin.p1 {
+	right: 38px;
+	top: 42px
+}
+
+.home-footer-pin.p2 {
+	right: 0;
+	top: 104px
+}
+
+.home-footer-pin.p3 {
+	right: 94px;
+	top: 154px
+}
+
+.home-footer-blue-line {
+	width: 78px;
+	height: 4px;
+	background: #1f8dff;
+	margin: 34px 0 28px
+}
+
+.home-footer-tag {
+	font-size: 1.06rem;
+	line-height: 1.28;
+	font-weight: var(--footer-xheavy)
+}
+
+.home-footer-action {
+	display: grid;
+	grid-template-columns: 58px 1fr 24px;
+	align-items: center;
+	gap: 18px;
+	color: #fff;
+	padding: 28px 0;
+	border-bottom: 1px solid rgba(255, 255, 255, .34);
+	font-family: inherit
+}
+
+.home-footer-action:first-child {
+	padding-top: 0
+}
+
+.home-footer-action:last-child {
+	border-bottom: 0
+}
+
+.home-footer-action .action-icon {
+	font-size: 2rem;
+	line-height: 1;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center
+}
+
+.home-footer-action strong {
+	display: block;
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 1.08rem;
+	line-height: 1.06;
+	margin-bottom: 5px;
+	font-weight: var(--footer-xheavy);
+	letter-spacing: -.01em
+}
+
+.home-footer-action span {
+	display: block;
+	color: #fff;
+	font-size: .9rem;
+	line-height: 1.25;
+	font-weight: 500
+}
+
+.home-footer-action .arrow {
+	font-size: 1.45rem;
+	font-weight: var(--footer-xheavy)
+}
+
+.home-footer-bottom {
+	background: #020914;
+	color: #d5e4f5;
+	padding: 22px 0;
+	font-family: inherit;
+	font-size: var(--footer-copy);
+	line-height: 1.42
+}
+
+.home-footer-bottom-grid {
+	width: min(1180px, calc(100% - 44px));
+	margin: auto;
+	display: grid;
+	grid-template-columns: 260px 1fr auto;
+	align-items: center;
+	gap: 34px
+}
+
+.home-footer-logo {
+	width: 230px;
+	height: auto;
+	display: block
+}
+
+.home-footer-copy {
+	font-size: var(--footer-copy);
+	line-height: 1.42;
+	font-weight: 600;
+	color: #d5e4f5
+}
+
+.home-footer-socials {
+	display: flex;
+	gap: 16px;
+	color: #fff;
+	font-size: 1.22rem;
+	font-weight: var(--footer-xheavy)
+}
+
+
+
+
+
+
 .footer-logo {
 	width: 250px;
 }
@@ -3074,283 +3357,6 @@ div.photo-panel {
 	opacity: .9
 }
 
-/* --  HOME FOOTER — MASTER CONTROL Adjust this block only for the entire homepage footer. 
-Keeps typography stable so it does not repaint heavier on load. --*/
-.home-footer-panels {
-	--footer-body: .98rem;
-	--footer-copy: .9rem;
-	--footer-kicker: .78rem;
-	--footer-heavy: 700;
-	--footer-xheavy: 800;
-	padding: 0;
-	background: #061325;
-	color: #fff;
-	font-family: inherit;
-	font-size: var(--footer-body);
-	line-height: 1.42;
-	font-weight: 400
-}
-
-.home-footer-panels *,
-.home-footer-bottom * {
-	box-sizing: border-box
-}
-
-.home-footer-grid {
-	display: grid;
-	grid-template-columns: 1fr 1.08fr .92fr;
-	min-height: 390px
-}
-
-.home-footer-panel {
-	padding: 48px 6.25vw 46px;
-	font-family: inherit;
-	font-size: var(--footer-body);
-	line-height: 1.42;
-	font-weight: 400
-}
-
-.home-footer-reviews {
-	background: #06213d
-}
-
-.home-footer-service {
-	background: #fff;
-	color: #07172b;
-	position: relative;
-	overflow: hidden
-}
-
-.home-footer-actions {
-	background: #178de8;
-	color: #fff
-}
-
-.home-footer-kicker {
-	color: #1f8dff;
-	text-transform: uppercase;
-	letter-spacing: .12em;
-	font-size: var(--footer-kicker);
-	font-weight: var(--footer-xheavy);
-	margin-bottom: 16px
-}
-
-.home-footer-panel h2 {
-	margin: 0 0 24px;
-	color: inherit;
-	text-transform: uppercase;
-	font-family: inherit;
-	font-size: clamp(1.95rem, 3vw, 3rem);
-	line-height: .96;
-	font-weight: var(--footer-xheavy);
-	letter-spacing: -.045em
-}
-
-.home-footer-panel p {
-	margin: 0;
-	color: inherit;
-	font-family: inherit;
-	font-size: var(--footer-body);
-	line-height: 1.42;
-	font-weight: var(--footer-heavy)
-}
-
-.home-footer-stars {
-	display: flex;
-	gap: 14px;
-	margin: 34px 0 28px;
-	color: #ffd34f;
-	font-size: 1.95rem;
-	line-height: 1
-}
-
-.home-footer-outline {
-	display: inline-flex;
-	align-items: center;
-	gap: 16px;
-	min-height: 58px;
-	padding: 0 28px;
-	border: 1px solid rgba(255, 255, 255, .74);
-	color: #fff;
-	font-weight: var(--footer-xheavy);
-	text-transform: uppercase;
-	font-size: .86rem;
-	letter-spacing: .02em
-}
-
-.home-footer-outline strong {
-	font-size: 1.15rem;
-	color: #62b7ff
-}
-
-.home-footer-map {
-	position: absolute;
-	right: 8%;
-	top: 48px;
-	width: 230px;
-	height: 250px;
-	opacity: .98
-}
-
-.home-footer-map:before {
-	content: "";
-	position: absolute;
-	inset: 6px;
-	background: linear-gradient(#dbe3ec 1px, transparent 1px), linear-gradient(90deg, #dbe3ec 1px, transparent 1px);
-	background-size: 52px 52px;
-	border: 1px solid #dbe3ec
-}
-
-.home-footer-ohio {
-	position: absolute;
-	inset: 0;
-	background: url('images/ohio-service-area.png') center/contain no-repeat;
-	filter: drop-shadow(0 12px 18px rgba(7, 23, 43, .14));
-	opacity: .88;
-	z-index: 1
-}
-
-.home-footer-pin {
-	position: absolute;
-	z-index: 2;
-	width: 46px;
-	height: 46px;
-	background: #3997ee;
-	border-radius: 50% 50% 50% 0;
-	transform: rotate(-45deg);
-	box-shadow: 0 14px 22px rgba(20, 115, 210, .26)
-}
-
-.home-footer-pin:after {
-	content: "";
-	position: absolute;
-	width: 14px;
-	height: 14px;
-	border-radius: 50%;
-	background: #fff;
-	left: 16px;
-	top: 16px;
-	box-shadow: 0 0 0 4px rgba(255, 255, 255, .22)
-}
-
-.home-footer-pin.p1 {
-	right: 38px;
-	top: 42px
-}
-
-.home-footer-pin.p2 {
-	right: 0;
-	top: 104px
-}
-
-.home-footer-pin.p3 {
-	right: 94px;
-	top: 154px
-}
-
-.home-footer-blue-line {
-	width: 78px;
-	height: 4px;
-	background: #1f8dff;
-	margin: 34px 0 28px
-}
-
-.home-footer-tag {
-	font-size: 1.06rem;
-	line-height: 1.28;
-	font-weight: var(--footer-xheavy)
-}
-
-.home-footer-action {
-	display: grid;
-	grid-template-columns: 58px 1fr 24px;
-	align-items: center;
-	gap: 18px;
-	color: #fff;
-	padding: 28px 0;
-	border-bottom: 1px solid rgba(255, 255, 255, .34);
-	font-family: inherit
-}
-
-.home-footer-action:first-child {
-	padding-top: 0
-}
-
-.home-footer-action:last-child {
-	border-bottom: 0
-}
-
-.home-footer-action .action-icon {
-	font-size: 2rem;
-	line-height: 1;
-	color: #fff;
-	display: flex;
-	align-items: center;
-	justify-content: center
-}
-
-.home-footer-action strong {
-	display: block;
-	color: #fff;
-	text-transform: uppercase;
-	font-size: 1.08rem;
-	line-height: 1.06;
-	margin-bottom: 5px;
-	font-weight: var(--footer-xheavy);
-	letter-spacing: -.01em
-}
-
-.home-footer-action span {
-	display: block;
-	color: #fff;
-	font-size: .9rem;
-	line-height: 1.25;
-	font-weight: 500
-}
-
-.home-footer-action .arrow {
-	font-size: 1.45rem;
-	font-weight: var(--footer-xheavy)
-}
-
-.home-footer-bottom {
-	background: #020914;
-	color: #d5e4f5;
-	padding: 22px 0;
-	font-family: inherit;
-	font-size: var(--footer-copy);
-	line-height: 1.42
-}
-
-.home-footer-bottom-grid {
-	width: min(1180px, calc(100% - 44px));
-	margin: auto;
-	display: grid;
-	grid-template-columns: 260px 1fr auto;
-	align-items: center;
-	gap: 34px
-}
-
-.home-footer-logo {
-	width: 230px;
-	height: auto;
-	display: block
-}
-
-.home-footer-copy {
-	font-size: var(--footer-copy);
-	line-height: 1.42;
-	font-weight: 600;
-	color: #d5e4f5
-}
-
-.home-footer-socials {
-	display: flex;
-	gap: 16px;
-	color: #fff;
-	font-size: 1.22rem;
-	font-weight: var(--footer-xheavy)
-}
 
 @media(max-width:1100px) {
 	.home-footer-grid {
