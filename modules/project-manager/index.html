@@ -29,6 +29,18 @@
 
         <input id="pm-file-input" class="pm-file-input" type="file" accept="image/*,.heic,.heif" multiple>
 
+        <div id="pm-loader" class="pm-retro-loader" hidden>
+          <div class="pm-retro-screen">
+            <div class="pm-retro-topline">
+              <span>PROJECT MANAGER</span>
+              <span>SYSTEM READY</span>
+            </div>
+            <pre id="pm-loader-lines" class="pm-retro-lines">C:\PROJECTS&gt; awaiting photos...</pre>
+            <div class="pm-retro-bar" aria-hidden="true"><span></span></div>
+            <p id="pm-loader-status" class="pm-retro-status">Standing by<span class="pm-cursor">_</span></p>
+          </div>
+        </div>
+
         <div class="pm-progress" aria-hidden="true"><span></span></div>
         <p id="pm-message" class="pm-message"></p>
 
