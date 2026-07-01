@@ -1140,14 +1140,3 @@ textarea {
 		opacity: .9;
 	}
 }
-
-/* Start Project Wallace extracted inline styles */
-p {
-	margin-top: 24px;
-}
-
-div.photo-panel {
-	background-image: linear-gradient(rgba(7, 23, 43, .12), rgba(7, 23, 43, .55)), url("images/industrial-blue-equipment.jpg");
-}
-
-/** End Project Wallace extracted inline styles */
