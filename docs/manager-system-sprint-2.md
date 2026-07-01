@@ -37,7 +37,7 @@ The system should help manage:
 - [x] Confirm active repository: `MobsterGit/-spraygenx-website-public`.
 - [x] Confirm current site foundation: static HTML, CSS, vanilla JavaScript, JSON portfolio data, GitHub Pages, Scriptable workflow.
 - [x] Create Sprint 2 checklist document.
-- [ ] Define manager-system modules.
+- [x] Define manager-system modules.
 - [ ] Define the main job record structure.
 - [ ] Define customer / contractor record structure.
 - [ ] Define proposal record structure.
@@ -45,6 +45,234 @@ The system should help manage:
 - [ ] Define mileage record structure.
 - [ ] Define photo / portfolio record structure.
 - [ ] Define follow-up task record structure.
+
+---
+
+## Defined Manager-System Modules
+
+These are the working modules for the Spray GenX manager system.
+
+### 1. Jobs
+
+The Jobs module is the center of the system.
+
+Every estimate, proposal, invoice, photo set, mileage entry, follow-up, and portfolio candidate should be able to connect back to a job record.
+
+Purpose:
+
+- track active and past work
+- reduce forgotten follow-ups
+- connect job photos to business records
+- connect proposals, invoices, and payments
+- create a reliable job history
+- support future reporting
+
+Core records connected to Jobs:
+
+- customer / contractor
+- site address
+- scope
+- proposal
+- invoice
+- photos
+- mileage
+- notes
+- follow-up tasks
+- portfolio entries
+
+### 2. Customers / Contractors
+
+The Customers / Contractors module stores people and companies Spray GenX works for or with.
+
+This should handle both homeowner customers and commercial/GC relationships.
+
+Purpose:
+
+- avoid retyping names, phone numbers, and emails
+- track repeat customers and contractors
+- separate direct customers from subcontract / GC contacts
+- support proposals, invoices, follow-ups, and relationship history
+
+Suggested contact types:
+
+- homeowner
+- business owner
+- general contractor
+- property manager
+- subcontract relationship
+- supplier / vendor
+- internal / personal reference
+
+### 3. Proposals
+
+The Proposals module tracks estimates before they become approved work.
+
+Purpose:
+
+- create professional customer-facing proposals
+- save scope language for reuse
+- connect proposed work to a job record
+- convert approved proposals into invoices
+- track open, accepted, rejected, or revised proposals
+
+Proposal status examples:
+
+- draft
+- sent
+- revised
+- approved
+- declined
+- expired
+- converted to invoice
+
+### 4. Invoices
+
+The Invoices module tracks billable work and payment status.
+
+Purpose:
+
+- convert approved proposals into invoices
+- track invoice numbers
+- track sent / unpaid / paid / overdue status
+- preserve a business record for tax and accounting use
+- support clean PDF export
+
+Invoice status examples:
+
+- draft
+- sent
+- partially paid
+- paid
+- overdue
+- void
+
+### 5. Mileage
+
+The Mileage module connects business driving to jobs, estimates, suppliers, and admin errands.
+
+Purpose:
+
+- reduce year-end mileage pain
+- connect trips to jobs whenever possible
+- support business vs personal classification
+- create accountant-friendly exports
+- preserve notes for unusual trips
+
+Mileage should support:
+
+- date
+- origin
+- destination
+- miles
+- purpose
+- job link
+- business / personal / mixed classification
+- source import notes
+
+### 6. Photos
+
+The Photos module manages job photos before they become website portfolio content.
+
+Purpose:
+
+- collect field photos by job
+- separate business archive photos from public website photos
+- support before / after grouping
+- identify cover photos
+- prepare selected photos for portfolio publishing
+
+Photo states:
+
+- inbox
+- job archive
+- portfolio candidate
+- approved for website
+- published
+- hidden / rejected
+
+### 7. Portfolio Publishing
+
+The Portfolio Publishing module controls what job photos and project writeups become public website content.
+
+Purpose:
+
+- protect the public site from messy work-in-progress data
+- map job photos into existing `data/portfolio.json`
+- organize projects by category
+- define title, description, cover, captions, and visibility
+- preserve the existing static JSON-driven site model
+
+This module should only publish selected, approved content.
+
+### 8. Follow-Up Tasks
+
+The Follow-Up Tasks module tracks next actions that otherwise get buried in texts, memory, or notes.
+
+Purpose:
+
+- track calls, estimates, touch-ups, collections, callbacks, and warranty items
+- keep job movement visible
+- make the dashboard useful every morning
+- reduce missed money and missed communication
+
+Task examples:
+
+- call customer
+- send proposal
+- revise proposal
+- schedule job
+- order material
+- upload photos
+- send invoice
+- collect payment
+- request review
+- add project to portfolio
+
+### 9. Reports / Exports
+
+The Reports / Exports module turns stored records into usable business output.
+
+Purpose:
+
+- support tax prep
+- export proposals and invoices
+- summarize yearly work
+- summarize contractor/customer revenue
+- export mileage
+- prepare accountant-friendly CSV files
+- eventually show business totals without digging through files
+
+Initial export targets:
+
+- yearly job summary CSV
+- proposal log CSV
+- invoice log CSV
+- mileage CSV
+- customer / contractor CSV
+- tax support CSV
+
+### 10. Settings / Templates
+
+The Settings / Templates module stores reusable defaults.
+
+Purpose:
+
+- avoid rewriting common scope language
+- define numbering rules
+- define company info
+- define proposal and invoice language
+- define payment terms
+- define portfolio category names
+- define default export folders
+
+Template examples:
+
+- proposal intro language
+- invoice payment terms
+- common painting scope blocks
+- warranty / exclusions language
+- customer-facing project descriptions
+- default notes
 
 ---
 
@@ -161,20 +389,9 @@ The system should help manage:
 
 ## Current Next Task
 
-Define manager-system modules.
+Define the main job record structure.
 
-Recommended modules:
-
-1. Jobs
-2. Customers / Contractors
-3. Proposals
-4. Invoices
-5. Mileage
-6. Photos
-7. Portfolio Publishing
-8. Follow-Up Tasks
-9. Reports / Exports
-10. Settings / Templates
+The job record should become the central object that connects customers, proposals, invoices, photos, mileage, portfolio entries, and follow-up tasks.
 
 ---
 
