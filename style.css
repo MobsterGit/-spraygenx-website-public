@@ -277,6 +277,8 @@ img {
 	opacity: .98;
 }
 
+/* 
+WHY ANYONE WOULD DO THIS ???
 .home-footer-map:before {
   content: "";
   position: absolute;
@@ -286,6 +288,7 @@ img {
   border: 1px solid #dbe3ec
 }
 
+*/
 .home-footer-ohio {
   position: absolute;
   inset: 0;
