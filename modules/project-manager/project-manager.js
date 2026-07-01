@@ -10,9 +10,16 @@ const uploadEngine = new UploadEngine({ processor, logger });
 const state = {
   step: "upload",
   published: false,
-  processing: false,
-  loaderLines: ["C:\\PROJECTS> awaiting photos..."]
+  loaderPercent: 0
 };
+
+const loaderSteps = [
+  "Reading photos...",
+  "Checking files...",
+  "Preparing images...",
+  "Creating previews...",
+  "Finalizing project..."
+];
 
 const els = {};
 
@@ -27,12 +34,12 @@ function cacheElements() {
   els.fileInput = document.querySelector("#pm-file-input");
   els.browseButtons = document.querySelectorAll("[data-action='browse']");
   els.dropzone = document.querySelector("#pm-dropzone");
+  els.message = document.querySelector("#pm-message");
+  els.progress = document.querySelector("#pm-progress span");
   els.loader = document.querySelector("#pm-loader");
   els.loaderLines = document.querySelector("#pm-loader-lines");
   els.loaderStatus = document.querySelector("#pm-loader-status");
   els.loaderBar = document.querySelector(".pm-retro-bar span");
-  els.message = document.querySelector("#pm-message");
-  els.progress = document.querySelector("#pm-progress span");
   els.steps = document.querySelectorAll("[data-step]");
   els.grid = document.querySelector("#pm-grid");
   els.nextButton = document.querySelector("[data-action='next']");
@@ -46,6 +53,13 @@ function cacheElements() {
 function bindEvents() {
   els.browseButtons.forEach((button) => button.addEventListener("click", () => els.fileInput.click()));
   els.fileInput.addEventListener("change", (event) => handleFiles(event.target.files));
+
+  els.dropzone.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      els.fileInput.click();
+    }
+  });
 
   els.dropzone.addEventListener("dragover", (event) => {
     event.preventDefault();
@@ -73,34 +87,28 @@ function bindEvents() {
   els.publishButton.addEventListener("click", publishProject);
 
   uploadEngine.addEventListener("items-changed", () => render());
-  uploadEngine.addEventListener("cancelled", () => setMessage("", "info"));
+  uploadEngine.addEventListener("cancelled", () => {
+    hideLoader();
+    setMessage("", "info");
+  });
   uploadEngine.addEventListener("message", (event) => setMessage(event.detail.text, event.detail.type));
   uploadEngine.addEventListener("processing-start", (event) => {
-    state.processing = true;
-    state.loaderLines = [
-      "C:\\PROJECTS> photos detected",
-      `C:\\PROJECTS> loading ${event.detail.count} file${event.detail.count === 1 ? "" : "s"}...`
-    ];
-    setLoaderStatus("Booting image pipeline");
-    setLoaderProgress(0);
-    renderLoader();
+    showLoader(event.detail.count);
+    updateLoader(1, "Reading photos...", "C:\\PROJECTS> initializing upload session...");
   });
   uploadEngine.addEventListener("progress", (event) => {
     const { current, total, fileName } = event.detail;
-    const percent = (current / total) * 100;
+    const percent = Math.round((current / total) * 100);
+    const step = loaderSteps[Math.min(loaderSteps.length - 1, Math.floor((percent / 100) * loaderSteps.length))];
+    const line = `C:\\PROJECTS> ${step}\nFILE ${current}/${total}: ${fileName}\nPROGRESS: ${percent}%`;
+
     setProgress(percent);
-    setLoaderProgress(percent);
-    pushLoaderLine(`C:\\PROJECTS> processing ${current}/${total} :: ${fileName}`);
-    setLoaderStatus("Converting / optimizing / thumbnailing");
-    setMessage(`Preparing ${current} of ${total}: ${fileName}`, "info");
+    updateLoader(percent, step, line);
+    setMessage(`${percent}% — ${step}`, "info");
   });
   uploadEngine.addEventListener("processing-complete", (event) => {
-    state.processing = false;
     setProgress(100);
-    setLoaderProgress(100);
-    pushLoaderLine(`C:\\PROJECTS> ${event.detail.total} photo${event.detail.total === 1 ? "" : "s"} ready`);
-    pushLoaderLine("C:\\PROJECTS> cover photo prepared");
-    setLoaderStatus("Ready for review");
+    updateLoader(100, "Complete.", `C:\\PROJECTS> Complete.\n${event.detail.total} photo${event.detail.total === 1 ? "" : "s"} ready.\nPROGRESS: 100%`);
     setMessage(`${event.detail.total} photo${event.detail.total === 1 ? "" : "s"} ready.`, "success");
   });
 }
@@ -120,12 +128,9 @@ function cancelSession() {
   uploadEngine.clear();
   state.step = "upload";
   state.published = false;
-  state.processing = false;
-  state.loaderLines = ["C:\\PROJECTS> awaiting photos..."];
+  hideLoader();
   setMessage("", "info");
   setProgress(0);
-  setLoaderProgress(0);
-  setLoaderStatus("Standing by");
   render();
 }
 
@@ -164,7 +169,6 @@ function render() {
 
   els.nextButton.disabled = uploadEngine.items.length === 0;
   renderGrid();
-  renderLoader();
   renderLog();
 }
 
@@ -179,7 +183,7 @@ function renderGrid() {
   els.grid.innerHTML = uploadEngine.items.map((item) => `
     <article class="pm-thumb ${item.featured ? "is-featured" : ""}" data-id="${item.id}">
       <span class="pm-cover-badge">⭐ Cover</span>
-      <img src="${item.thumbnailUrl}" alt="${escapeHtml(item.originalName)}">
+      <img src="${item.thumbnailUrl}" alt="${escapeHtml(item.originalName)}" data-cover="${item.id}">
       <div class="pm-thumb-footer">
         <span class="pm-thumb-name" title="${escapeHtml(item.originalName)}">${escapeHtml(item.outputName)}</span>
         <button class="pm-mini" type="button" data-cover="${item.id}">Cover</button>
@@ -209,30 +213,29 @@ function renderSummary(payload) {
   `;
 }
 
-function renderLoader() {
-  if (!els.loader) return;
-  els.loader.hidden = state.loaderLines.length <= 1 && !state.processing && !uploadEngine.items.length;
-  els.loaderLines.textContent = state.loaderLines.slice(-6).join("\n");
-}
-
-function pushLoaderLine(line) {
-  state.loaderLines = [...state.loaderLines, line].slice(-8);
-  renderLoader();
-}
-
-function setLoaderStatus(status) {
-  if (!els.loaderStatus) return;
-  els.loaderStatus.innerHTML = `${escapeHtml(status)}<span class="pm-cursor">_</span>`;
-}
-
-function setLoaderProgress(percent) {
-  if (!els.loaderBar) return;
-  els.loaderBar.style.width = `${Math.max(0, Math.min(100, percent))}%`;
-}
-
 function renderLog() {
   if (!els.logOutput) return;
   els.logOutput.textContent = JSON.stringify(logger.export(), null, 2);
+}
+
+function showLoader(total) {
+  state.loaderPercent = 0;
+  els.loader.hidden = false;
+  updateLoader(0, `Preparing ${total} photo${total === 1 ? "" : "s"}...`, "C:\\PROJECTS> preparing your project...");
+}
+
+function hideLoader() {
+  state.loaderPercent = 0;
+  if (els.loader) els.loader.hidden = true;
+  if (els.loaderBar) els.loaderBar.style.width = "0%";
+}
+
+function updateLoader(percent, status, lines) {
+  const cleanPercent = Math.max(0, Math.min(100, Math.round(percent)));
+  state.loaderPercent = cleanPercent;
+  els.loaderLines.innerHTML = `${escapeHtml(lines)}\n\n<span class="pm-retro-percent">${cleanPercent}%</span>`;
+  els.loaderStatus.innerHTML = `${escapeHtml(status)}<span class="pm-cursor">_</span>`;
+  els.loaderBar.style.width = `${cleanPercent}%`;
 }
 
 function setProgress(percent) {
