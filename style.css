@@ -496,20 +496,20 @@ WHY ANYONE WOULD DO THIS ???
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .22)
   }
 /*     USE THIS ONE - MAP MARKERS           */
-  .home-footer-pin.p1 {
-    right: 28px;
-    top: 26px
-  }
+   .home-footer-pin.p1 {
+	right: 27px !important;
+	bottom: 192px !important;
+}
 
   .home-footer-pin.p2 {
-    right: 0;
-    top: 68px
-  }
+	right: 58px !important;
+	bottom: 148px !important;
+}
 
   .home-footer-pin.p3 {
-    right: 62px;
-    top: 102px
-  }
+	right: 101px !important;
+	bottom: 169px !important;
+}
 /*     USE THIS ONE - MAP MARKERS           */
   .home-footer-action {
     grid-template-columns: 48px 1fr 22px;
