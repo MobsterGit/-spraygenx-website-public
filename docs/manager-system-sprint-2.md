@@ -38,7 +38,7 @@ The system should help manage:
 - [x] Confirm current site foundation: static HTML, CSS, vanilla JavaScript, JSON portfolio data, GitHub Pages, Scriptable workflow.
 - [x] Create Sprint 2 checklist document.
 - [x] Define manager-system modules.
-- [ ] Define the main job record structure.
+- [x] Define the main job record structure. See `docs/manager-system-job-record.md`.
 - [ ] Define customer / contractor record structure.
 - [ ] Define proposal record structure.
 - [ ] Define invoice record structure.
@@ -389,9 +389,9 @@ Template examples:
 
 ## Current Next Task
 
-Define the main job record structure.
+Define customer / contractor record structure.
 
-The job record should become the central object that connects customers, proposals, invoices, photos, mileage, portfolio entries, and follow-up tasks.
+The customer / contractor record should connect repeat contacts, billing details, job history, proposals, invoices, and follow-up context without forcing repeated data entry.
 
 ---
 
