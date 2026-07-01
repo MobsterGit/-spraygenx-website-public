@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Manager | Upload Engine</title>
+  <link rel="stylesheet" href="./project-manager.css">
+</head>
+<body class="project-manager-page">
+  <main class="pm-app" aria-labelledby="pm-title">
+    <header class="pm-header">
+      <div>
+        <p class="pm-kicker">Sprint 1</p>
+        <h1 id="pm-title">Project Manager</h1>
+      </div>
+      <p class="pm-muted">Upload photos. Pick the cover. Let the system prepare the rest.</p>
+    </header>
+
+    <section class="pm-card" aria-live="polite">
+      <div class="pm-step is-active" data-step="upload">
+        <div id="pm-dropzone" class="pm-dropzone" role="button" tabindex="0">
+          <div>
+            <strong>📷 Select Photos</strong>
+            <p class="pm-muted">Drag files here or browse your device.</p>
+            <button class="pm-button primary" type="button" data-action="browse">Browse Device</button>
+            <p class="pm-muted">Maximum 10 photos.</p>
+          </div>
+        </div>
+
+        <input id="pm-file-input" class="pm-file-input" type="file" accept="image/*,.heic,.heif" multiple>
+
+        <div class="pm-progress" aria-hidden="true"><span></span></div>
+        <p id="pm-message" class="pm-message"></p>
+
+        <div class="pm-button-row">
+          <button class="pm-button danger" type="button" data-action="cancel">Cancel</button>
+          <div class="pm-actions">
+            <button class="pm-button" type="button" data-action="browse">Add Photos</button>
+            <button class="pm-button primary" type="button" data-action="next" disabled>Next →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pm-step" data-step="review">
+        <h2>Choose Cover Photo</h2>
+        <p class="pm-muted">Tap Cover on the photo that should represent this project.</p>
+        <div id="pm-grid" class="pm-grid"></div>
+
+        <div class="pm-button-row">
+          <button class="pm-button" type="button" data-action="back">← Back</button>
+          <div class="pm-actions">
+            <button class="pm-button danger" type="button" data-action="cancel">Cancel</button>
+            <button class="pm-button primary" type="button" data-action="publish">Publish Dev Preview</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pm-step" data-step="publish">
+        <h2>Dev Preview Ready</h2>
+        <div id="pm-summary" class="pm-summary"></div>
+        <div class="pm-button-row">
+          <button class="pm-button" type="button" data-action="back">← Back</button>
+          <button class="pm-button danger" type="button" data-action="cancel">Start Over</button>
+        </div>
+      </div>
+    </section>
+
+    <details class="pm-card" style="margin-top:18px; padding:18px;">
+      <summary>Session log</summary>
+      <pre id="pm-log-output" class="pm-muted"></pre>
+    </details>
+  </main>
+
+  <script type="module" src="./project-manager.js"></script>
+</body>
+</html>
