@@ -318,20 +318,7 @@ img {
   box-shadow: 0 0 0 4px rgba(255, 255, 255, .22)
 }
 
-.home-footer-pin.p1 {
-  right: 38px;
-  top: 42px
-}
 
-.home-footer-pin.p2 {
-  right: 0;
-  top: 104px
-}
-
-.home-footer-pin.p3 {
-  right: 94px;
-  top: 154px
-}
 
 .home-footer-blue-line {
   width: 88px;
@@ -506,7 +493,7 @@ img {
     top: 12px;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .22)
   }
-
+/*     USE THIS ONE - MAP MARKERS           */
   .home-footer-pin.p1 {
     right: 28px;
     top: 26px
@@ -521,7 +508,7 @@ img {
     right: 62px;
     top: 102px
   }
-
+/*     USE THIS ONE - MAP MARKERS           */
   .home-footer-action {
     grid-template-columns: 48px 1fr 22px;
     gap: 16px;
