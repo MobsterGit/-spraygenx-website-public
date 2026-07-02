@@ -1,6 +1,6 @@
 # Spray GenX Manager Data
 
-This folder is the first lightweight owner-side manager-system structure.
+This folder is the lightweight owner-side manager-system structure.
 
 ## Structure
 
@@ -14,6 +14,7 @@ data/manager/
   media/
   tasks/
   templates/
+  imports/
   exports/
     jobs/
     customers/
@@ -36,3 +37,15 @@ data/portfolio.json
 ```
 
 Approved portfolio projects should be copied intentionally from manager media records into `data/portfolio.json`.
+
+## Import Staging
+
+Existing Scriptable proposal and invoice records should be staged in:
+
+```text
+data/manager/imports/
+```
+
+This keeps the live Scriptable Proposal / Invoice Manager intact while the website Manager learns how to index those records, create matching jobs/customers, and connect proposals, invoices, tasks, photos, and mileage.
+
+See `data/manager/imports/README.md` for the import rules.
