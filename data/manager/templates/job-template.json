@@ -1,0 +1,94 @@
+{
+  "job_id": "JOB-YYYY-0001",
+  "job_title": "",
+  "job_slug": "",
+  "job_type": "commercial",
+  "job_category": "commercial-interiors",
+  "status": "lead",
+  "customer_id": "",
+  "customer_display_name": "",
+  "contact_type": "",
+  "primary_contact_name": "",
+  "location": {
+    "site_name": "",
+    "address_line_1": "",
+    "address_line_2": "",
+    "city": "",
+    "state": "OH",
+    "zip": "",
+    "county": "",
+    "service_area": "Northeast Ohio"
+  },
+  "scope": {
+    "scope_short": "",
+    "scope_full": "",
+    "surface_types": [],
+    "materials": [],
+    "access_notes": "",
+    "exclusions": ""
+  },
+  "dates": {
+    "created_date": "",
+    "estimate_date": "",
+    "proposal_sent_date": "",
+    "approved_date": "",
+    "scheduled_start_date": "",
+    "actual_start_date": "",
+    "completion_date": "",
+    "invoice_sent_date": "",
+    "paid_date": ""
+  },
+  "financials": {
+    "estimated_value": 0.00,
+    "approved_value": 0.00,
+    "invoice_total": 0.00,
+    "amount_paid": 0.00,
+    "balance_due": 0.00,
+    "pricing_type": "fixed_price",
+    "tax_exempt": false,
+    "payment_status": "not_billable_yet"
+  },
+  "links": {
+    "proposal_ids": [],
+    "invoice_ids": [],
+    "photo_group_ids": [],
+    "mileage_ids": [],
+    "task_ids": [],
+    "portfolio_project_id": ""
+  },
+  "photos": {
+    "photo_status": "none",
+    "photo_folder": "",
+    "portfolio_candidate": false,
+    "portfolio_approved": false,
+    "before_after_available": false,
+    "cover_photo": ""
+  },
+  "portfolio": {
+    "portfolio_candidate": false,
+    "portfolio_category": "",
+    "portfolio_title": "",
+    "portfolio_description": "",
+    "portfolio_visible": false,
+    "portfolio_published_date": ""
+  },
+  "follow_up": {
+    "next_action": "",
+    "next_action_due": "",
+    "priority": "normal",
+    "assigned_to": "owner",
+    "follow_up_required": false
+  },
+  "notes": {
+    "field_notes": "",
+    "private_notes": "",
+    "customer_notes": ""
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "",
+    "updated_at": "",
+    "archived": false,
+    "archive_reason": ""
+  }
+}
