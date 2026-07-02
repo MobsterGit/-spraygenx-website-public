@@ -11,6 +11,7 @@ const state = {
     mileage: [],
     tasks: []
   },
+  templates: {},
   drafts: []
 };
 
@@ -49,7 +50,8 @@ async function loadData() {
     const index = await fetchJson('../data/manager/manager-index.json');
     const records = await loadRecords(index.records || {});
     state.records = { ...state.records, ...records };
-    setStatus(`Loaded ${state.records.jobs.length} repo job record(s) and ${state.drafts.length} local draft(s).`);
+    state.templates = index.templates || {};
+    setStatus(`Loaded ${state.records.jobs.length} repo job record(s), ${state.records.proposals.length} proposal(s), ${state.records.invoices.length} invoice(s), and ${state.drafts.length} local draft(s).`);
     render();
   } catch (error) {
     console.error(error);
@@ -100,12 +102,12 @@ function render() {
   switch (state.activeView) {
     case 'dashboard': renderDashboard(); break;
     case 'jobs': renderJobs(); break;
-    case 'customers': renderSimpleModule('Customer Manager', state.records.customers, 'customer_display_name', 'customer_id'); break;
-    case 'photos': renderSimpleModule('Photo Manager', state.records.media, 'title', 'media_id'); break;
-    case 'proposals': renderSimpleModule('Proposal Manager', state.records.proposals, 'proposal_title', 'proposal_id'); break;
-    case 'invoices': renderSimpleModule('Invoice Manager', state.records.invoices, 'invoice_title', 'invoice_id'); break;
-    case 'mileage': renderSimpleModule('Mileage Tracker', state.records.mileage, 'trip_purpose', 'mileage_id'); break;
-    case 'tasks': renderSimpleModule('Task Manager', state.records.tasks, 'task_title', 'task_id'); break;
+    case 'customers': renderSimpleModule('Customer Manager', state.records.customers, recordTitle, recordId); break;
+    case 'photos': renderSimpleModule('Photo Manager', state.records.media, recordTitle, recordId); break;
+    case 'proposals': renderSimpleModule('Proposal Manager', state.records.proposals, recordTitle, recordId); break;
+    case 'invoices': renderSimpleModule('Invoice Manager', state.records.invoices, recordTitle, recordId); break;
+    case 'mileage': renderSimpleModule('Mileage Tracker', state.records.mileage, recordTitle, recordId); break;
+    case 'tasks': renderSimpleModule('Task Manager', state.records.tasks, recordTitle, recordId); break;
     default: renderSettings();
   }
 }
@@ -116,20 +118,37 @@ function allJobs() {
 
 function renderDashboard() {
   const jobs = allJobs();
+  const activeJobs = jobs.filter((job) => !['complete', 'completed', 'paid', 'archived'].includes(String(job.status || '').toLowerCase()));
+  const openProposals = state.records.proposals.filter((proposal) => !['approved', 'declined', 'expired', 'converted_to_invoice'].includes(managerStatus(proposal)));
+  const unpaidInvoices = state.records.invoices.filter((invoice) => !['paid', 'void'].includes(invoicePaymentStatus(invoice)));
+  const followUps = state.records.tasks.filter((task) => ['open', 'waiting', 'scheduled'].includes(String(task.status || '').toLowerCase()));
+  const mileageReview = state.records.mileage.filter((trip) => ['needs_review', 'unknown', 'mixed'].includes(String(trip.status || trip.classification || '').toLowerCase()));
+  const portfolioCandidates = state.records.media.filter((media) => media.portfolio?.portfolio_candidate || media.portfolio?.portfolio_approved || media.status === 'portfolio_candidate');
   const estimatedValue = jobs.reduce((sum, job) => sum + Number(job.financials?.estimated_value || 0), 0);
+  const unpaidTotal = unpaidInvoices.reduce((sum, invoice) => sum + moneyToNumber(invoice.manager?.balance_due || invoice.price || 0), 0);
 
   workspace.innerHTML = `
     <section class="dashboard-grid" aria-label="Manager totals">
-      ${metricCard('Repo Jobs', state.records.jobs.length)}
-      ${metricCard('Local Drafts', state.drafts.length)}
-      ${metricCard('Proposals', state.records.proposals.length)}
-      ${metricCard('Tasks', state.records.tasks.length)}
+      ${metricCard('Active Jobs', activeJobs.length)}
+      ${metricCard('Open Proposals', openProposals.length)}
+      ${metricCard('Unpaid Invoices', unpaidInvoices.length)}
+      ${metricCard('Follow-Ups', followUps.length)}
     </section>
 
-    <section class="card">
-      <h2>Pipeline Value</h2>
-      <strong>${money.format(estimatedValue)}</strong>
-      <p>Current value calculated from loaded repo jobs plus local drafts.</p>
+    <section class="dashboard-grid" aria-label="Manager money totals">
+      ${metricCard('Pipeline Value', money.format(estimatedValue))}
+      ${metricCard('Balance Due', money.format(unpaidTotal))}
+      ${metricCard('Mileage Review', mileageReview.length)}
+      ${metricCard('Portfolio Candidates', portfolioCandidates.length)}
+    </section>
+
+    <section class="dashboard-queues">
+      ${queueCard('Active Jobs', activeJobs, 'No active jobs loaded yet.')}
+      ${queueCard('Open Proposals', openProposals, 'No open proposals loaded yet.')}
+      ${queueCard('Unpaid Invoices', unpaidInvoices, 'No unpaid invoices loaded yet.')}
+      ${queueCard('Follow-Up Tasks', followUps, 'No open follow-up tasks loaded yet.')}
+      ${queueCard('Mileage Needs Review', mileageReview, 'No mileage records need review.')}
+      ${queueCard('Photos / Portfolio', portfolioCandidates, 'No portfolio candidates loaded yet.')}
     </section>
 
     <section class="jobs-panel card">
@@ -226,11 +245,11 @@ function renderJobDetail(jobId) {
       </section>
 
       <section class="detail-grid relation-grid">
-        ${relationCard('Proposals', linked.proposals, 'proposal_id')}
-        ${relationCard('Invoices', linked.invoices, 'invoice_id')}
-        ${relationCard('Photos', linked.media, 'media_id')}
-        ${relationCard('Mileage', linked.mileage, 'mileage_id')}
-        ${relationCard('Tasks', linked.tasks, 'task_id')}
+        ${relationCard('Proposals', linked.proposals, recordId)}
+        ${relationCard('Invoices', linked.invoices, recordId)}
+        ${relationCard('Photos', linked.media, recordId)}
+        ${relationCard('Mileage', linked.mileage, recordId)}
+        ${relationCard('Tasks', linked.tasks, recordId)}
       </section>
 
       ${isDraft ? `<section class="card json-card"><h3>Export JSON</h3><p>Copy this into <code>data/manager/jobs/${escapeHtml(job.job_id)}.json</code>, then add that path to <code>manager-index.json</code>.</p><pre>${escapeHtml(JSON.stringify(job, null, 2))}</pre></section>` : ''}
@@ -243,20 +262,20 @@ function renderJobDetail(jobId) {
 function getLinkedRecords(job) {
   const links = job.links || {};
   return {
-    proposals: state.records.proposals.filter((item) => (links.proposal_ids || []).includes(item.proposal_id) || item.job_id === job.job_id),
-    invoices: state.records.invoices.filter((item) => (links.invoice_ids || []).includes(item.invoice_id) || item.job_id === job.job_id),
-    media: state.records.media.filter((item) => (links.photo_group_ids || []).includes(item.media_id) || item.job_id === job.job_id),
-    mileage: state.records.mileage.filter((item) => (links.mileage_ids || []).includes(item.mileage_id) || item.job_id === job.job_id),
-    tasks: state.records.tasks.filter((item) => (links.task_ids || []).includes(item.task_id) || item.job_id === job.job_id)
+    proposals: state.records.proposals.filter((item) => (links.proposal_ids || []).includes(recordId(item)) || item.manager?.job_id === job.job_id),
+    invoices: state.records.invoices.filter((item) => (links.invoice_ids || []).includes(recordId(item)) || item.manager?.job_id === job.job_id),
+    media: state.records.media.filter((item) => (links.photo_group_ids || []).includes(recordId(item)) || item.job_id === job.job_id),
+    mileage: state.records.mileage.filter((item) => (links.mileage_ids || []).includes(recordId(item)) || item.job_id === job.job_id),
+    tasks: state.records.tasks.filter((item) => (links.task_ids || []).includes(recordId(item)) || item.links?.job_id === job.job_id || item.job_id === job.job_id)
   };
 }
 
-function renderSimpleModule(title, records, titleKey, idKey) {
+function renderSimpleModule(title, records, titleGetter, idGetter) {
   workspace.innerHTML = `
     <section class="card">
       <h2>${escapeHtml(title)}</h2>
-      <p>This module is connected to /data/manager/ and will use the same shell as the Job Manager.</p>
-      ${records.length ? `<div class="job-list">${records.map((record) => `<div class="job-row" role="group"><span><h3>${escapeHtml(record[titleKey] || record[idKey] || 'Record')}</h3><p>${escapeHtml(record[idKey] || '')}</p></span><span class="pill">Loaded</span></div>`).join('')}</div>` : emptyState('No records loaded for this module yet.')}
+      <p>This module is connected to <code>/data/manager/</code> and loaded through <code>manager-index.json</code>.</p>
+      ${records.length ? `<div class="job-list">${records.map((record) => `<div class="job-row" role="group"><span><h3>${escapeHtml(titleGetter(record) || idGetter(record) || 'Record')}</h3><p>${escapeHtml(idGetter(record) || '')}</p></span><span class="pill">${escapeHtml(recordStatus(record))}</span></div>`).join('')}</div>` : emptyState('No records loaded for this module yet.')}
     </section>
   `;
 }
@@ -380,6 +399,16 @@ function renderSettings() {
       <h2>Manager Settings</h2>
       <p>Future controls: company defaults, proposal wording, invoice terms, service categories, and portfolio publishing rules.</p>
       <p><strong>Storage mode:</strong> Repo JSON for permanent records; browser localStorage for MVP drafts.</p>
+      <p><strong>Template paths loaded:</strong> ${escapeHtml(Object.keys(state.templates).join(', ') || 'None yet')}</p>
+    </section>
+  `;
+}
+
+function queueCard(title, records, emptyMessage) {
+  return `
+    <section class="card queue-card">
+      <h2>${escapeHtml(title)}</h2>
+      ${records.length ? `<div class="mini-list">${records.slice(0, 5).map((record) => `<div class="mini-row"><strong>${escapeHtml(recordTitle(record))}</strong><span>${escapeHtml(recordSubtitle(record))}</span></div>`).join('')}</div>` : `<p>${escapeHtml(emptyMessage)}</p>`}
     </section>
   `;
 }
@@ -392,8 +421,8 @@ function detailCard(title, rows) {
   return `<section class="detail-card"><h3>${escapeHtml(title)}</h3><dl>${Object.entries(rows).map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value || '—')}</dd></div>`).join('')}</dl></section>`;
 }
 
-function relationCard(title, records, idKey) {
-  return `<section class="detail-card"><h3>${escapeHtml(title)}</h3>${records.length ? records.map((record) => `<p><strong>${escapeHtml(record[idKey] || 'Record')}</strong></p>`).join('') : '<p>No linked records yet.</p>'}</section>`;
+function relationCard(title, records, idGetter) {
+  return `<section class="detail-card"><h3>${escapeHtml(title)}</h3>${records.length ? records.map((record) => `<p><strong>${escapeHtml(idGetter(record) || 'Record')}</strong></p>`).join('') : '<p>No linked records yet.</p>'}</section>`;
 }
 
 function emptyState(message) {
@@ -402,6 +431,37 @@ function emptyState(message) {
 
 function errorCard(error) {
   return `<article class="empty-state"><h2>Manager load error</h2><p>${escapeHtml(error.message)}</p></article>`;
+}
+
+function recordTitle(record) {
+  return record.job_title || record.display_name || record.customer_display_name || record.title || record.task_title || record.project || record.client || record.trip?.destination_name || record.trip?.origin_name || recordId(record) || 'Record';
+}
+
+function recordSubtitle(record) {
+  const id = recordId(record);
+  const status = recordStatus(record);
+  return [id, status].filter(Boolean).join(' · ');
+}
+
+function recordId(record) {
+  return record.job_id || record.customer_id || record.media_id || record.mileage_id || record.task_id || record.manager?.proposal_id || record.manager?.invoice_id || record.proposal_id || record.invoice_id || record.portfolio_project_id || record.docNo || '';
+}
+
+function recordStatus(record) {
+  return label(record.status || record.manager?.status || record.manager?.payment_status || record.classification || 'loaded');
+}
+
+function managerStatus(record) {
+  return String(record.manager?.status || record.status || '').toLowerCase();
+}
+
+function invoicePaymentStatus(record) {
+  return String(record.manager?.payment_status || record.payment_status || record.status || '').toLowerCase();
+}
+
+function moneyToNumber(value) {
+  if (typeof value === 'number') return value;
+  return Number(String(value || '0').replace(/[^0-9.-]+/g, '')) || 0;
 }
 
 function setStatus(message) { dataStatus.textContent = message; }
