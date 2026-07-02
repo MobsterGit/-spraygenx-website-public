@@ -35,7 +35,7 @@ section:not(.hero) .section-head h2,section:not(.hero) h2,section:not(.hero) .ca
 .pill,.library-tags span{background:#f8fbff!important}
 .footer-inline-links{display:inline-flex;align-items:center;gap:8px;margin-left:8px;flex-wrap:wrap}.footer-inline-links a{color:#d5e4f5;text-decoration:none}.footer-inline-links a:hover{color:#fff}.footer-inline-links span{opacity:.65}
 .map-art{right:34px!important;bottom:26px!important}
-.p1{right:132px!important;bottom:108px!important}.p2{right:92px!important;bottom:138px!important}.p3{right:108px!important;bottom:70px!important}
+
 @media(min-width:900px){:root{--sgx-body-lh:1.58;--sgx-heading-lh:1.02}.hero.home .hero-inner p{line-height:1.56!important}.lead{line-height:1.58!important}}
 @media(max-width:1100px){.site-header .nav{min-height:0!important;padding-top:var(--sgx-pad-sm)!important;padding-bottom:var(--sgx-pad-sm)!important}}
 @media(max-width:640px){
