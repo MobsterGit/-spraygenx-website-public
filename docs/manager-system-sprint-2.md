@@ -29,6 +29,9 @@ The system should help manage:
 - Minimize data entry.
 - Do not disturb the public website unless the checklist item specifically requires it.
 - Keep manager data separate from public portfolio data until content is intentionally approved for publishing.
+- Continue using Scriptable as the field-facing proposal / invoice app unless a later sprint deliberately replaces it.
+- Avoid endless scrolling for proposals and invoices; active work should appear first, with older records available through sortable history views.
+- Treat backup and recovery as core infrastructure, not an optional feature.
 
 ---
 
@@ -104,10 +107,21 @@ The system should help manage:
 - [x] Create invoice JSON template: `data/manager/templates/invoice-template.json`.
 - [x] Create sample proposal record: `data/manager/proposals/PROP-2026-0001.json`.
 - [x] Create sample invoice record: `data/manager/invoices/INV-2026-0001.json`.
-- [ ] Decide whether proposal/invoice data should stay in Scriptable, GitHub, local files, or both.
+- [x] Decision: keep Scriptable as the primary field-facing proposal / invoice interface for now.
+- [ ] Decide final sync behavior between Scriptable iCloud files and `data/manager/` records.
 - [ ] Define convert-proposal-to-invoice logic.
 - [ ] Define PDF export requirements.
 - [ ] Define customer-facing document style.
+- [ ] Build active proposal window: show only current in-progress proposals first, not the entire archive.
+- [ ] Build active invoice window: show only open / unpaid invoices first, not the entire archive.
+- [ ] Define active proposal limit target: roughly 20 visible working records before history browsing is needed.
+- [ ] Define active invoice limit target: open invoices visible first; paid invoices move out of daily view.
+- [ ] Build Browse History view for older proposals and invoices.
+- [ ] Add sortable history filters by year, month, week, customer, job, status, amount, and search text.
+- [ ] Auto-remove proposals from active view after conversion to invoice or archive.
+- [ ] Auto-remove invoices from active view after marked paid or archived.
+- [ ] Create `document_index.json` concept for fast proposal/invoice search, sorting, linking, and recovery.
+- [ ] Preserve existing proposal and invoice PDFs / JSON files; index them rather than forcing a physical folder move.
 
 ---
 
@@ -159,19 +173,39 @@ The system should help manage:
 - [ ] Define proposal creation workflow.
 - [ ] Define invoice creation workflow.
 - [ ] Define export / backup workflow.
+- [ ] Define proposal/invoice UX as two layers: active first window, sortable history second window.
+- [ ] Define document row format for fast mobile scanning: number, customer/job, amount, status, date, city.
 
 ---
 
-## Phase 8 — Build Order
+## Phase 8 — Backup and Recovery Requirements
+
+- [ ] Add automatic backup before every proposal, invoice, job, customer, media, mileage, or task save.
+- [ ] Use safe-write behavior: write temp file, verify JSON opens, back up previous file, then replace active file.
+- [ ] Add daily snapshot of document index and active records.
+- [ ] Add full backup export button for a dated ZIP-style archive.
+- [ ] Add recovery view for restoring last known good proposal, invoice, job, or index file.
+- [ ] Add version number and last-modified metadata to records.
+- [ ] Add checksum / validation metadata for critical proposal and invoice JSON files.
+- [ ] Protect against bulk corruption: accepted proposals, paid invoices, and archived records must remain recoverable from prior snapshots.
+- [ ] Define backup folder convention: `Backups/YYYY/MM/`, daily snapshots, and full exports.
+- [ ] Ensure backup workflow works from iPhone / Scriptable, not only from desktop.
+
+---
+
+## Phase 9 — Build Order
 
 - [x] Build job JSON schema first.
 - [x] Build sample data second.
 - [x] Build basic manager dashboard shell third.
 - [ ] Build dashboard data loading fourth.
-- [ ] Build add/edit job workflow fifth.
-- [ ] Connect proposals and invoices sixth.
-- [ ] Connect photos and portfolio seventh.
-- [ ] Connect mileage eighth.
+- [ ] Build active proposal / active invoice windows fifth.
+- [ ] Build sortable proposal / invoice history browser sixth.
+- [ ] Build backup / recovery foundation seventh.
+- [ ] Build add/edit job workflow eighth.
+- [ ] Connect proposals and invoices ninth.
+- [ ] Connect photos and portfolio tenth.
+- [ ] Connect mileage eleventh.
 - [ ] Polish mobile usability last.
 
 ---
@@ -186,6 +220,13 @@ Wire `manager/index.html`, `manager/manager.css`, and `manager/manager.js` to re
 - follow-up tasks
 - mileage needing review
 - photos / portfolio candidates
+
+Then prioritize the proposal / invoice document manager foundation:
+
+- active first-window lists for current proposals and open invoices
+- sortable second-window history browser
+- document index
+- automatic backup / recovery behavior
 
 ---
 
