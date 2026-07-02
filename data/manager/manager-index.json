@@ -1,0 +1,27 @@
+{
+  "version": "0.1.0",
+  "updated": "2026-07-02",
+  "records": {
+    "jobs": [
+      "data/manager/jobs/JOB-2026-0001.json"
+    ],
+    "customers": [
+      "data/manager/customers/CUST-2026-0001.json"
+    ],
+    "proposals": [
+      "data/manager/proposals/PROP-2026-0001.json"
+    ],
+    "invoices": [
+      "data/manager/invoices/INV-2026-0001.json"
+    ],
+    "media": [
+      "data/manager/media/MEDIA-2026-0001.json"
+    ],
+    "mileage": [
+      "data/manager/mileage/MILE-2026-0001.json"
+    ],
+    "tasks": [
+      "data/manager/tasks/TASK-2026-0001.json"
+    ]
+  }
+}
