@@ -183,10 +183,17 @@ async function proposalForm(doc, label) {
 }
 
 async function largeText(title, current) {
-  const wv = new WebView();
-  const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font:17px -apple-system;padding:16px;background:#f7f7f7}textarea{width:100%;height:68vh;font:16px -apple-system;padding:12px;border:1px solid #bbb;border-radius:10px;box-sizing:border-box}button{font:17px -apple-system;padding:12px 16px;border:0;border-radius:10px;background:#0a84ff;color:white;margin-top:12px}</style></head><body><h2>${escapeHtml(title)}</h2><textarea id="t">${escapeHtml(current)}</textarea><button onclick="completion(document.getElementById('t').value)">Save</button></body></html>`;
-  await wv.loadHTML(html);
-  return await wv.present(false);
+  const a = new Alert();
+  a.title = title;
+  a.message = "Paste or edit text here. Scriptable uses a single field, but it will keep long pasted scope text.";
+  a.addTextField(title, current || "");
+  a.addAction("Save");
+  a.addAction("Leave Blank");
+  a.addCancelAction("Keep Existing");
+  const c = await a.presentAlert();
+  if (c === -1) return current || "";
+  if (c === 1) return "";
+  return a.textFieldValue(0);
 }
 
 async function currentDocumentsFlow() {
