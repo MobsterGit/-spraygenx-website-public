@@ -1,8 +1,10 @@
 .document-manager { display: grid; gap: 16px; }
 .document-summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.document-controls { display: flex; align-items: end; gap: 12px; flex-wrap: wrap; }
-.document-controls label { display: grid; gap: 6px; min-width: 210px; color: var(--muted); }
-.document-controls select { width: 100%; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.08); color: var(--text); padding: 10px 12px; }
+.document-controls, .document-filters { display: flex; align-items: end; gap: 12px; flex-wrap: wrap; }
+.document-controls label, .document-filters label { display: grid; gap: 6px; min-width: 210px; color: var(--muted); }
+.document-controls select, .document-filters select, .document-filters input { width: 100%; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.08); color: var(--text); padding: 10px 12px; }
+.document-filters { border: 1px solid var(--line); border-radius: 18px; padding: 12px; background: rgba(255,255,255,.035); }
+.document-hint { border: 1px dashed var(--line); border-radius: 16px; padding: 12px; color: var(--muted); background: rgba(255,255,255,.025); }
 .document-list { display: grid; gap: 10px; }
 .document-row { border: 1px solid var(--line); border-radius: 20px; background: rgba(13,27,46,.84); box-shadow: var(--shadow); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 15px; }
 .document-row h3, .document-row p { margin-bottom: 4px; }
@@ -14,4 +16,5 @@
   .document-summary-grid { grid-template-columns: 1fr; }
   .document-row { grid-template-columns: 1fr; }
   .document-meta { justify-items: start; }
+  .document-controls label, .document-filters label { min-width: 100%; }
 }
