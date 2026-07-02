@@ -1,6 +1,6 @@
 // Spray GenX WRA Manager — UX Test Build
-// Version: 2026.07.02 UX-Test
-// Purpose: first hands-on Scriptable testing with clearer screens, safer actions, and sample data.
+// Version: 2026.07.02 UX-Test-2
+// Purpose: first hands-on Scriptable testing with clearer screens, safer actions, sample data, archive browsing, and backups.
 
 const fm = FileManager.iCloud();
 const ROOT = fm.joinPath(fm.documentsDirectory(), "SprayGenX");
@@ -11,7 +11,8 @@ const DIRS = {
   invoices: fm.joinPath(ROOT, "Invoices"),
   data: fm.joinPath(ROOT, "Data"),
   logs: fm.joinPath(ROOT, "Logs"),
-  backups: fm.joinPath(ROOT, "Backups")
+  backups: fm.joinPath(ROOT, "Backups"),
+  exports: fm.joinPath(ROOT, "Exports")
 };
 
 const FILES = {
@@ -37,7 +38,7 @@ setup();
 await home();
 
 function setup() {
-  Object.values(DIRS).forEach(path => { if (!fm.fileExists(path)) fm.createDirectory(path, true); });
+  Object.values(DIRS).forEach(p => { if (!fm.fileExists(p)) fm.createDirectory(p, true); });
   if (!fm.fileExists(FILES.settings)) writeJson(FILES.settings, DEFAULT_SETTINGS);
   if (!fm.fileExists(FILES.proposals)) writeJson(FILES.proposals, []);
   if (!fm.fileExists(FILES.invoices)) writeJson(FILES.invoices, []);
@@ -47,10 +48,10 @@ function setup() {
 async function home() {
   let close = false;
   while (!close) {
-    const stats = getStats();
+    const s = stats();
     const a = new Alert();
     a.title = "Spray GenX Manager";
-    a.message = `${stats.active} active · ${stats.proposals} proposals · ${stats.invoices} invoices\nBalance due: ${money(stats.balanceDue)}\n\nTesting build — safe to run.`;
+    a.message = `${s.active} active · ${s.proposals} proposals · ${s.invoices} invoices\nBalance due: ${money(s.balance)}\n\nUX test build — safe to run.`;
     a.addAction("+ New Proposal");
     a.addAction("Current Work");
     a.addAction("Find / Archive");
@@ -60,7 +61,7 @@ async function home() {
     a.addCancelAction("Close");
     const c = await a.presentSheet();
     if (c === -1) close = true;
-    if (c === 0) await newProposalFlow();
+    if (c === 0) await proposalFlow();
     if (c === 1) await currentWork();
     if (c === 2) await archiveMenu();
     if (c === 3) await testCenter();
@@ -69,38 +70,33 @@ async function home() {
   }
 }
 
-function getStats() {
-  const proposals = readJson(FILES.proposals, []);
-  const invoices = readJson(FILES.invoices, []);
-  const activeProps = proposals.filter(x => !["archived", "declined", "converted_to_invoice"].includes(String(x.status || "").toLowerCase()));
-  const activeInv = invoices.filter(x => !["paid", "void", "archived"].includes(String(x.status || "").toLowerCase()));
-  return {
-    proposals: proposals.length,
-    invoices: invoices.length,
-    active: activeProps.length + activeInv.length,
-    balanceDue: activeInv.reduce((sum, item) => sum + Number(item.total || 0), 0)
-  };
+function stats() {
+  const props = readJson(FILES.proposals, []);
+  const inv = readJson(FILES.invoices, []);
+  const activeProps = props.filter(d => !["archived", "declined", "converted_to_invoice"].includes(status(d.status)));
+  const activeInv = inv.filter(d => !["paid", "void", "archived"].includes(status(d.status)));
+  return { proposals: props.length, invoices: inv.length, active: activeProps.length + activeInv.length, balance: activeInv.reduce((n, d) => n + Number(d.balance_due ?? d.total ?? 0), 0) };
 }
 
-async function newProposalFlow(seed) {
-  const settings = getSettings();
-  const doc = seed || blankProposal(settings);
+async function proposalFlow(seed) {
+  const doc = seed || blankProposal();
+  const saved = await proposalEditor(doc, seed ? "Edit Proposal" : "New Proposal");
+  if (!saved) return;
+  saveProposal(saved);
+  writeHtml(saved, "proposal");
+  bumpProposal(saved.id);
+  log("proposal_saved", saved.id);
+  await afterSave(saved, "proposal");
+}
 
+async function proposalEditor(doc, title) {
   const base = new Alert();
-  base.title = doc.id;
-  base.message = "Step 1 of 3 — customer and job";
-  base.addTextField("Customer name", doc.customer || "");
-  base.addTextField("Contact / GC", doc.contact || "");
-  base.addTextField("Phone", doc.phone || "");
-  base.addTextField("Email", doc.email || "");
-  base.addTextField("Job title", doc.title || "");
-  base.addTextField("Site / address", doc.site || "");
-  base.addTextField("City", doc.city || "");
-  base.addTextField("Category", doc.category || "");
+  base.title = title;
+  base.message = `${doc.id}\nStep 1 of 3 — customer and job`;
+  ["Customer name", "Contact / GC", "Phone", "Email", "Job title", "Site / address", "City", "Category"].forEach((label, i) => base.addTextField(label, [doc.customer, doc.contact, doc.phone, doc.email, doc.title, doc.site, doc.city, doc.category][i] || ""));
   base.addAction("Next");
   base.addCancelAction("Cancel");
-  if (await base.presentAlert() === -1) return;
-
+  if (await base.presentAlert() === -1) return null;
   doc.customer = base.textFieldValue(0).trim();
   doc.contact = base.textFieldValue(1).trim();
   doc.phone = base.textFieldValue(2).trim();
@@ -110,43 +106,34 @@ async function newProposalFlow(seed) {
   doc.city = base.textFieldValue(6).trim();
   doc.category = base.textFieldValue(7).trim();
 
-  const moneyForm = new Alert();
-  moneyForm.title = doc.id;
-  moneyForm.message = "Step 2 of 3 — pricing";
-  moneyForm.addTextField("Total proposal price", String(doc.total || ""));
-  moneyForm.addTextField("Deposit / draw", String(doc.deposit || ""));
-  moneyForm.addTextField("Status", doc.status || "open");
-  moneyForm.addAction("Next");
-  moneyForm.addCancelAction("Cancel");
-  if (await moneyForm.presentAlert() === -1) return;
-
-  doc.total = num(moneyForm.textFieldValue(0));
-  doc.deposit = num(moneyForm.textFieldValue(1));
-  doc.status = moneyForm.textFieldValue(2).trim() || "open";
+  const price = new Alert();
+  price.title = doc.id;
+  price.message = "Step 2 of 3 — pricing";
+  price.addTextField("Total price", String(doc.total || ""));
+  price.addTextField("Deposit / paid", String(doc.deposit || ""));
+  price.addTextField("Status", doc.status || "open");
+  price.addAction("Next");
+  price.addCancelAction("Cancel");
+  if (await price.presentAlert() === -1) return null;
+  doc.total = num(price.textFieldValue(0));
+  doc.deposit = num(price.textFieldValue(1));
+  doc.status = price.textFieldValue(2).trim() || "open";
 
   doc.summary = await textStep("Step 3 of 3", "Short scope summary", doc.summary);
   doc.details = await textStep("Scope Details", "Paste detailed scope here", doc.details);
   doc.notes = await textStep("Notes / Exclusions", "Anything excluded or special", doc.notes);
   doc.updated = today();
-  doc.sort_year = today().slice(0, 4);
-  doc.sort_month = today().slice(0, 7);
-  doc.sort_week = weekKey(new Date());
-
-  saveProposal(doc);
-  writeHtml(doc, "proposal");
-  bumpProposal(doc.id);
-  log("proposal_saved", doc.id);
-
-  await afterSave(doc, "proposal");
+  sortKeys(doc);
+  return doc;
 }
 
 async function textStep(title, placeholder, current) {
   const a = new Alert();
   a.title = title;
-  a.message = "For first testing this uses one paste field. Long scope text will save, but the editor is basic.";
+  a.message = "Long pasted scope text will save; Scriptable editing is basic.";
   a.addTextField(placeholder, current || "");
   a.addAction("Save");
-  a.addAction("Skip");
+  a.addAction("Blank");
   a.addCancelAction("Keep Existing");
   const c = await a.presentAlert();
   if (c === -1) return current || "";
@@ -167,21 +154,11 @@ async function afterSave(doc, type) {
     a.addAction("Back to Home");
     const c = await a.presentSheet();
     if (c === 0) await QuickLook.present(writeHtml(doc, type));
-    if (c === 1) {
-      if (type === "proposal") await newProposalFlow(doc);
-      else await editInvoiceFlow(doc);
-      back = true;
-    }
-    if (type === "proposal" && c === 2) {
-      await convertToInvoice(doc);
-      back = true;
-    }
+    if (c === 1) { type === "proposal" ? await proposalFlow(doc) : await invoiceEditor(doc); back = true; }
+    if (type === "proposal" && c === 2) { await convertToInvoice(doc); back = true; }
     const copyIndex = type === "proposal" ? 3 : 2;
     const homeIndex = type === "proposal" ? 4 : 3;
-    if (c === copyIndex) {
-      Pasteboard.copy(filePathFor(doc, type));
-      await notice("Copied", "The file path was copied to the clipboard.");
-    }
+    if (c === copyIndex) { Pasteboard.copy(filePathFor(doc, type)); await notice("Copied", "File path copied."); }
     if (c === homeIndex || c === -1) back = true;
   }
 }
@@ -192,8 +169,8 @@ async function currentWork() {
 }
 
 function activeDocs() {
-  const props = readJson(FILES.proposals, []).filter(x => !["archived", "declined", "converted_to_invoice"].includes(String(x.status || "").toLowerCase()));
-  const inv = readJson(FILES.invoices, []).filter(x => !["paid", "void", "archived"].includes(String(x.status || "").toLowerCase()));
+  const props = readJson(FILES.proposals, []).filter(d => !["archived", "declined", "converted_to_invoice"].includes(status(d.status)));
+  const inv = readJson(FILES.invoices, []).filter(d => !["paid", "void", "archived"].includes(status(d.status)));
   return props.concat(inv).sort((a, b) => String(b.updated || "").localeCompare(String(a.updated || "")));
 }
 
@@ -205,56 +182,54 @@ async function documentTable(title, docs, emptyMsg) {
   h.isHeader = true;
   h.addText(title, `${docs.length} item(s)`);
   table.addRow(h);
-
   docs.forEach(doc => {
     const row = new UITableRow();
-    row.height = 70;
+    row.height = 72;
     const left = row.addText(doc.customer || doc.title || doc.id, `${doc.kind || "proposal"} · ${doc.status || "open"} · ${money(doc.total)}`);
     left.widthWeight = 75;
     const right = row.addText(doc.updated || doc.created || "", doc.id);
     right.rightAligned();
     right.widthWeight = 35;
-    row.onSelect = async () => await openDoc(doc);
+    row.onSelect = async () => await openDoc(loadDoc(doc));
     table.addRow(row);
   });
   await table.present();
 }
 
-async function openDoc(doc) {
+function loadDoc(doc) {
   const type = doc.kind === "invoice" ? "invoice" : "proposal";
-  let done = false;
-  while (!done) {
-    const a = new Alert();
-    a.title = doc.id;
-    a.message = `${doc.customer || "No customer"}\n${doc.title || "No title"}\n${money(doc.total)}`;
-    a.addAction("Preview");
-    a.addAction("Edit");
-    a.addAction("Duplicate");
-    if (type === "proposal") a.addAction("Convert to Invoice");
-    a.addAction("Archive");
-    a.addCancelAction("Back");
-    const c = await a.presentSheet();
-    if (c === -1) done = true;
-    if (c === 0) await QuickLook.present(writeHtml(doc, type));
-    if (c === 1) {
-      if (type === "proposal") await newProposalFlow(doc);
-      else await editInvoiceFlow(doc);
-      done = true;
-    }
-    if (c === 2) { await duplicateDoc(doc, type); done = true; }
-    if (type === "proposal" && c === 3) { await convertToInvoice(doc); done = true; }
-    const archiveIndex = type === "proposal" ? 4 : 3;
-    if (c === archiveIndex) { await archiveDoc(doc, type); done = true; }
-  }
+  const path = filePathFor(doc, type);
+  return fm.fileExists(path) ? readJson(path, doc) : doc;
 }
 
-async function editInvoiceFlow(doc) {
+async function openDoc(doc) {
+  const type = doc.kind === "invoice" ? "invoice" : "proposal";
+  const a = new Alert();
+  a.title = doc.id;
+  a.message = `${doc.customer || "No customer"}\n${doc.title || "No title"}\n${money(doc.total)}`;
+  a.addAction("Preview");
+  a.addAction("Edit");
+  a.addAction("Duplicate");
+  if (type === "proposal") a.addAction("Convert to Invoice");
+  a.addAction("Archive");
+  a.addCancelAction("Back");
+  const c = await a.presentSheet();
+  if (c === 0) await QuickLook.present(writeHtml(doc, type));
+  if (c === 1) type === "proposal" ? await proposalFlow(doc) : await invoiceEditor(doc);
+  if (c === 2) await duplicateDoc(doc, type);
+  if (type === "proposal" && c === 3) await convertToInvoice(doc);
+  const archiveIndex = type === "proposal" ? 4 : 3;
+  if (c === archiveIndex) await archiveDoc(doc, type);
+}
+
+async function invoiceEditor(doc) {
   const a = new Alert();
   a.title = `Invoice ${doc.id}`;
   a.message = "Edit invoice status and amount.";
   a.addTextField("Customer", doc.customer || "");
   a.addTextField("Job title", doc.title || "");
   a.addTextField("Total", String(doc.total || ""));
+  a.addTextField("Deposit / paid", String(doc.deposit || ""));
   a.addTextField("Status", doc.status || "unpaid");
   a.addAction("Save");
   a.addCancelAction("Cancel");
@@ -262,50 +237,38 @@ async function editInvoiceFlow(doc) {
   doc.customer = a.textFieldValue(0).trim();
   doc.title = a.textFieldValue(1).trim();
   doc.total = num(a.textFieldValue(2));
-  doc.status = a.textFieldValue(3).trim() || "unpaid";
+  doc.deposit = num(a.textFieldValue(3));
+  doc.status = a.textFieldValue(4).trim() || "unpaid";
   doc.updated = today();
+  sortKeys(doc);
   saveInvoice(doc);
   writeHtml(doc, "invoice");
   log("invoice_updated", doc.id);
 }
 
 async function convertToInvoice(proposal) {
-  const settings = getSettings();
-  const id = `INV-${new Date().getFullYear()}-${String(settings.nextInvoiceNumber || 1).padStart(4, "0")}`;
-  const invoice = Object.assign({}, proposal, {
-    id,
-    kind: "invoice",
-    status: "unpaid",
-    source_proposal: proposal.id,
-    created: today(),
-    updated: today()
-  });
+  const id = nextInvoiceId();
+  const invoice = Object.assign({}, proposal, { id, kind: "invoice", status: "unpaid", source_proposal: proposal.id, created: today(), updated: today() });
+  sortKeys(invoice);
   proposal.status = "converted_to_invoice";
   proposal.updated = today();
   saveProposal(proposal);
   saveInvoice(invoice);
+  writeHtml(proposal, "proposal");
   writeHtml(invoice, "invoice");
-  settings.nextInvoiceNumber = Number(settings.nextInvoiceNumber || 1) + 1;
-  writeJson(FILES.settings, settings);
   log("converted_to_invoice", `${proposal.id} -> ${invoice.id}`);
   await notice("Invoice Created", `${invoice.id} was created from ${proposal.id}.`);
 }
 
 async function duplicateDoc(doc, type) {
   const copy = Object.assign({}, doc);
-  if (type === "invoice") {
-    copy.id = nextInvoiceId();
-    copy.kind = "invoice";
-    copy.status = "draft";
-    saveInvoice(copy);
-  } else {
-    copy.id = nextProposalId();
-    copy.kind = "proposal";
-    copy.status = "draft";
-    saveProposal(copy);
-  }
+  copy.id = type === "invoice" ? nextInvoiceId() : nextProposalId();
+  copy.kind = type;
+  copy.status = "draft";
   copy.created = today();
   copy.updated = today();
+  sortKeys(copy);
+  type === "invoice" ? saveInvoice(copy) : saveProposal(copy);
   writeHtml(copy, type);
   await notice("Duplicated", `${copy.id} was created.`);
 }
@@ -319,7 +282,7 @@ async function archiveDoc(doc, type) {
   if (await a.presentAlert() === -1) return;
   doc.status = "archived";
   doc.updated = today();
-  if (type === "invoice") saveInvoice(doc); else saveProposal(doc);
+  type === "invoice" ? saveInvoice(doc) : saveProposal(doc);
   log("archived", doc.id);
 }
 
@@ -327,124 +290,96 @@ async function archiveMenu() {
   const docs = readJson(FILES.proposals, []).concat(readJson(FILES.invoices, []));
   const a = new Alert();
   a.title = "Find / Archive";
-  a.message = "Browse older documents by useful field.";
+  a.message = "Browse older proposals and invoices without crowding Current Work.";
   a.addAction("By Month");
   a.addAction("By Year");
-  a.addAction("By Customer Search");
+  a.addAction("By Week");
+  a.addAction("By Customer / Job Search");
   a.addCancelAction("Back");
   const c = await a.presentSheet();
   if (c === -1) return;
-  if (c === 2) return await customerSearch(docs);
-  const key = c === 0 ? "sort_month" : "sort_year";
+  if (c === 3) return await searchDocs(docs);
+  const key = c === 0 ? "sort_month" : c === 1 ? "sort_year" : "sort_week";
   const groups = groupBy(docs, d => d[key] || "Unsorted");
   const names = Object.keys(groups).sort().reverse();
+  if (!names.length) return await notice("Find / Archive", "No documents yet.");
   const pick = new Alert();
-  pick.title = c === 0 ? "Month" : "Year";
+  pick.title = key.replace("sort_", "").toUpperCase();
   names.forEach(name => pick.addAction(`${name} (${groups[name].length})`));
   pick.addCancelAction("Back");
   const p = await pick.presentSheet();
-  if (p === -1) return;
-  await documentTable(names[p], groups[names[p]], "No documents found.");
+  if (p !== -1) await documentTable(names[p], groups[names[p]], "No documents found.");
 }
 
-async function customerSearch(docs) {
+async function searchDocs(docs) {
   const a = new Alert();
-  a.title = "Customer Search";
-  a.addTextField("Search customer or job", "");
+  a.title = "Customer / Job Search";
+  a.addTextField("Search customer, job, city, or id", "");
   a.addAction("Search");
   a.addCancelAction("Cancel");
   if (await a.presentAlert() === -1) return;
   const q = a.textFieldValue(0).toLowerCase().trim();
-  const results = docs.filter(d => `${d.customer} ${d.title} ${d.site} ${d.city} ${d.id}`.toLowerCase().includes(q));
+  if (!q) return await notice("Search", "Enter at least one search word.");
+  const results = docs.filter(d => `${d.customer || ""} ${d.title || ""} ${d.site || ""} ${d.city || ""} ${d.id || ""}`.toLowerCase().includes(q));
   await documentTable(`Search: ${q}`, results, "No matching documents.");
 }
 
 async function testCenter() {
   const a = new Alert();
   a.title = "Test Center";
-  a.message = "Use this before real data. It creates and removes obvious test records.";
+  a.message = "Creates and removes obvious TEST records only.";
   a.addAction("Create Sample Proposal");
   a.addAction("Create Sample Invoice");
   a.addAction("Show Storage Paths");
+  a.addAction("Rebuild Indexes");
   a.addDestructiveAction("Delete Test Records Only");
   a.addCancelAction("Back");
   const c = await a.presentSheet();
-  if (c === 0) await createSampleProposal();
-  if (c === 1) await createSampleInvoice();
+  if (c === 0) await sampleProposal();
+  if (c === 1) await sampleInvoice();
   if (c === 2) await notice("Storage", `${ROOT}\n\nProposals: ${DIRS.proposals}\nInvoices: ${DIRS.invoices}\nBackups: ${DIRS.backups}`);
-  if (c === 3) await deleteTestRecords();
+  if (c === 3) { rebuildIndexes(); await notice("Indexes Rebuilt", "Lists rebuilt from JSON files."); }
+  if (c === 4) await deleteTestRecords();
 }
 
-async function createSampleProposal() {
-  const doc = blankProposal(getSettings());
-  doc.customer = "TEST Customer";
-  doc.contact = "TEST Contact";
-  doc.title = "TEST Interior Repaint";
-  doc.site = "123 Test Street";
-  doc.city = "Wadsworth";
-  doc.category = "commercial-interior";
-  doc.summary = "TEST proposal for Scriptable UX testing.";
-  doc.details = "Prep, mask, paint listed surfaces, and clean work area.";
-  doc.notes = "This is safe to delete from Test Center.";
-  doc.total = 2500;
-  saveProposal(doc);
-  writeHtml(doc, "proposal");
-  bumpProposal(doc.id);
-  await notice("Sample Created", `${doc.id} is ready in Current Work.`);
+async function sampleProposal() {
+  const d = blankProposal();
+  Object.assign(d, { customer: "TEST Customer", contact: "TEST Contact", title: "TEST Interior Repaint", site: "123 Test Street", city: "Wadsworth", category: "commercial-interior", summary: "TEST proposal for Scriptable UX testing.", details: "Prep, mask, paint listed surfaces, and clean work area.", notes: "Safe to delete from Test Center.", total: 2500, deposit: 0 });
+  saveProposal(d); writeHtml(d, "proposal"); bumpProposal(d.id); log("sample_proposal_created", d.id);
+  await notice("Sample Created", `${d.id} is ready in Current Work.`);
 }
 
-async function createSampleInvoice() {
+async function sampleInvoice() {
   const id = nextInvoiceId();
-  const doc = {
-    id,
-    kind: "invoice",
-    customer: "TEST Customer",
-    contact: "TEST Contact",
-    phone: "",
-    email: "",
-    title: "TEST Invoice",
-    site: "123 Test Street",
-    city: "Wadsworth",
-    category: "test",
-    summary: "TEST invoice for UX testing.",
-    details: "Invoice generated from test center.",
-    notes: "Safe to delete.",
-    total: 1200,
-    deposit: 0,
-    status: "unpaid",
-    created: today(),
-    updated: today(),
-    sort_year: today().slice(0, 4),
-    sort_month: today().slice(0, 7),
-    sort_week: weekKey(new Date())
-  };
-  saveInvoice(doc);
-  writeHtml(doc, "invoice");
-  await notice("Sample Created", `${doc.id} is ready in Current Work.`);
+  const d = { id, kind: "invoice", customer: "TEST Customer", contact: "TEST Contact", phone: "", email: "", title: "TEST Invoice", site: "123 Test Street", city: "Wadsworth", category: "test", summary: "TEST invoice for UX testing.", details: "Invoice generated from test center.", notes: "Safe to delete.", total: 1200, deposit: 0, status: "unpaid", created: today(), updated: today() };
+  sortKeys(d); saveInvoice(d); writeHtml(d, "invoice"); log("sample_invoice_created", d.id);
+  await notice("Sample Created", `${d.id} is ready in Current Work.`);
 }
 
 async function deleteTestRecords() {
   const a = new Alert();
   a.title = "Delete test records?";
-  a.message = "Only records with TEST in the customer or title will be removed.";
+  a.message = "Only records with TEST in customer or title will be removed.";
   a.addDestructiveAction("Delete TEST Records");
   a.addCancelAction("Cancel");
   if (await a.presentAlert() === -1) return;
-  const keepProps = readJson(FILES.proposals, []).filter(d => !isTest(d));
-  const keepInv = readJson(FILES.invoices, []).filter(d => !isTest(d));
-  writeJson(FILES.proposals, keepProps);
-  writeJson(FILES.invoices, keepInv);
-  await notice("Cleaned", "TEST records were removed from the indexes. HTML/JSON files may remain for inspection.");
-}
-
-function isTest(d) {
-  return `${d.customer || ""} ${d.title || ""}`.toUpperCase().includes("TEST");
+  [DIRS.proposals, DIRS.invoices].forEach(dir => {
+    fm.listContents(dir).forEach(name => {
+      const path = fm.joinPath(dir, name);
+      if (fm.isDirectory(path)) return;
+      const d = name.endsWith(".json") ? readJson(path, null) : null;
+      const isTest = String(name).toUpperCase().includes("TEST") || (d && `${d.customer || ""} ${d.title || ""}`.toUpperCase().includes("TEST"));
+      if (isTest) fm.remove(path);
+    });
+  });
+  rebuildIndexes();
+  await notice("Cleaned", "TEST records and matching HTML/JSON files were removed.");
 }
 
 async function backupMenu() {
   const a = new Alert();
   a.title = "Backup / Restore";
-  a.message = "First test version supports creating backups. Restore will be added after real-world testing.";
+  a.message = "Create full copies before testing real data.";
   a.addAction("Create Backup Now");
   a.addAction("List Backups");
   a.addCancelAction("Back");
@@ -457,18 +392,23 @@ function createBackup() {
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
   const dir = fm.joinPath(DIRS.backups, stamp);
   fm.createDirectory(dir, true);
-  copyIfExists(FILES.settings, fm.joinPath(dir, "settings.json"));
-  copyIfExists(FILES.proposals, fm.joinPath(dir, "proposal_index.json"));
-  copyIfExists(FILES.invoices, fm.joinPath(dir, "invoice_index.json"));
-  copyIfExists(FILES.activity, fm.joinPath(dir, "activity_log.json"));
+  copyDir(DIRS.proposals, fm.joinPath(dir, "Proposals"));
+  copyDir(DIRS.invoices, fm.joinPath(dir, "Invoices"));
+  copyDir(DIRS.logs, fm.joinPath(dir, "Logs"));
+  copyDir(DIRS.data, fm.joinPath(dir, "Data"));
   log("backup_created", stamp);
   return dir;
 }
 
-function copyIfExists(src, dst) {
+function copyDir(src, dst) {
   if (!fm.fileExists(src)) return;
-  if (fm.fileExists(dst)) fm.remove(dst);
-  fm.copy(src, dst);
+  if (!fm.fileExists(dst)) fm.createDirectory(dst, true);
+  fm.listContents(src).forEach(name => {
+    const s = fm.joinPath(src, name);
+    const d = fm.joinPath(dst, name);
+    if (fm.isDirectory(s)) copyDir(s, d);
+    else { if (fm.fileExists(d)) fm.remove(d); fm.copy(s, d); }
+  });
 }
 
 async function settingsMenu() {
@@ -490,115 +430,43 @@ async function settingsMenu() {
   writeJson(FILES.settings, s);
 }
 
-function blankProposal(settings) {
-  const id = `PROP-${new Date().getFullYear()}-${String(settings.nextProposalNumber || 1).padStart(4, "0")}`;
-  return {
-    id,
-    kind: "proposal",
-    customer: "",
-    contact: "",
-    phone: "",
-    email: "",
-    title: "",
-    site: "",
-    city: "",
-    category: "",
-    summary: "",
-    details: "",
-    notes: "",
-    total: 0,
-    deposit: 0,
-    status: "open",
-    created: today(),
-    updated: today(),
-    sort_year: today().slice(0, 4),
-    sort_month: today().slice(0, 7),
-    sort_week: weekKey(new Date())
-  };
-}
-
-function saveProposal(doc) {
-  doc.kind = "proposal";
-  writeJson(filePathFor(doc, "proposal"), doc);
-  upsert(FILES.proposals, doc);
-}
-
-function saveInvoice(doc) {
-  doc.kind = "invoice";
-  writeJson(filePathFor(doc, "invoice"), doc);
-  upsert(FILES.invoices, doc);
-}
-
-function filePathFor(doc, type) {
-  return fm.joinPath(type === "invoice" ? DIRS.invoices : DIRS.proposals, `${doc.id}.json`);
-}
-
-function upsert(indexPath, doc) {
-  const list = readJson(indexPath, []).filter(x => x.id !== doc.id);
-  list.push(slim(doc));
-  list.sort((a, b) => String(b.updated || "").localeCompare(String(a.updated || "")));
-  writeJson(indexPath, list);
-}
-
-function slim(doc) {
-  return {
-    id: doc.id,
-    kind: doc.kind,
-    customer: doc.customer,
-    title: doc.title,
-    site: doc.site,
-    city: doc.city,
-    status: doc.status,
-    total: doc.total,
-    created: doc.created,
-    updated: doc.updated,
-    sort_year: doc.sort_year,
-    sort_month: doc.sort_month,
-    sort_week: doc.sort_week
-  };
-}
-
-function writeHtml(doc, type) {
+function blankProposal() {
   const s = getSettings();
-  const path = fm.joinPath(type === "invoice" ? DIRS.invoices : DIRS.proposals, `${doc.id}.html`);
-  const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#eee;color:#111;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.page{background:white;max-width:820px;margin:0 auto;min-height:100vh;padding:34px;box-sizing:border-box}.top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #111;padding-bottom:18px;margin-bottom:24px}.brand h1{margin:0;font-size:29px}.brand p,.doc p{margin:4px 0;color:#444}.doc{text-align:right}.doc h2{margin:0;text-transform:uppercase}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.box{border:1px solid #ddd;border-radius:9px;padding:14px;margin-bottom:18px}.box h3{margin:0 0 8px;text-transform:uppercase;font-size:13px;letter-spacing:.08em}.scope{white-space:pre-wrap}.price{font-size:30px;font-weight:800;text-align:right}.terms{border-top:1px solid #ddd;margin-top:18px;padding-top:12px;font-size:13px}</style></head><body><main class="page"><section class="top"><div class="brand"><h1>${esc(s.companyName)}</h1><p>${esc(s.tagline)}</p><p>${esc(s.serviceArea)}</p><p>${esc([s.phone,s.email].filter(Boolean).join(" · "))}</p></div><div class="doc"><h2>${esc(type)}</h2><p><strong>${esc(doc.id)}</strong></p><p>${esc(doc.created || today())}</p><p>${esc(doc.status || "open")}</p></div></section><section class="grid"><div class="box"><h3>Customer</h3><p><strong>${esc(doc.customer)}</strong><br>${esc(doc.contact)}<br>${esc(doc.phone)}<br>${esc(doc.email)}</p></div><div class="box"><h3>Project</h3><p><strong>${esc(doc.title)}</strong><br>${esc(doc.site)}<br>${esc(doc.city)}</p></div></section><section class="box"><h3>Scope Summary</h3><p class="scope">${esc(doc.summary)}</p></section><section class="box"><h3>Scope Details</h3><p class="scope">${esc(doc.details)}</p></section><section class="grid"><div class="box"><h3>Notes / Exclusions</h3><p class="scope">${esc(doc.notes)}</p></div><div class="box"><h3>Total</h3><p class="price">${money(doc.total)}</p><p>Deposit: ${money(doc.deposit)}</p></div></section><section class="terms"><p><strong>Terms:</strong> ${esc(s.defaultTerms)}</p><p><strong>Warranty:</strong> ${esc(s.warrantyNote)}</p></section></main></body></html>`;
+  const id = `PROP-${new Date().getFullYear()}-${String(s.nextProposalNumber || 1).padStart(4, "0")}`;
+  const d = { id, kind: "proposal", customer: "", contact: "", phone: "", email: "", title: "", site: "", city: "", category: "", summary: "", details: "", notes: "", total: 0, deposit: 0, status: "open", created: today(), updated: today() };
+  sortKeys(d);
+  return d;
+}
+
+function saveProposal(d) { d.kind = "proposal"; d.balance_due = Math.max(0, Number(d.total || 0) - Number(d.deposit || 0)); writeJson(filePathFor(d, "proposal"), d); upsert(FILES.proposals, d); }
+function saveInvoice(d) { d.kind = "invoice"; d.balance_due = Math.max(0, Number(d.total || 0) - Number(d.deposit || 0)); writeJson(filePathFor(d, "invoice"), d); upsert(FILES.invoices, d); }
+function filePathFor(d, type) { return fm.joinPath(type === "invoice" ? DIRS.invoices : DIRS.proposals, `${d.id}.json`); }
+function upsert(indexPath, d) { const list = readJson(indexPath, []).filter(x => x.id !== d.id); list.push(slim(d)); list.sort((a, b) => String(b.updated || "").localeCompare(String(a.updated || ""))); writeJson(indexPath, list); }
+function slim(d) { return { id: d.id, kind: d.kind, customer: d.customer, title: d.title, site: d.site, city: d.city, status: d.status, total: d.total, deposit: d.deposit, balance_due: d.balance_due, created: d.created, updated: d.updated, sort_year: d.sort_year, sort_month: d.sort_month, sort_week: d.sort_week }; }
+
+function writeHtml(d, type) {
+  const s = getSettings();
+  const path = fm.joinPath(type === "invoice" ? DIRS.invoices : DIRS.proposals, `${d.id}.html`);
+  const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#eee;color:#111;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.page{background:white;max-width:820px;margin:0 auto;min-height:100vh;padding:34px;box-sizing:border-box}.top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #111;padding-bottom:18px;margin-bottom:24px}.brand h1{margin:0;font-size:29px}.brand p,.doc p{margin:4px 0;color:#444}.doc{text-align:right}.doc h2{margin:0;text-transform:uppercase}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.box{border:1px solid #ddd;border-radius:9px;padding:14px;margin-bottom:18px}.box h3{margin:0 0 8px;text-transform:uppercase;font-size:13px;letter-spacing:.08em}.scope{white-space:pre-wrap}.price{font-size:30px;font-weight:800;text-align:right}.terms{border-top:1px solid #ddd;margin-top:18px;padding-top:12px;font-size:13px}@media(max-width:650px){.top,.grid{display:block}.doc{text-align:left;margin-top:18px}.page{padding:24px}}</style></head><body><main class="page"><section class="top"><div class="brand"><h1>${esc(s.companyName)}</h1><p>${esc(s.tagline)}</p><p>${esc(s.serviceArea)}</p><p>${esc([s.phone,s.email].filter(Boolean).join(" · "))}</p></div><div class="doc"><h2>${esc(type)}</h2><p><strong>${esc(d.id)}</strong></p><p>${esc(d.created || today())}</p><p>${esc(d.status || "open")}</p></div></section><section class="grid"><div class="box"><h3>Customer</h3><p><strong>${esc(d.customer)}</strong><br>${esc(d.contact)}<br>${esc(d.phone)}<br>${esc(d.email)}</p></div><div class="box"><h3>Project</h3><p><strong>${esc(d.title)}</strong><br>${esc(d.site)}<br>${esc(d.city)}<br>${esc(d.category)}</p></div></section><section class="box"><h3>Scope Summary</h3><p class="scope">${esc(d.summary)}</p></section><section class="box"><h3>Scope Details</h3><p class="scope">${esc(d.details)}</p></section><section class="grid"><div class="box"><h3>Notes / Exclusions</h3><p class="scope">${esc(d.notes)}</p></div><div class="box"><h3>Total</h3><p class="price">${money(d.total)}</p><p>Deposit / Paid: ${money(d.deposit)}</p><p>Balance Due: ${money(d.balance_due)}</p></div></section><section class="terms"><p><strong>Terms:</strong> ${esc(s.defaultTerms)}</p><p><strong>Warranty:</strong> ${esc(s.warrantyNote)}</p></section></main></body></html>`;
   fm.writeString(path, html);
   return path;
 }
 
-function nextProposalId() {
-  const s = getSettings();
-  const id = `PROP-${new Date().getFullYear()}-${String(s.nextProposalNumber || 1).padStart(4, "0")}`;
-  s.nextProposalNumber = Number(s.nextProposalNumber || 1) + 1;
-  writeJson(FILES.settings, s);
-  return id;
-}
-
-function nextInvoiceId() {
-  const s = getSettings();
-  const id = `INV-${new Date().getFullYear()}-${String(s.nextInvoiceNumber || 1).padStart(4, "0")}`;
-  s.nextInvoiceNumber = Number(s.nextInvoiceNumber || 1) + 1;
-  writeJson(FILES.settings, s);
-  return id;
-}
-
-function bumpProposal(id) {
-  const s = getSettings();
-  const n = Number(String(id).match(/(\d+)$/)?.[1] || 0) + 1;
-  if (n > Number(s.nextProposalNumber || 1)) {
-    s.nextProposalNumber = n;
-    writeJson(FILES.settings, s);
-  }
-}
-
+function nextProposalId() { const s = getSettings(); const id = `PROP-${new Date().getFullYear()}-${String(s.nextProposalNumber || 1).padStart(4, "0")}`; s.nextProposalNumber = Number(s.nextProposalNumber || 1) + 1; writeJson(FILES.settings, s); return id; }
+function nextInvoiceId() { const s = getSettings(); const id = `INV-${new Date().getFullYear()}-${String(s.nextInvoiceNumber || 1).padStart(4, "0")}`; s.nextInvoiceNumber = Number(s.nextInvoiceNumber || 1) + 1; writeJson(FILES.settings, s); return id; }
+function bumpProposal(id) { const s = getSettings(); const n = Number(String(id).match(/(\d+)$/)?.[1] || 0) + 1; if (n > Number(s.nextProposalNumber || 1)) { s.nextProposalNumber = n; writeJson(FILES.settings, s); } }
+function rebuildIndexes() { writeJson(FILES.proposals, scan(DIRS.proposals, "proposal")); writeJson(FILES.invoices, scan(DIRS.invoices, "invoice")); }
+function scan(dir, kind) { return fm.listContents(dir).filter(n => n.endsWith(".json")).map(n => readJson(fm.joinPath(dir, n), null)).filter(Boolean).map(d => { d.kind = kind; sortKeys(d); return slim(d); }).sort((a, b) => String(b.updated || "").localeCompare(String(a.updated || ""))); }
+function sortKeys(d) { const date = d.created || today(); d.sort_year = date.slice(0, 4); d.sort_month = date.slice(0, 7); d.sort_week = weekKey(new Date(date)); }
 function getSettings() { return Object.assign({}, DEFAULT_SETTINGS, readJson(FILES.settings, {})); }
-function readJson(path, fallback) { try { return fm.fileExists(path) ? JSON.parse(fm.readString(path)) : fallback; } catch { return fallback; } }
-function writeJson(path, data) { fm.writeString(path, JSON.stringify(data, null, 2)); }
+function readJson(path, fallback) { try { if (!fm.fileExists(path)) return fallback; return JSON.parse(fm.readString(path)); } catch (e) { return fallback; } }
+function writeJson(path, value) { fm.writeString(path, JSON.stringify(value, null, 2)); }
+function log(action, detail) { const list = readJson(FILES.activity, []); list.push({ at: new Date().toISOString(), action, detail }); writeJson(FILES.activity, list.slice(-300)); }
+function groupBy(list, getter) { return list.reduce((acc, item) => { const key = getter(item) || "Unsorted"; if (!acc[key]) acc[key] = []; acc[key].push(item); return acc; }, {}); }
 function today() { return new Date().toISOString().slice(0, 10); }
+function weekKey(date) { const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())); const day = d.getUTCDay() || 7; d.setUTCDate(d.getUTCDate() + 4 - day); const start = new Date(Date.UTC(d.getUTCFullYear(), 0, 1)); const week = Math.ceil((((d - start) / 86400000) + 1) / 7); return `${d.getUTCFullYear()}-W${String(week).padStart(2, "0")}`; }
 function num(v) { return Number(String(v || "0").replace(/[^0-9.-]/g, "")) || 0; }
-function money(v) { return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(Number(v || 0)); }
-function log(action, detail) { const l = readJson(FILES.activity, []); l.push({ at: new Date().toISOString(), action, detail }); writeJson(FILES.activity, l.slice(-500)); }
-function groupBy(items, fn) { return items.reduce((a, x) => { const k = fn(x); a[k] = a[k] || []; a[k].push(x); return a; }, {}); }
-async function notice(title, message) { const a = new Alert(); a.title = title; a.message = message; a.addAction("OK"); await a.presentAlert(); }
-function esc(v) { return String(v || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
-function weekKey(date) { const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())); const day = d.getUTCDay() || 7; d.setUTCDate(d.getUTCDate() + 4 - day); const y = new Date(Date.UTC(d.getUTCFullYear(), 0, 1)); const w = Math.ceil((((d - y) / 86400000) + 1) / 7); return `${d.getUTCFullYear()}-W${String(w).padStart(2, "0")}`; }
+function money(v) { return "$" + Number(v || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function status(v) { return String(v || "").toLowerCase().trim(); }
+function esc(v) { return String(v ?? "").replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[ch])); }
+async function notice(title, message) { const a = new Alert(); a.title = title; a.message = String(message || ""); a.addAction("OK"); await a.presentAlert(); }
