@@ -1,12 +1,10 @@
 # Spray GenX Manager System — Sprint 2 Checklist
 
-This checklist is the working sprint tracker for the Spray GenX manager system.
-
-The goal is to build the manager system in small, checkable steps instead of jumping into a large unfinished app.
+This checklist is the working sprint tracker for the Spray GenX owner-side manager system.
 
 ## Sprint 2 Objective
 
-Create the owner-side manager-system foundation around the existing Spray GenX website workflow.
+Build the lightweight manager-system foundation around the existing static Spray GenX website, JSON data workflow, GitHub Pages setup, and Scriptable proposal / invoice workflow.
 
 The system should help manage:
 
@@ -18,6 +16,8 @@ The system should help manage:
 - job photos
 - portfolio publishing
 - follow-up tasks
+- reports / exports
+- settings / templates
 
 ## Ground Rules
 
@@ -28,6 +28,7 @@ The system should help manage:
 - Make it usable from an iPhone first.
 - Minimize data entry.
 - Do not disturb the public website unless the checklist item specifically requires it.
+- Keep manager data separate from public portfolio data until content is intentionally approved for publishing.
 
 ---
 
@@ -38,293 +39,72 @@ The system should help manage:
 - [x] Confirm current site foundation: static HTML, CSS, vanilla JavaScript, JSON portfolio data, GitHub Pages, Scriptable workflow.
 - [x] Create Sprint 2 checklist document.
 - [x] Define manager-system modules.
-- [x] Define the main job record structure. See `docs/manager-system-job-record.md`.
-- [ ] Define customer / contractor record structure.
-- [ ] Define proposal record structure.
-- [ ] Define invoice record structure.
-- [ ] Define mileage record structure.
-- [ ] Define photo / portfolio record structure.
-- [ ] Define follow-up task record structure.
-
----
-
-## Defined Manager-System Modules
-
-These are the working modules for the Spray GenX manager system.
-
-### 1. Jobs
-
-The Jobs module is the center of the system.
-
-Every estimate, proposal, invoice, photo set, mileage entry, follow-up, and portfolio candidate should be able to connect back to a job record.
-
-Purpose:
-
-- track active and past work
-- reduce forgotten follow-ups
-- connect job photos to business records
-- connect proposals, invoices, and payments
-- create a reliable job history
-- support future reporting
-
-Core records connected to Jobs:
-
-- customer / contractor
-- site address
-- scope
-- proposal
-- invoice
-- photos
-- mileage
-- notes
-- follow-up tasks
-- portfolio entries
-
-### 2. Customers / Contractors
-
-The Customers / Contractors module stores people and companies Spray GenX works for or with.
-
-This should handle both homeowner customers and commercial/GC relationships.
-
-Purpose:
-
-- avoid retyping names, phone numbers, and emails
-- track repeat customers and contractors
-- separate direct customers from subcontract / GC contacts
-- support proposals, invoices, follow-ups, and relationship history
-
-Suggested contact types:
-
-- homeowner
-- business owner
-- general contractor
-- property manager
-- subcontract relationship
-- supplier / vendor
-- internal / personal reference
-
-### 3. Proposals
-
-The Proposals module tracks estimates before they become approved work.
-
-Purpose:
-
-- create professional customer-facing proposals
-- save scope language for reuse
-- connect proposed work to a job record
-- convert approved proposals into invoices
-- track open, accepted, rejected, or revised proposals
-
-Proposal status examples:
-
-- draft
-- sent
-- revised
-- approved
-- declined
-- expired
-- converted to invoice
-
-### 4. Invoices
-
-The Invoices module tracks billable work and payment status.
-
-Purpose:
-
-- convert approved proposals into invoices
-- track invoice numbers
-- track sent / unpaid / paid / overdue status
-- preserve a business record for tax and accounting use
-- support clean PDF export
-
-Invoice status examples:
-
-- draft
-- sent
-- partially paid
-- paid
-- overdue
-- void
-
-### 5. Mileage
-
-The Mileage module connects business driving to jobs, estimates, suppliers, and admin errands.
-
-Purpose:
-
-- reduce year-end mileage pain
-- connect trips to jobs whenever possible
-- support business vs personal classification
-- create accountant-friendly exports
-- preserve notes for unusual trips
-
-Mileage should support:
-
-- date
-- origin
-- destination
-- miles
-- purpose
-- job link
-- business / personal / mixed classification
-- source import notes
-
-### 6. Photos
-
-The Photos module manages job photos before they become website portfolio content.
-
-Purpose:
-
-- collect field photos by job
-- separate business archive photos from public website photos
-- support before / after grouping
-- identify cover photos
-- prepare selected photos for portfolio publishing
-
-Photo states:
-
-- inbox
-- job archive
-- portfolio candidate
-- approved for website
-- published
-- hidden / rejected
-
-### 7. Portfolio Publishing
-
-The Portfolio Publishing module controls what job photos and project writeups become public website content.
-
-Purpose:
-
-- protect the public site from messy work-in-progress data
-- map job photos into existing `data/portfolio.json`
-- organize projects by category
-- define title, description, cover, captions, and visibility
-- preserve the existing static JSON-driven site model
-
-This module should only publish selected, approved content.
-
-### 8. Follow-Up Tasks
-
-The Follow-Up Tasks module tracks next actions that otherwise get buried in texts, memory, or notes.
-
-Purpose:
-
-- track calls, estimates, touch-ups, collections, callbacks, and warranty items
-- keep job movement visible
-- make the dashboard useful every morning
-- reduce missed money and missed communication
-
-Task examples:
-
-- call customer
-- send proposal
-- revise proposal
-- schedule job
-- order material
-- upload photos
-- send invoice
-- collect payment
-- request review
-- add project to portfolio
-
-### 9. Reports / Exports
-
-The Reports / Exports module turns stored records into usable business output.
-
-Purpose:
-
-- support tax prep
-- export proposals and invoices
-- summarize yearly work
-- summarize contractor/customer revenue
-- export mileage
-- prepare accountant-friendly CSV files
-- eventually show business totals without digging through files
-
-Initial export targets:
-
-- yearly job summary CSV
-- proposal log CSV
-- invoice log CSV
-- mileage CSV
-- customer / contractor CSV
-- tax support CSV
-
-### 10. Settings / Templates
-
-The Settings / Templates module stores reusable defaults.
-
-Purpose:
-
-- avoid rewriting common scope language
-- define numbering rules
-- define company info
-- define proposal and invoice language
-- define payment terms
-- define portfolio category names
-- define default export folders
-
-Template examples:
-
-- proposal intro language
-- invoice payment terms
-- common painting scope blocks
-- warranty / exclusions language
-- customer-facing project descriptions
-- default notes
+- [x] Define main job record structure: `docs/manager-system-job-record.md`.
+- [x] Define customer / contractor record structure: `docs/manager-system-customer-contractor-record.md`.
+- [x] Define proposal record structure: `docs/manager-system-proposal-record.md`.
+- [x] Define invoice record structure: `docs/manager-system-invoice-record.md`.
+- [x] Define mileage record structure: `docs/manager-system-mileage-record.md`.
+- [x] Define photo record structure: `docs/manager-system-photo-record.md`.
+- [x] Define photo / portfolio record structure: `docs/manager-system-photo-portfolio-record.md`.
+- [x] Define follow-up task record structure: `docs/manager-system-follow-up-task-record.md`.
 
 ---
 
 ## Phase 2 — File and Folder Structure
 
-- [ ] Decide where manager data lives.
-- [ ] Create proposed `/manager/` or `/data/manager/` folder structure.
-- [ ] Decide what stays private vs public.
-- [ ] Separate website portfolio data from business-management data.
-- [ ] Define backup/export structure.
-- [ ] Define naming rules for jobs, customers, proposals, invoices, and photos.
+- [x] Decide where manager data lives: `data/manager/`.
+- [x] Create proposed manager folder structure: `data/manager/README.md`.
+- [x] Separate website portfolio data from business-management data.
+- [x] Preserve public website portfolio data at `data/portfolio.json`.
+- [x] Define backup/export structure in `data/manager/README.md`.
+- [x] Define naming rules for jobs, customers, proposals, invoices, mileage, media, tasks, and portfolio publishing records.
+- [x] Create manager index file: `data/manager/manager-index.json`.
 
 ---
 
 ## Phase 3 — Job Manager MVP
 
-- [ ] Create basic job JSON template.
-- [ ] Create sample job record.
-- [ ] Add job statuses:
-  - [ ] lead
-  - [ ] estimate needed
-  - [ ] proposal sent
-  - [ ] approved
-  - [ ] scheduled
-  - [ ] active
-  - [ ] complete
-  - [ ] invoiced
-  - [ ] paid
-  - [ ] archived
-- [ ] Add basic job fields:
-  - [ ] job title
-  - [ ] customer / contractor
-  - [ ] location
-  - [ ] scope summary
-  - [ ] estimated value
-  - [ ] actual value
-  - [ ] start date
-  - [ ] completion date
-  - [ ] notes
-  - [ ] next action
-- [ ] Add link fields for photos, proposals, invoices, mileage, and portfolio entries.
+- [x] Create basic job JSON template: `data/manager/templates/job-template.json`.
+- [x] Create sample job record: `data/manager/jobs/JOB-2026-0001.json`.
+- [x] Add job statuses:
+  - [x] lead
+  - [x] estimate needed
+  - [x] proposal sent
+  - [x] approved
+  - [x] scheduled
+  - [x] active
+  - [x] complete
+  - [x] invoiced
+  - [x] paid
+  - [x] archived
+- [x] Add basic job fields:
+  - [x] job title
+  - [x] customer / contractor
+  - [x] location
+  - [x] scope summary
+  - [x] estimated value
+  - [x] actual value
+  - [x] start date
+  - [x] completion date
+  - [x] notes
+  - [x] next action
+- [x] Add link fields for photos, proposals, invoices, mileage, tasks, and portfolio entries.
+- [ ] Build add-job workflow in the manager interface.
+- [ ] Build edit-job workflow in the manager interface.
+- [ ] Build job list / job detail view from `data/manager/manager-index.json`.
 
 ---
 
 ## Phase 4 — Proposal / Invoice Manager
 
-- [ ] Review existing Scriptable proposal/invoice workflow.
+- [x] Review existing Scriptable proposal/invoice workflow at a structure level.
+- [x] Define proposal number format.
+- [x] Define invoice number format.
+- [x] Create proposal JSON template: `data/manager/templates/proposal-template.json`.
+- [x] Create invoice JSON template: `data/manager/templates/invoice-template.json`.
+- [x] Create sample proposal record: `data/manager/proposals/PROP-2026-0001.json`.
+- [x] Create sample invoice record: `data/manager/invoices/INV-2026-0001.json`.
 - [ ] Decide whether proposal/invoice data should stay in Scriptable, GitHub, local files, or both.
-- [ ] Define proposal number format.
-- [ ] Define invoice number format.
-- [ ] Create proposal JSON template.
-- [ ] Create invoice JSON template.
 - [ ] Define convert-proposal-to-invoice logic.
 - [ ] Define PDF export requirements.
 - [ ] Define customer-facing document style.
@@ -333,7 +113,12 @@ Template examples:
 
 ## Phase 5 — Photo and Portfolio Manager
 
-- [ ] Review current portfolio JSON structure.
+- [x] Review current portfolio JSON direction.
+- [x] Define media/photo record structure.
+- [x] Define photo-to-portfolio structure.
+- [x] Create media JSON template: `data/manager/templates/media-template.json`.
+- [x] Create portfolio project JSON template: `data/manager/templates/portfolio-project-template.json`.
+- [x] Create sample media record: `data/manager/media/MEDIA-2026-0001.json`.
 - [ ] Define upload inbox rules.
 - [ ] Define converted image naming rules.
 - [ ] Define project category rules.
@@ -347,6 +132,9 @@ Template examples:
 
 ## Phase 6 — Mileage and Tax Support
 
+- [x] Define mileage record structure.
+- [x] Create mileage JSON template: `data/manager/templates/mileage-template.json`.
+- [x] Create sample mileage record: `data/manager/mileage/MILE-2026-0001.json`.
 - [ ] Define mileage import format.
 - [ ] Define job-to-mileage matching rules.
 - [ ] Define business vs personal classification rules.
@@ -358,11 +146,11 @@ Template examples:
 
 ## Phase 7 — Interface Plan
 
-- [ ] Decide first interface:
-  - [ ] Scriptable menu
-  - [ ] static local HTML dashboard
-  - [ ] private GitHub-backed manager page
-  - [ ] desktop Python GUI
+- [x] Decide first interface: private GitHub-backed static manager page.
+- [x] Create first manager page shell: `manager/index.html`.
+- [x] Create manager stylesheet: `manager/manager.css`.
+- [x] Create manager JavaScript shell: `manager/manager.js`.
+- [ ] Load manager index JSON into the dashboard.
 - [ ] Define home dashboard sections.
 - [ ] Define mobile-first navigation.
 - [ ] Define add-job workflow.
@@ -376,27 +164,31 @@ Template examples:
 
 ## Phase 8 — Build Order
 
-- [ ] Build job JSON schema first.
-- [ ] Build sample data second.
-- [ ] Build basic manager dashboard third.
-- [ ] Build add/edit job workflow fourth.
-- [ ] Connect proposals and invoices fifth.
-- [ ] Connect photos and portfolio sixth.
-- [ ] Connect mileage seventh.
+- [x] Build job JSON schema first.
+- [x] Build sample data second.
+- [x] Build basic manager dashboard shell third.
+- [ ] Build dashboard data loading fourth.
+- [ ] Build add/edit job workflow fifth.
+- [ ] Connect proposals and invoices sixth.
+- [ ] Connect photos and portfolio seventh.
+- [ ] Connect mileage eighth.
 - [ ] Polish mobile usability last.
 
 ---
 
 ## Current Next Task
 
-Define customer / contractor record structure.
+Wire `manager/index.html`, `manager/manager.css`, and `manager/manager.js` to read `data/manager/manager-index.json` and show the first useful dashboard cards:
 
-The customer / contractor record should connect repeat contacts, billing details, job history, proposals, invoices, and follow-up context without forcing repeated data entry.
+- active jobs
+- open proposals
+- unpaid invoices
+- follow-up tasks
+- mileage needing review
+- photos / portfolio candidates
 
 ---
 
 ## Notes
-
-This checklist should be updated as each item is completed.
 
 Do not mark an item complete until the related structure, file, or decision actually exists in the repository or workflow.
