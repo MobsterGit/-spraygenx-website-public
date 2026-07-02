@@ -1,0 +1,37 @@
+{
+  "media_id": "MEDIA-2026-0001",
+  "job_id": "JOB-2026-0001",
+  "customer_id": "CUST-2026-0001",
+  "title": "Canton Car Wash Brick Coating Photos",
+  "status": "portfolio_candidate",
+  "group": {
+    "source_folder": "images/jobs/JOB-2026-0001/",
+    "portfolio_folder": "images/portfolio/block-metal/",
+    "cover_image": "",
+    "before_after_available": false,
+    "image_count": 0
+  },
+  "images": [],
+  "portfolio": {
+    "portfolio_candidate": true,
+    "portfolio_approved": false,
+    "portfolio_project_id": "",
+    "portfolio_category": "block-metal",
+    "portfolio_title": "Car Wash Masonry Coating",
+    "portfolio_description": "Durable water-resistant masonry coating for a commercial car wash exterior.",
+    "portfolio_visible": false,
+    "published_date": ""
+  },
+  "before_after_groups": [],
+  "notes": {
+    "field_notes": "Photos need review before portfolio use.",
+    "private_notes": "Sample media record for manager MVP data structure testing."
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "2026-07-02T00:00:00-04:00",
+    "updated_at": "2026-07-02T00:00:00-04:00",
+    "archived": false,
+    "archive_reason": ""
+  }
+}
