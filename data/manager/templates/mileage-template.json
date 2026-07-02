@@ -1,0 +1,47 @@
+{
+  "mileage_id": "MILE-YYYY-0001",
+  "trip_date": "",
+  "status": "needs_review",
+  "classification": "unknown",
+  "trip": {
+    "origin_name": "",
+    "origin_address": "",
+    "destination_name": "",
+    "destination_address": "",
+    "city": "",
+    "state": "OH",
+    "miles": 0.00,
+    "round_trip": false
+  },
+  "purpose": {
+    "purpose": "",
+    "trip_category": "unknown",
+    "business_percent": 0,
+    "deductible_miles": 0.00
+  },
+  "links": {
+    "job_id": "",
+    "customer_id": "",
+    "proposal_id": "",
+    "invoice_id": "",
+    "supplier_id": ""
+  },
+  "source": {
+    "source": "manual",
+    "source_file": "",
+    "source_row_id": "",
+    "confidence": "manual",
+    "import_notes": ""
+  },
+  "notes": {
+    "notes": "",
+    "private_notes": ""
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "",
+    "updated_at": "",
+    "archived": false,
+    "archive_reason": ""
+  }
+}
