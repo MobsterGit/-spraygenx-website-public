@@ -497,16 +497,19 @@ WHY ANYONE WOULD DO THIS ???
   }
 /*     USE THIS ONE - MAP MARKERS           */
    .home-footer-pin.p1 {
+	position: absolute;
 	right: 25px !important;
 	bottom: 154px !important;
 }
 
   .home-footer-pin.p2 {
+	  position: absolute;
 	right: 58px !important;
 	bottom: 148px !important;
 }
 
   .home-footer-pin.p3 {
+	  position: absolute;
 	right: 61px !important;
 	bottom: 194px !important;
 }
