@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spray GenX Manager</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="manager.css">
+</head>
+<body>
+  <div class="manager-app" data-app="spraygenx-manager">
+    <aside class="manager-sidebar" aria-label="Manager navigation">
+      <a class="manager-brand" href="./" aria-label="Spray GenX Manager home">
+        <span class="brand-mark">X</span>
+        <span>
+          <strong>Spray GenX</strong>
+          <small>Manager MVP</small>
+        </span>
+      </a>
+
+      <nav class="manager-nav">
+        <button class="nav-item is-active" type="button" data-view="dashboard">Dashboard</button>
+        <button class="nav-item" type="button" data-view="jobs">Jobs</button>
+        <button class="nav-item" type="button" data-view="customers">Customers</button>
+        <button class="nav-item" type="button" data-view="photos">Photos</button>
+        <button class="nav-item" type="button" data-view="proposals">Proposals</button>
+        <button class="nav-item" type="button" data-view="invoices">Invoices</button>
+        <button class="nav-item" type="button" data-view="mileage">Mileage</button>
+        <button class="nav-item" type="button" data-view="tasks">Tasks</button>
+        <button class="nav-item" type="button" data-view="settings">Settings</button>
+      </nav>
+    </aside>
+
+    <main class="manager-main">
+      <header class="manager-toolbar">
+        <div>
+          <p class="eyebrow">Sprint 3</p>
+          <h1 id="view-title">Job Manager MVP</h1>
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn btn-secondary" type="button" id="refresh-data">Refresh Data</button>
+          <button class="btn btn-primary" type="button" id="new-job">+ New Job</button>
+        </div>
+      </header>
+
+      <section class="status-strip" aria-live="polite">
+        <span id="data-status">Loading manager records…</span>
+      </section>
+
+      <section id="workspace" class="workspace" tabindex="-1"></section>
+    </main>
+  </div>
+
+  <template id="empty-state-template">
+    <article class="empty-state">
+      <h2>No records yet</h2>
+      <p>This module is wired into the Manager shell and ready for the next data records.</p>
+    </article>
+  </template>
+
+  <script src="manager.js" defer></script>
+</body>
+</html>
