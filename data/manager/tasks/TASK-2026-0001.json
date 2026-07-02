@@ -1,0 +1,36 @@
+{
+  "task_id": "TASK-2026-0001",
+  "task_title": "Follow up on proposal approval",
+  "task_type": "general_follow_up",
+  "status": "open",
+  "priority": "normal",
+  "links": {
+    "job_id": "JOB-2026-0001",
+    "customer_id": "CUST-2026-0001",
+    "proposal_id": "PROP-2026-0001",
+    "invoice_id": "",
+    "photo_group_id": "",
+    "mileage_id": ""
+  },
+  "dates": {
+    "created_date": "2026-07-02",
+    "due_date": "",
+    "scheduled_date": "",
+    "completed_date": "",
+    "snoozed_until": ""
+  },
+  "details": {
+    "description": "Follow up on proposal approval.",
+    "assigned_to": "owner",
+    "communication_method": "text",
+    "customer_facing": false,
+    "private_notes": "Sample task for manager MVP data structure testing."
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "2026-07-02T00:00:00-04:00",
+    "updated_at": "2026-07-02T00:00:00-04:00",
+    "archived": false,
+    "archive_reason": ""
+  }
+}
