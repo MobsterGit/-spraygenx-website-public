@@ -1,6 +1,9 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.2",
   "updated": "2026-07-02",
+  "indexes": {
+    "documents": "data/manager/document_index.json"
+  },
   "records": {
     "jobs": [
       "data/manager/jobs/JOB-2026-0001.json"
