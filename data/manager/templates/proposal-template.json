@@ -1,0 +1,57 @@
+{
+  "proposal_id": "PROP-YYYY-0001",
+  "proposal_number": "SGX-PROP-YYYY-0001",
+  "proposal_title": "",
+  "status": "draft",
+  "revision_number": 0,
+  "links": {
+    "job_id": "",
+    "customer_id": "",
+    "invoice_id": ""
+  },
+  "dates": {
+    "created_date": "",
+    "sent_date": "",
+    "revised_date": "",
+    "approved_date": "",
+    "declined_date": "",
+    "expiration_date": "",
+    "converted_to_invoice_date": ""
+  },
+  "scope": {
+    "scope_intro": "Spray GenX LLC proposes to complete the following work:",
+    "scope_items": [],
+    "included_work": [],
+    "excluded_work": []
+  },
+  "financials": {
+    "subtotal": 0.00,
+    "taxable": false,
+    "tax_rate": 0.00,
+    "tax_total": 0.00,
+    "discount_total": 0.00,
+    "proposal_total": 0.00,
+    "pricing_type": "fixed_price",
+    "deposit_required": false,
+    "deposit_amount": 0.00
+  },
+  "terms": {
+    "payment_terms": "Due upon completion unless otherwise stated.",
+    "warranty_notes": "",
+    "customer_notes": "",
+    "private_notes": ""
+  },
+  "output": {
+    "html_file": "",
+    "pdf_file": "",
+    "export_folder": "exports/proposals/2026/",
+    "last_exported_at": ""
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "",
+    "updated_at": "",
+    "archived": false,
+    "archive_reason": ""
+  }
+}
