@@ -1,45 +1,40 @@
 {
-  "invoice_id": "INV-YYYY-0001",
-  "invoice_number": "SGX-INV-YYYY-0001",
-  "invoice_title": "",
-  "status": "draft",
-  "links": {
+  "docType": "invoice",
+  "docNo": "INV-YYYY-001",
+  "date": "",
+  "client": "",
+  "project": "",
+  "price": "$0.00",
+  "scope": "",
+  "notes": "",
+  "manager": {
+    "invoice_id": "INV-YYYY-0001",
     "job_id": "",
     "customer_id": "",
-    "proposal_id": ""
-  },
-  "dates": {
-    "created_date": "",
-    "sent_date": "",
-    "due_date": "",
-    "paid_date": "",
-    "void_date": ""
-  },
-  "billable_items": {
-    "line_items": []
-  },
-  "financials": {
-    "subtotal": 0.00,
-    "taxable": false,
-    "tax_rate": 0.00,
-    "tax_total": 0.00,
-    "discount_total": 0.00,
-    "invoice_total": 0.00,
-    "amount_paid": 0.00,
-    "balance_due": 0.00,
-    "payment_status": "unpaid"
-  },
-  "payments": [],
-  "terms": {
-    "payment_terms": "Due upon completion unless otherwise stated.",
-    "customer_notes": "Thank you for your business.",
-    "private_notes": ""
-  },
-  "output": {
+    "proposal_id": "",
+    "status": "draft",
+    "payment_status": "unpaid",
+    "amount_paid": "$0.00",
+    "balance_due": "$0.00",
     "html_file": "",
     "pdf_file": "",
-    "export_folder": "exports/invoices/2026/",
-    "last_exported_at": ""
+    "json_path": ""
+  },
+  "scriptable_compatibility": {
+    "current_record_fields": [
+      "docType",
+      "docNo",
+      "date",
+      "client",
+      "project",
+      "price",
+      "scope",
+      "notes"
+    ],
+    "numbering_rule": "INV-YYYY-001 based on existing invoice HTML files",
+    "html_builder": "buildDocumentHTML(record)",
+    "save_function": "saveInvoiceRecord(record)",
+    "pdf_export_method": "QuickLook preview, Share, Print, pinch out preview, Save to Files"
   },
   "audit": {
     "created_by": "owner",
