@@ -22,6 +22,12 @@ data/manager/
     invoices/
     mileage/
     tax/
+  backups/
+    YYYY/
+      MM/
+        daily/
+        records/
+        full-exports/
   archive/
     2026/
 ```
@@ -49,3 +55,13 @@ data/manager/imports/
 This keeps the live Scriptable Proposal / Invoice Manager intact while the website Manager learns how to index those records, create matching jobs/customers, and connect proposals, invoices, tasks, photos, and mileage.
 
 See `data/manager/imports/README.md` for the import rules.
+
+## Backup and Recovery
+
+Backup rules are defined in:
+
+```text
+docs/manager-system-backup-recovery.md
+```
+
+Future save workflows should back up the previous known-good JSON, validate the new JSON, then update indexes. Accepted proposals, paid invoices, and archived records must remain recoverable even if active files or indexes are damaged.
