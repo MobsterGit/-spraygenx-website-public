@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-29",
+  "updated": "2026-07-02",
   "notes": "Bulk image library for Spray GenX job photos. Scriptable/AI uploads will add image blocks here and the public photo-library.html page will render them.",
   "categories": [
     {
@@ -51,6 +51,8 @@
   ],
   "blocks": [
     {
+      "id": "commercial-painting-storefront-and-ceilings-20260629160807",
+      "slug": "commercial-painting-storefront-and-ceilings",
       "title": "commercial Painting storefront and ceilings",
       "summary": "Completed Spray GenX project.",
       "customer": "Cambria's Bistro",
@@ -66,24 +68,23 @@
         "ceiling",
         "dryfall"
       ],
-      "weight": 25,
       "status": "draft",
-      "siteLocations": [
-        "library",
-        "latest",
-        "search"
-      ],
-      "images": [],
-      "cover": "",
+      "visible": true,
+      "weight": 25,
       "priority": 25,
       "views": {
         "library": true,
         "latest": true,
         "search": true
       },
-      "visible": true,
-      "id": "commercial-painting-storefront-and-ceilings-20260629160807",
-      "slug": "commercial-painting-storefront-and-ceilings"
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "",
+      "images": []
     },
     {
       "id": "untitled-image-block-20260629160224",
@@ -93,9 +94,10 @@
       "customer": "Cambrias Italian Eatery",
       "location": "Wadsworth, Ohio",
       "date": "2026-06-29",
-      "category": "uncategorized",
+      "category": "residential-interiors",
       "categories": [
-        "uncategorized"
+        "uncategorized",
+        "residential-interiors"
       ],
       "tags": [
         "black ceiling",
