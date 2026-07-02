@@ -1,0 +1,36 @@
+{
+  "source": "scriptable-proposal-invoice-manager",
+  "imported_at": "",
+  "documents": [
+    {
+      "docType": "proposal",
+      "docNo": "SGX-2026-024",
+      "date": "",
+      "client": "",
+      "project": "Gazebo Refurbish",
+      "price": "$0.00",
+      "scope": "",
+      "notes": ""
+    },
+    {
+      "docType": "proposal",
+      "docNo": "SGX-2026-023",
+      "date": "",
+      "client": "",
+      "project": "Deck Refurbish",
+      "price": "$0.00",
+      "scope": "",
+      "notes": ""
+    },
+    {
+      "docType": "proposal",
+      "docNo": "SGX-2026-019",
+      "date": "",
+      "client": "",
+      "project": "Canton Car Wash",
+      "price": "$0.00",
+      "scope": "",
+      "notes": ""
+    }
+  ]
+}
