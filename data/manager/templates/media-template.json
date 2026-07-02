@@ -1,0 +1,37 @@
+{
+  "media_id": "MEDIA-YYYY-0001",
+  "job_id": "",
+  "customer_id": "",
+  "title": "",
+  "status": "inbox",
+  "group": {
+    "source_folder": "",
+    "portfolio_folder": "",
+    "cover_image": "",
+    "before_after_available": false,
+    "image_count": 0
+  },
+  "images": [],
+  "portfolio": {
+    "portfolio_candidate": false,
+    "portfolio_approved": false,
+    "portfolio_project_id": "",
+    "portfolio_category": "",
+    "portfolio_title": "",
+    "portfolio_description": "",
+    "portfolio_visible": false,
+    "published_date": ""
+  },
+  "before_after_groups": [],
+  "notes": {
+    "field_notes": "",
+    "private_notes": ""
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "",
+    "updated_at": "",
+    "archived": false,
+    "archive_reason": ""
+  }
+}
