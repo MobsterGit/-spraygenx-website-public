@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "updated": "2026-07-02",
   "records": {
     "jobs": [
@@ -23,5 +23,15 @@
     "tasks": [
       "data/manager/tasks/TASK-2026-0001.json"
     ]
+  },
+  "templates": {
+    "job": "data/manager/templates/job-template.json",
+    "customer": "data/manager/templates/customer-template.json",
+    "proposal": "data/manager/templates/proposal-template.json",
+    "invoice": "data/manager/templates/invoice-template.json",
+    "mileage": "data/manager/templates/mileage-template.json",
+    "media": "data/manager/templates/media-template.json",
+    "task": "data/manager/templates/task-template.json",
+    "portfolio_project": "data/manager/templates/portfolio-project-template.json"
   }
 }
