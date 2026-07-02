@@ -1,0 +1,77 @@
+{
+  "version": "0.1.0",
+  "updated": "2026-07-02",
+  "description": "Master proposal and invoice index for Spray GenX Manager. This file is a sortable/searchable catalog, not the source document itself.",
+  "rules": {
+    "active_proposal_statuses": ["draft", "needs_revision", "sent", "pending", "accepted"],
+    "inactive_proposal_statuses": ["converted_to_invoice", "declined", "expired", "archived"],
+    "active_invoice_statuses": ["draft", "sent", "partial", "unpaid", "overdue"],
+    "inactive_invoice_statuses": ["paid", "void", "archived"],
+    "active_window_target": 20,
+    "history_sort_default": "date_desc",
+    "safe_save_required": true,
+    "backup_before_replace": true
+  },
+  "backup": {
+    "strategy": "safe-write",
+    "before_each_save": true,
+    "daily_snapshot": true,
+    "full_export": true,
+    "folders": {
+      "versioned_backups": "Backups/YYYY/MM/",
+      "daily_snapshots": "Backups/Daily/",
+      "full_exports": "Backups/Exports/"
+    }
+  },
+  "documents": [
+    {
+      "id": "PROP-2026-0001",
+      "type": "proposal",
+      "number": "PROP-2026-0001",
+      "status": "sent",
+      "active": true,
+      "customer_id": "CUST-2026-0001",
+      "customer_name": "Sample Customer",
+      "job_id": "JOB-2026-0001",
+      "job_name": "Sample Manager Job",
+      "city": "Wadsworth",
+      "state": "OH",
+      "amount": 0,
+      "created_date": "2026-07-02",
+      "updated_date": "2026-07-02",
+      "year": 2026,
+      "month": "2026-07",
+      "week": "2026-W27",
+      "source_json": "data/manager/proposals/PROP-2026-0001.json",
+      "source_pdf": "",
+      "tags": ["sample", "manager"],
+      "search_text": "PROP-2026-0001 Sample Customer Sample Manager Job Wadsworth OH sent"
+    },
+    {
+      "id": "INV-2026-0001",
+      "type": "invoice",
+      "number": "INV-2026-0001",
+      "status": "unpaid",
+      "payment_status": "unpaid",
+      "active": true,
+      "customer_id": "CUST-2026-0001",
+      "customer_name": "Sample Customer",
+      "job_id": "JOB-2026-0001",
+      "job_name": "Sample Manager Job",
+      "city": "Wadsworth",
+      "state": "OH",
+      "amount": 0,
+      "balance_due": 0,
+      "created_date": "2026-07-02",
+      "updated_date": "2026-07-02",
+      "due_date": "",
+      "year": 2026,
+      "month": "2026-07",
+      "week": "2026-W27",
+      "source_json": "data/manager/invoices/INV-2026-0001.json",
+      "source_pdf": "",
+      "tags": ["sample", "manager"],
+      "search_text": "INV-2026-0001 Sample Customer Sample Manager Job Wadsworth OH unpaid"
+    }
+  ]
+}
