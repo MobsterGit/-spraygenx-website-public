@@ -309,15 +309,7 @@ WHY ANYONE WOULD DO THIS ???
   box-shadow: 0 14px 22px rgba(20, 115, 210, .26)
 }
 
-.home-footer-pin.p1 {
-	margin: 65px 9px 0px 4px;
-}
-.home-footer-pin.p2 {
-	margin: 100px 30px 0px 5px;
-}
-.home-footer-pin.p3
-	margin: 35px 0px 0px 5px;
-}
+
 .home-footer-pin:after {
   content: "";
   position: absolute;
@@ -505,22 +497,14 @@ WHY ANYONE WOULD DO THIS ???
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .22)
   }
 /*     USE THIS ONE - MAP MARKERS           */
-   .home-footer-pin.p1 {
-	position: absolute;
-	right: 25px !important;
-	bottom: 154px !important;
+.home-footer-pin.p1 {
+	margin: 65px 9px 0px 4px;
 }
-
-  .home-footer-pin.p2 {
-	  position: absolute;
-	right: 58px !important;
-	bottom: 148px !important;
+.home-footer-pin.p2 {
+	margin: 100px 30px 0px 5px;
 }
-
-  .home-footer-pin.p3 {
-	  position: absolute;
-	right: 61px !important;
-	bottom: 194px !important;
+.home-footer-pin.p3
+	margin: 35px 0px 0px 5px;
 }
 /*     USE THIS ONE - MAP MARKERS           */
   .home-footer-action {
