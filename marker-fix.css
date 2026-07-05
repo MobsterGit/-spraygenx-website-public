@@ -12,11 +12,14 @@
 
 .home-footer-ohio {
   position: absolute;
-  inset: 10px 18px 8px 6px;
+  inset: 6px 12px 6px 0;
   display: block;
-  opacity: .12;
-  background: #061325;
+  opacity: 1;
+  background: #dbe3ec;
+  border: 1px solid #c6d1df;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.55), 0 12px 24px rgba(7,23,43,.08);
   clip-path: polygon(30% 4%, 64% 6%, 88% 22%, 92% 52%, 78% 82%, 44% 96%, 12% 84%, 4% 50%, 13% 20%);
+  z-index: 1;
 }
 
 .home-footer-pin {
@@ -71,6 +74,10 @@
     bottom: 26px;
     width: 150px;
     height: 165px;
+  }
+
+  .home-footer-ohio {
+    inset: 4px 8px 4px 0;
   }
 
   .home-footer-pin {
