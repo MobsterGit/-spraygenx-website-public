@@ -289,41 +289,64 @@ WHY ANYONE WOULD DO THIS ???
 }
 
 */
-.home-footer-ohio {
-  position: absolute;
-  inset: 0;
-  background: url('images/ohio-service-area.png') center/contain no-repeat;
-  filter: drop-shadow(0 12px 18px rgba(7, 23, 43, .14));
-  opacity: .88;
-  z-index: 1
-}
-
-.home-footer-pin {
-  position: absolute;
-  z-index: 2;
-  width: 46px;
-  height: 46px;
-  background: #3997ee;
-  border-radius: 50% 50% 50% 0;
+/* Spray GenX map markers */
+.map-marker {
+  width: 34px;
+  height: 34px;
+  border-radius: 50% 50% 50% 8px;
   transform: rotate(-45deg);
-  box-shadow: 0 14px 22px rgba(20, 115, 210, .26)
+  background: #111827;
+  border: 2px solid #ffffff;
+  box-shadow: 0 6px 14px rgba(0,0,0,.28);
+  display: grid;
+  place-items: center;
 }
 
-
-.home-footer-pin:after {
+.map-marker::before {
   content: "";
-  position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #fff;
-  left: 16px;
-  top: 16px;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, .22)
+  background: #f5c542;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.55);
 }
 
+.map-marker > * {
+  transform: rotate(45deg);
+}
 
+/* category colors */
+.map-marker.commercial {
+  background: #111827;
+}
 
+.map-marker.residential {
+  background: #6b1f2a;
+}
+
+.map-marker.industrial {
+  background: #2f4f46;
+}
+
+.map-marker.featured {
+  background: #000000;
+  border-color: #f5c542;
+}
+
+/* hover / active */
+.map-marker:hover {
+  transform: rotate(-45deg) scale(1.08);
+  box-shadow: 0 8px 18px rgba(0,0,0,.35);
+}
+
+.map-marker.active {
+  background: #f5c542;
+  border-color: #111827;
+}
+
+.map-marker.active::before {
+  background: #111827;
+}
 .home-footer-blue-line {
   width: 88px;
   height: 4px;
