@@ -1,0 +1,103 @@
+/* Emergency footer map marker restore.
+   Loaded after style.css so the footer pins display even if earlier marker CSS is damaged. */
+
+.home-footer-map {
+  position: absolute;
+  right: 0;
+  top: 144px;
+  width: 230px;
+  height: 250px;
+  opacity: .98;
+}
+
+.home-footer-ohio {
+  position: absolute;
+  inset: 10px 18px 8px 6px;
+  display: block;
+  opacity: .12;
+  background: #061325;
+  clip-path: polygon(30% 4%, 64% 6%, 88% 22%, 92% 52%, 78% 82%, 44% 96%, 12% 84%, 4% 50%, 13% 20%);
+}
+
+.home-footer-pin {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 50% 50% 50% 8px;
+  transform: rotate(-45deg);
+  background: #061325;
+  border: 2px solid #fff;
+  box-shadow: 0 8px 18px rgba(7, 23, 43, .26);
+  z-index: 2;
+}
+
+.home-footer-pin::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 13px;
+  top: 13px;
+  border-radius: 50%;
+  background: #1f8dff;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, .22);
+}
+
+.home-footer-pin.p1 {
+  right: 38px;
+  top: 42px;
+}
+
+.home-footer-pin.p2 {
+  right: 0;
+  top: 104px;
+}
+
+.home-footer-pin.p3 {
+  right: 94px;
+  top: 154px;
+}
+
+@media(max-width:1100px) {
+  .home-footer-map {
+    right: 42px;
+  }
+}
+
+@media(max-width:640px) {
+  .home-footer-map {
+    top: auto;
+    right: 24px;
+    bottom: 26px;
+    width: 150px;
+    height: 165px;
+  }
+
+  .home-footer-pin {
+    width: 34px;
+    height: 34px;
+  }
+
+  .home-footer-pin::after {
+    width: 10px;
+    height: 10px;
+    left: 10px;
+    top: 10px;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .22);
+  }
+
+  .home-footer-pin.p1 {
+    right: 28px;
+    top: 26px;
+  }
+
+  .home-footer-pin.p2 {
+    right: 0;
+    top: 70px;
+  }
+
+  .home-footer-pin.p3 {
+    right: 62px;
+    top: 102px;
+  }
+}
