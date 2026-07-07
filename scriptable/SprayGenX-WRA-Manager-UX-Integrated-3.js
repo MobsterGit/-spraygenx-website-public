@@ -1,6 +1,6 @@
 // Spray GenX WRA Manager - UX Integrated 5
-// Version: 2026.07.07 proposal-output-layout
-// Purpose: Scriptable proposal/invoice manager with editable job photo and branded HTML output.
+// Version: 2026.07.07 fixed-print-proposal-template
+// Purpose: Scriptable proposal/invoice manager with editable job photo and fixed letter-size HTML output.
 
 const fm = FileManager.iCloud();
 const ROOT = fm.joinPath(fm.documentsDirectory(), "SprayGenX");
@@ -202,10 +202,7 @@ async function setJobPhoto(doc, kind) {
   }
 }
 
-async function currentWork() {
-  await documentTable("Current Work", activeDocs(), "No active work found.");
-}
-
+async function currentWork() { await documentTable("Current Work", activeDocs(), "No active work found."); }
 function activeDocs() {
   const props = arr(readJson(FILES.proposals, [])).filter(d => !["archived", "declined", "converted_to_invoice"].includes(status(d.status)));
   const inv = arr(readJson(FILES.invoices, [])).filter(d => !["paid", "void", "archived"].includes(status(d.status)));
@@ -277,14 +274,7 @@ async function duplicateDoc(doc, kind) {
 }
 
 async function convertToInvoice(proposal) {
-  const invoice = Object.assign({}, proposal, {
-    id: nextInvoiceId(),
-    kind: "invoice",
-    status: "unpaid",
-    source_proposal: proposal.id,
-    created: today(),
-    updated: today()
-  });
+  const invoice = Object.assign({}, proposal, { id: nextInvoiceId(), kind: "invoice", status: "unpaid", source_proposal: proposal.id, created: today(), updated: today() });
   proposal.status = "converted_to_invoice";
   proposal.updated = today();
   saveDoc(proposal, "proposal");
@@ -295,22 +285,13 @@ async function convertToInvoice(proposal) {
   await notice("Invoice Created", `${invoice.id} from ${proposal.id}`);
 }
 
-async function archiveDoc(doc, kind) {
-  doc.status = "archived";
-  doc.updated = today();
-  saveDoc(doc, kind);
-  await notice("Archived", doc.id);
-}
+async function archiveDoc(doc, kind) { doc.status = "archived"; doc.updated = today(); saveDoc(doc, kind); await notice("Archived", doc.id); }
 
 async function archiveMenu() {
   const docs = arr(readJson(FILES.proposals, [])).concat(arr(readJson(FILES.invoices, [])));
   const a = new Alert();
   a.title = "Find / Archive";
-  a.addAction("By Month");
-  a.addAction("By Year");
-  a.addAction("By Week");
-  a.addAction("Search");
-  a.addCancelAction("Back");
+  a.addAction("By Month"); a.addAction("By Year"); a.addAction("By Week"); a.addAction("Search"); a.addCancelAction("Back");
   const c = await a.presentSheet();
   if (c === -1) return;
   if (c === 3) return await searchDocs(docs);
@@ -341,49 +322,25 @@ async function backupMenu() {
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
   const dir = fm.joinPath(DIRS.backups, stamp);
   ensure(dir);
-  copyDir(DIRS.data, fm.joinPath(dir, "Data"));
-  copyDir(DIRS.logs, fm.joinPath(dir, "Logs"));
-  copyDir(DIRS.proposals, fm.joinPath(dir, "Proposals"));
-  copyDir(DIRS.invoices, fm.joinPath(dir, "Invoices"));
-  copyDir(DIRS.images, fm.joinPath(dir, "Images"));
-  copyDir(DIRS.imageBlocks, fm.joinPath(dir, "ImageBlocks"));
+  copyDir(DIRS.data, fm.joinPath(dir, "Data")); copyDir(DIRS.logs, fm.joinPath(dir, "Logs")); copyDir(DIRS.proposals, fm.joinPath(dir, "Proposals")); copyDir(DIRS.invoices, fm.joinPath(dir, "Invoices")); copyDir(DIRS.images, fm.joinPath(dir, "Images")); copyDir(DIRS.imageBlocks, fm.joinPath(dir, "ImageBlocks"));
   await notice("Backup Created", dir);
 }
 
-async function rebuildAction() {
-  const r = rebuildIndexes();
-  syncNextNumbers();
-  await notice("Data Rebuilt", `${r.proposals} proposals\n${r.invoices} invoices\n${r.skipped} skipped`);
-}
+async function rebuildAction() { const r = rebuildIndexes(); syncNextNumbers(); await notice("Data Rebuilt", `${r.proposals} proposals\n${r.invoices} invoices\n${r.skipped} skipped`); }
 
 async function settingsMenu() {
   const s = getSettings();
   const a = new Alert();
   a.title = "Settings";
   a.message = "Branding and document seal";
-  a.addTextField("Company", s.companyName || "");
-  a.addTextField("Phone", s.phone || "");
-  a.addTextField("Email", s.email || "");
-  a.addTextField("Service area", s.serviceArea || "");
-  a.addTextField("Seal text", s.sealText || s.companyName || "");
-  a.addTextField("Seal small text", s.sealSubtext || "");
-  a.addTextField("Seal on? yes/no", s.sealEnabled === false ? "no" : "yes");
-  a.addAction("Save");
-  a.addCancelAction("Cancel");
+  a.addTextField("Company", s.companyName || ""); a.addTextField("Phone", s.phone || ""); a.addTextField("Email", s.email || ""); a.addTextField("Service area", s.serviceArea || ""); a.addTextField("Seal text", s.sealText || s.companyName || ""); a.addTextField("Seal small text", s.sealSubtext || ""); a.addTextField("Seal on? yes/no", s.sealEnabled === false ? "no" : "yes");
+  a.addAction("Save"); a.addCancelAction("Cancel");
   if (await a.presentAlert() === -1) return;
-  s.companyName = cleanText(a.textFieldValue(0));
-  s.phone = cleanText(a.textFieldValue(1));
-  s.email = cleanText(a.textFieldValue(2));
-  s.serviceArea = cleanText(a.textFieldValue(3));
-  s.sealText = cleanText(a.textFieldValue(4)) || s.companyName;
-  s.sealSubtext = cleanText(a.textFieldValue(5));
-  s.sealEnabled = !/^n(o)?|false|off|0$/i.test(a.textFieldValue(6).trim());
+  s.companyName = cleanText(a.textFieldValue(0)); s.phone = cleanText(a.textFieldValue(1)); s.email = cleanText(a.textFieldValue(2)); s.serviceArea = cleanText(a.textFieldValue(3)); s.sealText = cleanText(a.textFieldValue(4)) || s.companyName; s.sealSubtext = cleanText(a.textFieldValue(5)); s.sealEnabled = !/^n(o)?|false|off|0$/i.test(a.textFieldValue(6).trim());
   writeJson(FILES.settings, s);
 }
 
-async function showPaths() {
-  await notice("Spray GenX Paths", `Root:\n${ROOT}\n\nData:\n${DIRS.data}\n\nProposals:\n${DIRS.proposals}\n\nInvoices:\n${DIRS.invoices}\n\nImages:\n${DIRS.images}\n\nImage Blocks:\n${DIRS.imageBlocks}\n\nLogs:\n${DIRS.logs}`);
-}
+async function showPaths() { await notice("Spray GenX Paths", `Root:\n${ROOT}\n\nData:\n${DIRS.data}\n\nProposals:\n${DIRS.proposals}\n\nInvoices:\n${DIRS.invoices}\n\nImages:\n${DIRS.images}\n\nImage Blocks:\n${DIRS.imageBlocks}\n\nLogs:\n${DIRS.logs}`); }
 
 function rebuildIndexes() {
   const p = [], i = [];
@@ -424,9 +381,7 @@ function normalizeRecord(raw, filename, path) {
   const created = toIso(first(manager.created_date, raw.date, raw.Date, raw.created, raw.createdDate, raw.created_at, today()));
   const updated = toIso(first(manager.updated_date, raw.updated, raw.updatedDate, raw.updated_at, created));
   const d = {
-    id,
-    kind,
-    path,
+    id, kind, path,
     customer: cleanText(first(customerObj.name, customerObj.client, raw.client, raw.Client, raw.customerName, typeof raw.customer === "string" ? raw.customer : "", raw.name)),
     contact: cleanText(first(customerObj.contact, raw.contact, raw.gc, raw.GC)),
     phone: cleanText(first(customerObj.phone, raw.phone)),
@@ -438,73 +393,35 @@ function normalizeRecord(raw, filename, path) {
     summary: cleanText(first(scope.summary, raw.summary)),
     details: cleanText(first(scope.details, scope.description, raw.details, typeof raw.scope === "string" ? raw.scope : "", raw.description)),
     notes: cleanText([scope.exclusions, scope.notes, raw.exclusions, raw.notes].filter(Boolean).join("\n\n")),
-    total,
-    deposit: paid,
-    balance_due: balance,
+    total, deposit: paid, balance_due: balance,
     status: cleanText(first(manager.status, manager.payment_status, raw.status, kind === "invoice" ? "unpaid" : "open")),
     imagePath: cleanText(first(raw.imagePath, raw.featuredImagePath, raw.photoPath, raw.projectImagePath, job.imagePath, job.featuredImagePath)),
     featuredImageId: cleanText(first(raw.featuredImageId, raw.featured_image_id, job.featuredImageId, job.featured_image_id)),
     imageBlockIds: arr(raw.imageBlockIds).concat(arr(raw.image_block_ids)),
     imageBlocks: arr(raw.imageBlocks).concat(arr(raw.image_blocks)),
-    created,
-    updated
+    created, updated
   };
   sortKeys(d);
   return d;
 }
 
 function blankDoc(kind) {
-  const d = {
-    id: kind === "invoice" ? nextInvoiceId() : nextProposalId(),
-    kind,
-    customer: "", contact: "", phone: "", email: "",
-    title: "", site: "", city: "", category: "",
-    summary: "", details: "", notes: "",
-    total: 0, deposit: 0, balance_due: 0,
-    status: kind === "invoice" ? "unpaid" : "open",
-    imagePath: "", featuredImageId: "", imageBlockIds: [], imageBlocks: [],
-    created: today(), updated: today()
-  };
-  sortKeys(d);
-  return d;
+  const d = { id: kind === "invoice" ? nextInvoiceId() : nextProposalId(), kind, customer: "", contact: "", phone: "", email: "", title: "", site: "", city: "", category: "", summary: "", details: "", notes: "", total: 0, deposit: 0, balance_due: 0, status: kind === "invoice" ? "unpaid" : "open", imagePath: "", featuredImageId: "", imageBlockIds: [], imageBlocks: [], created: today(), updated: today() };
+  sortKeys(d); return d;
 }
 
 function saveDoc(d, kind) {
   d.kind = kind;
   d.balance_due = Math.max(0, Number(d.total || 0) - Number(d.deposit || 0));
-  d.customer = cleanText(d.customer);
-  d.contact = cleanText(d.contact);
-  d.phone = cleanText(d.phone);
-  d.email = cleanText(d.email);
-  d.title = cleanText(d.title);
-  d.site = cleanText(d.site);
-  d.city = cleanText(d.city);
-  d.category = cleanText(d.category);
-  d.summary = cleanText(d.summary);
-  d.details = cleanText(d.details);
-  d.notes = cleanText(d.notes);
-  d.status = cleanText(d.status);
-  d.imagePath = cleanText(d.imagePath || "");
-  d.featuredImageId = cleanText(d.featuredImageId || "");
+  d.customer = cleanText(d.customer); d.contact = cleanText(d.contact); d.phone = cleanText(d.phone); d.email = cleanText(d.email); d.title = cleanText(d.title); d.site = cleanText(d.site); d.city = cleanText(d.city); d.category = cleanText(d.category); d.summary = cleanText(d.summary); d.details = cleanText(d.details); d.notes = cleanText(d.notes); d.status = cleanText(d.status); d.imagePath = cleanText(d.imagePath || ""); d.featuredImageId = cleanText(d.featuredImageId || "");
   sortKeys(d);
   writeJson(filePathFor(d, kind), d);
   rebuildIndexes();
   log(`${kind}_saved`, d.id);
 }
 
-function filePathFor(d, kind) {
-  return fm.joinPath(kind === "invoice" ? DIRS.invoices : DIRS.proposals, `${d.id}.json`);
-}
-
-function slim(d) {
-  return {
-    id: d.id, kind: d.kind, path: d.path || "", customer: d.customer || "", title: d.title || "",
-    site: d.site || "", city: d.city || "", status: d.status || "open",
-    total: Number(d.total || 0), deposit: Number(d.deposit || 0), balance_due: Number(d.balance_due || 0),
-    featuredImageId: d.featuredImageId || "", imagePath: d.imagePath || "", imageBlockIds: arr(d.imageBlockIds), imageBlocks: arr(d.imageBlocks),
-    created: d.created || today(), updated: d.updated || d.created || today(), sort_year: d.sort_year, sort_month: d.sort_month, sort_week: d.sort_week
-  };
-}
+function filePathFor(d, kind) { return fm.joinPath(kind === "invoice" ? DIRS.invoices : DIRS.proposals, `${d.id}.json`); }
+function slim(d) { return { id: d.id, kind: d.kind, path: d.path || "", customer: d.customer || "", title: d.title || "", site: d.site || "", city: d.city || "", status: d.status || "open", total: Number(d.total || 0), deposit: Number(d.deposit || 0), balance_due: Number(d.balance_due || 0), featuredImageId: d.featuredImageId || "", imagePath: d.imagePath || "", imageBlockIds: arr(d.imageBlockIds), imageBlocks: arr(d.imageBlocks), created: d.created || today(), updated: d.updated || d.created || today(), sort_year: d.sort_year, sort_month: d.sort_month, sort_week: d.sort_week }; }
 
 function writeHtml(d, kind) {
   d = normalizeRecord(d, `${d.id || "document"}.json`, d.path || "") || d;
@@ -512,32 +429,22 @@ function writeHtml(d, kind) {
   const path = fm.joinPath(kind === "invoice" ? DIRS.invoices : DIRS.proposals, `${d.id}.html`);
   const label = kind === "invoice" ? "INVOICE" : "PROPOSAL";
   const img = imageHtml(d);
-  const companyLines = [s.companyName, s.tagline, s.serviceArea, s.phone, s.email].filter(Boolean).map(esc).join("<br>");
-  const customerLines = [d.customer, d.contact, d.phone, d.email, d.site, d.city].filter(Boolean).map(esc).join("<br>");
-  const seal = s.sealEnabled === false ? "" : `<div class="seal"><div class="seal-ring"></div><div class="seal-text">${esc(s.sealText || "SPRAY\nGENX LLC").replace(/\n/g, "<br>")}<span>${esc(s.sealSubtext || "LLC / Business ID")}</span></div></div>`;
+  const companyInfo = htmlLines([s.tagline, s.serviceArea, s.phone, s.email]);
+  const customerInfo = htmlLines([d.customer, d.contact, d.phone, d.email]);
+  const projectInfo = htmlLines([d.title, d.site, d.city, d.category]);
+  const seal = s.sealEnabled === false ? "" : `<div class="seal"><div class="seal-center">${esc(s.sealText || "SPRAY\nGENX LLC").replace(/\n/g, "<br>")}<span>${esc(s.sealSubtext || "LLC / Business ID")}</span></div></div>`;
   const html = `<!doctype html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(d.id)} - ${label}</title>
-<style>
-@page{size:letter;margin:0}*{box-sizing:border-box}body{margin:0;background:#f0f0f0;color:#111;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.42}.page{background:#fff;width:8.5in;min-height:11in;margin:0 auto;padding:.48in .55in 1.05in;position:relative}.mast{display:grid;grid-template-columns:1fr 1fr;gap:.35in;align-items:start;border-bottom:3px solid #111;padding-bottom:.22in;margin-bottom:.25in}.company h1{margin:0 0 .08in;font-size:30px;line-height:.96;letter-spacing:-.035em;font-weight:950}.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:900;color:#555;margin-bottom:.08in}.info{font-size:13px;color:#333}.docbox{text-align:right}.docbox h2{margin:0;font-size:30px;line-height:.9;letter-spacing:-.03em;font-weight:950}.docno{font-size:15px;font-weight:900;margin:.08in 0 .1in}.customer-card{border-left:4px solid #111;padding-left:.15in;display:inline-block;text-align:left;min-width:2.55in}.customer-card .label{font-size:10px;text-transform:uppercase;letter-spacing:.16em;font-weight:950;color:#555;margin-bottom:.05in}.hero{width:100%;height:2.18in;object-fit:cover;border:1px solid #d7d7d7;display:block;margin:0 0 .26in}.nohero{height:.1in;margin:0 0 .12in}.section{border:1px solid #d9d9d9;border-radius:10px;padding:.17in .2in;margin:0 0 .18in;break-inside:avoid}.section h3{margin:0 0 .08in;font-size:12px;text-transform:uppercase;letter-spacing:.15em;font-weight:950}.scope{white-space:pre-wrap;margin:0;font-size:14px}.two{display:grid;grid-template-columns:1fr 1fr;gap:.18in}.price-card{border:2px solid #111}.total-label{text-transform:uppercase;font-size:11px;letter-spacing:.15em;font-weight:900;color:#555;text-align:right}.total{font-size:34px;font-weight:950;text-align:right;margin:.03in 0 .08in}.price-row{display:flex;justify-content:space-between;border-top:1px solid #ddd;padding:.07in 0;font-size:13px}.terms{border-top:1px solid #d9d9d9;margin-top:.18in;padding-top:.16in;padding-right:1.65in;font-size:12px;color:#333}.terms p{margin:0 0 .08in}.seal{position:absolute;right:.55in;bottom:.38in;width:1.1in;height:1.1in;border:2px solid #111;border-radius:50%;background:rgba(255,255,255,.97);display:flex;align-items:center;justify-content:center;text-align:center;transform:rotate(-7deg)}.seal-ring{position:absolute;inset:.08in;border:1px solid #111;border-radius:50%}.seal-text{position:relative;font-weight:950;font-size:11px;line-height:.95;letter-spacing:.02em}.seal-text span{display:block;margin-top:.05in;font-size:6.5px;line-height:1.05;letter-spacing:.08em}.footerline{position:absolute;left:.55in;right:.55in;bottom:.18in;border-top:1px solid #ddd;padding-top:.08in;font-size:10px;color:#777}@media(max-width:720px){.page{width:auto;min-height:100vh;padding:28px 24px 105px}.mast,.two{display:block}.docbox{text-align:left;margin-top:22px}.customer-card{display:block}.hero{height:220px}.terms{padding-right:0}.seal{right:24px}}
-</style>
-</head>
-<body>
-<main class="page">
-<section class="mast"><div class="company"><div class="kicker">Spray GenX Document</div><h1>${esc(s.companyName)}</h1><div class="info">${companyLines}</div></div><div class="docbox"><h2>${label}</h2><div class="docno">${esc(d.id)}</div><div class="customer-card"><div class="label">Customer / Project</div><strong>${esc(d.customer || "Customer")}</strong><br>${customerLines}<br><br><strong>${esc(d.title || "Project")}</strong><br>${esc(d.category || "")}</div></div></section>
+<html><head><meta charset="UTF-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(d.id)} - ${label}</title><style>
+@page{size:letter;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#e9e9e9;color:#111;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.38}.page{background:#fff;width:8.5in;min-height:11in;margin:0 auto;padding:.50in .55in .95in;position:relative}.top{display:grid;grid-template-columns:1fr 1fr;gap:.30in;align-items:start;border-bottom:3px solid #111;padding-bottom:.22in;margin-bottom:.24in}.brand h1{margin:0 0 .08in;font-size:29px;line-height:1;font-weight:900;letter-spacing:-.035em}.brand .info,.doc .meta{font-size:16px;color:#444}.doc{text-align:right}.doc h2{margin:0 0 .07in;font-size:26px;line-height:1;text-transform:uppercase;font-weight:900}.doc .num{font-size:18px;font-weight:900;margin-bottom:.06in}.doc .meta{font-size:15px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:.20in;margin-bottom:.24in}.card{border:1px solid #ddd;border-radius:9px;padding:.16in .17in;min-height:1.35in;break-inside:avoid}.card h3,.section h3{margin:0 0 .12in;font-size:13px;text-transform:uppercase;letter-spacing:.14em;font-weight:900}.card p{margin:0}.card strong{font-weight:850}.hero{display:block;width:100%;height:2.55in;object-fit:cover;border:1px solid #d7d7d7;border-radius:9px;margin:0 0 .25in}.nohero{display:none}.section{border:1px solid #ddd;border-radius:9px;padding:.17in .18in;margin:0 0 .18in;break-inside:avoid}.scope{white-space:pre-wrap;margin:0;font-size:15px}.two{display:grid;grid-template-columns:1fr 1fr;gap:.20in;align-items:stretch}.price-card{min-height:2.25in}.price{font-size:32px;font-weight:900;text-align:right;margin:.18in 0 .20in}.price-card p{font-size:15px;margin:.12in 0}.terms{border-top:1px solid #ddd;margin-top:.20in;padding-top:.16in;padding-right:1.55in;font-size:12px;color:#333;break-inside:avoid}.terms p{margin:0 0 .07in}.seal{position:fixed;right:.55in;bottom:.35in;width:1.12in;height:1.12in;border:2px solid #111;border-radius:50%;background:rgba(255,255,255,.96);display:flex;align-items:center;justify-content:center;text-align:center;z-index:50;transform:rotate(-6deg)}.seal:before{content:"";position:absolute;inset:.08in;border:1px solid #111;border-radius:50%}.seal-center{position:relative;font-weight:900;font-size:11px;line-height:.95;letter-spacing:.02em}.seal-center span{display:block;margin-top:.055in;font-size:6.5px;line-height:1.05;letter-spacing:.06em}@media screen and (max-width:720px){.page{width:auto;min-height:100vh;padding:28px 24px 105px}.top,.cards,.two{display:block}.doc{text-align:left;margin-top:20px}.card{margin-bottom:16px}.hero{height:220px}.terms{padding-right:0}.seal{right:24px}}
+</style></head><body><main class="page">
+<section class="top"><div class="brand"><h1>${esc(s.companyName)}</h1><div class="info">${companyInfo}</div></div><div class="doc"><h2>${label}</h2><div class="num">${esc(d.id)}</div><div class="meta">${esc(d.created || today())}<br>Status: ${esc(d.status || "open")}</div></div></section>
+<section class="cards"><div class="card"><h3>Customer</h3><p>${customerInfo}</p></div><div class="card"><h3>Project</h3><p>${projectInfo}</p></div></section>
 ${img || '<div class="nohero"></div>'}
 <section class="section"><h3>Scope Summary</h3><p class="scope">${esc(d.summary)}</p></section>
-<section class="section"><h3>Scope of Work</h3><p class="scope">${esc(d.details)}</p></section>
-<section class="two"><div class="section"><h3>Notes / Exclusions</h3><p class="scope">${esc(d.notes)}</p></div><div class="section price-card"><h3>Pricing</h3><div class="total-label">Total</div><div class="total">${moneyWhole(d.total)}</div><div class="price-row"><span>${kind === "invoice" ? "Paid" : "Deposit"}</span><strong>${moneyWhole(d.deposit)}</strong></div><div class="price-row"><span>Balance</span><strong>${moneyWhole(d.balance_due)}</strong></div></div></section>
-<section class="terms"><p><strong>Terms:</strong> ${esc(s.defaultTerms)}</p><p><strong>Warranty:</strong> ${esc(s.warrantyNote)}</p></section>
-${seal}<div class="footerline">${esc(s.companyName)} - ${esc(s.serviceArea)} - ${esc([s.phone,s.email].filter(Boolean).join(" - "))}</div>
-</main>
-</body>
-</html>`;
+<section class="section"><h3>Scope Details</h3><p class="scope">${esc(d.details)}</p></section>
+<section class="two"><div class="section"><h3>Exclusions / Notes</h3><p class="scope">${esc(d.notes)}</p></div><div class="section price-card"><h3>Price</h3><div class="price">${moneyWhole(d.total)}</div><p>Deposit: ${moneyWhole(d.deposit)}</p><p>Balance: ${moneyWhole(d.balance_due)}</p></div></section>
+<section class="terms"><p><strong>Terms:</strong> ${esc(s.defaultTerms)}</p><p><strong>Warranty:</strong> ${esc(s.warrantyNote)}</p></section>${seal}
+</main></body></html>`;
   fm.writeString(path, html);
   return path;
 }
@@ -545,12 +452,7 @@ ${seal}<div class="footerline">${esc(s.companyName)} - ${esc(s.serviceArea)} - $
 function imageHtml(d) {
   const path = findImagePath(d);
   if (!path) return "";
-  try {
-    const img = fm.readImage(path);
-    if (!img) return "";
-    const b64 = Data.fromJPEG(img, 0.86).toBase64String();
-    return `<img class="hero" src="data:image/jpeg;base64,${b64}" alt="Project photo">`;
-  } catch (e) { return ""; }
+  try { const img = fm.readImage(path); if (!img) return ""; const b64 = Data.fromJPEG(img, 0.86).toBase64String(); return `<img class="hero" src="data:image/jpeg;base64,${b64}" alt="Project photo">`; } catch (e) { return ""; }
 }
 
 function findImagePath(d) {
@@ -572,6 +474,10 @@ function findImagePath(d) {
   return "";
 }
 
+function htmlLines(values) {
+  const seen = new Set();
+  return values.map(v => cleanText(v || "")).filter(v => { if (!v) return false; const k = v.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; }).map(v => esc(v)).join("<br>");
+}
 function hasImageRef(d) { return !!(d.imagePath || d.featuredImageId || arr(d.imageBlockIds).length || arr(d.imageBlocks).length); }
 function dedupe(list) { const m = {}; list.forEach(d => { if (d && d.id) m[d.id] = d; }); return Object.values(m); }
 function nextProposalId() { const s = getSettings(); return `SGX-${new Date().getFullYear()}-${String(s.nextProposalNumber || 1).padStart(3, "0")}`; }
@@ -600,21 +506,5 @@ function esc(v) { return cleanText(v).replace(/[&<>"]/g, ch => ({ "&": "&amp;", 
 function arr(v) { return Array.isArray(v) ? v : []; }
 function cap(v) { return String(v).charAt(0).toUpperCase() + String(v).slice(1); }
 function first(...vals) { for (const v of vals) { if (v !== undefined && v !== null && String(v).trim() !== "") return v; } return ""; }
-function cleanText(v) {
-  return String(v ?? "")
-    .replace(/â€¦/g, "...")
-    .replace(/â€”|â€“|â€\"|â€–/g, "-")
-    .replace(/â€¢/g, "-")
-    .replace(/â€˜|â€™|â€²/g, "'")
-    .replace(/â€œ|â€�/g, '"')
-    .replace(/â„¢/g, "TM")
-    .replace(/Â /g, " ")
-    .replace(/Â/g, "")
-    .replace(/\u00a0/g, " ")
-    .replace(/[\u2022]/g, "-")
-    .replace(/[\u2013\u2014]/g, "-")
-    .replace(/[\u201c\u201d]/g, '"')
-    .replace(/[\u2018\u2019]/g, "'")
-    .trim();
-}
+function cleanText(v) { return String(v ?? "").replace(/â€¦/g, "...").replace(/â€”|â€“|â€\"|â€–/g, "-").replace(/â€¢/g, "-").replace(/â€˜|â€™|â€²/g, "'").replace(/â€œ|â€�/g, '"').replace(/â„¢/g, "TM").replace(/Â /g, " ").replace(/Â/g, "").replace(/\u00a0/g, " ").replace(/[\u2022]/g, "-").replace(/[\u2013\u2014]/g, "-").replace(/[\u201c\u201d]/g, '"').replace(/[\u2018\u2019]/g, "'").trim(); }
 async function notice(title, message) { const a = new Alert(); a.title = title; a.message = String(message || ""); a.addAction("OK"); await a.presentAlert(); }
