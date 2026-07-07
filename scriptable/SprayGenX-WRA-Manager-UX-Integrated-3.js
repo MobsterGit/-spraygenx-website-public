@@ -1,6 +1,6 @@
 // Spray GenX WRA Manager - UX Integrated 5
-// Version: 2026.07.06 Integrated-5
-// Purpose: one Scriptable manager with proposal/invoice workflow, photo upload, UTF-8/mojibake cleanup, archive/search, backups, and branded HTML output.
+// Version: 2026.07.07 proposal-output-layout
+// Purpose: Scriptable proposal/invoice manager with editable job photo and branded HTML output.
 
 const fm = FileManager.iCloud();
 const ROOT = fm.joinPath(fm.documentsDirectory(), "SprayGenX");
@@ -512,7 +512,9 @@ function writeHtml(d, kind) {
   const path = fm.joinPath(kind === "invoice" ? DIRS.invoices : DIRS.proposals, `${d.id}.html`);
   const label = kind === "invoice" ? "INVOICE" : "PROPOSAL";
   const img = imageHtml(d);
-  const seal = s.sealEnabled === false ? "" : `<div class="seal"><div class="seal-inner">${esc(s.sealText || "SPRAY\nGENX LLC").replace(/\n/g, "<br>")}<span>${esc(s.sealSubtext || "LLC / Business ID")}</span></div></div>`;
+  const companyLines = [s.companyName, s.tagline, s.serviceArea, s.phone, s.email].filter(Boolean).map(esc).join("<br>");
+  const customerLines = [d.customer, d.contact, d.phone, d.email, d.site, d.city].filter(Boolean).map(esc).join("<br>");
+  const seal = s.sealEnabled === false ? "" : `<div class="seal"><div class="seal-ring"></div><div class="seal-text">${esc(s.sealText || "SPRAY\nGENX LLC").replace(/\n/g, "<br>")}<span>${esc(s.sealSubtext || "LLC / Business ID")}</span></div></div>`;
   const html = `<!doctype html>
 <html>
 <head>
@@ -521,18 +523,18 @@ function writeHtml(d, kind) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(d.id)} - ${label}</title>
 <style>
-@page{size:letter;margin:0}*{box-sizing:border-box}body{margin:0;background:#eee;color:#111;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.38}.page{background:#fff;max-width:820px;margin:0 auto;min-height:100vh;padding:38px 38px 105px;position:relative}.top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #111;padding-bottom:18px;margin-bottom:24px}.brand h1{margin:0 0 8px;font-size:29px;letter-spacing:-.03em}.brand p,.doc p{margin:4px 0;color:#444}.doc{text-align:right}.doc h2{margin:0 0 6px;text-transform:uppercase;font-size:24px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.box{border:1px solid #ddd;border-radius:9px;padding:14px 16px;margin-bottom:18px;break-inside:avoid}.box h3{margin:0 0 12px;text-transform:uppercase;font-size:13px;letter-spacing:.12em}.box p{margin:0}.scope{white-space:pre-wrap}.project-photo{display:block;width:100%;max-height:310px;object-fit:cover;border:1px solid #ddd;border-radius:9px;margin:4px 0 22px}.price{font-size:30px;font-weight:900;text-align:right;margin:25px 0 28px}.price-card p{margin:0 0 18px}.terms{border-top:1px solid #ddd;margin-top:8px;padding-top:22px;padding-right:178px;font-size:13px}.terms p{margin:0 0 12px}.seal{position:absolute;right:38px;bottom:28px;width:105px;height:105px;border:2px solid #111;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;background:rgba(255,255,255,.96);transform:rotate(-5deg)}.seal:before{content:"";position:absolute;inset:7px;border:1px solid #111;border-radius:50%}.seal-inner{position:relative;font-weight:900;font-size:11px;line-height:.95}.seal-inner span{display:block;margin-top:5px;font-size:6.5px;font-weight:700;line-height:1.05}.empty-photo{display:none}@media(max-width:650px){.page{padding:28px 24px 110px}.top,.grid{display:block}.doc{text-align:left;margin-top:18px}.project-photo{max-height:240px}.terms{padding-right:0}.seal{right:24px}}
+@page{size:letter;margin:0}*{box-sizing:border-box}body{margin:0;background:#f0f0f0;color:#111;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.42}.page{background:#fff;width:8.5in;min-height:11in;margin:0 auto;padding:.48in .55in 1.05in;position:relative}.mast{display:grid;grid-template-columns:1fr 1fr;gap:.35in;align-items:start;border-bottom:3px solid #111;padding-bottom:.22in;margin-bottom:.25in}.company h1{margin:0 0 .08in;font-size:30px;line-height:.96;letter-spacing:-.035em;font-weight:950}.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:900;color:#555;margin-bottom:.08in}.info{font-size:13px;color:#333}.docbox{text-align:right}.docbox h2{margin:0;font-size:30px;line-height:.9;letter-spacing:-.03em;font-weight:950}.docno{font-size:15px;font-weight:900;margin:.08in 0 .1in}.customer-card{border-left:4px solid #111;padding-left:.15in;display:inline-block;text-align:left;min-width:2.55in}.customer-card .label{font-size:10px;text-transform:uppercase;letter-spacing:.16em;font-weight:950;color:#555;margin-bottom:.05in}.hero{width:100%;height:2.18in;object-fit:cover;border:1px solid #d7d7d7;display:block;margin:0 0 .26in}.nohero{height:.1in;margin:0 0 .12in}.section{border:1px solid #d9d9d9;border-radius:10px;padding:.17in .2in;margin:0 0 .18in;break-inside:avoid}.section h3{margin:0 0 .08in;font-size:12px;text-transform:uppercase;letter-spacing:.15em;font-weight:950}.scope{white-space:pre-wrap;margin:0;font-size:14px}.two{display:grid;grid-template-columns:1fr 1fr;gap:.18in}.price-card{border:2px solid #111}.total-label{text-transform:uppercase;font-size:11px;letter-spacing:.15em;font-weight:900;color:#555;text-align:right}.total{font-size:34px;font-weight:950;text-align:right;margin:.03in 0 .08in}.price-row{display:flex;justify-content:space-between;border-top:1px solid #ddd;padding:.07in 0;font-size:13px}.terms{border-top:1px solid #d9d9d9;margin-top:.18in;padding-top:.16in;padding-right:1.65in;font-size:12px;color:#333}.terms p{margin:0 0 .08in}.seal{position:absolute;right:.55in;bottom:.38in;width:1.1in;height:1.1in;border:2px solid #111;border-radius:50%;background:rgba(255,255,255,.97);display:flex;align-items:center;justify-content:center;text-align:center;transform:rotate(-7deg)}.seal-ring{position:absolute;inset:.08in;border:1px solid #111;border-radius:50%}.seal-text{position:relative;font-weight:950;font-size:11px;line-height:.95;letter-spacing:.02em}.seal-text span{display:block;margin-top:.05in;font-size:6.5px;line-height:1.05;letter-spacing:.08em}.footerline{position:absolute;left:.55in;right:.55in;bottom:.18in;border-top:1px solid #ddd;padding-top:.08in;font-size:10px;color:#777}@media(max-width:720px){.page{width:auto;min-height:100vh;padding:28px 24px 105px}.mast,.two{display:block}.docbox{text-align:left;margin-top:22px}.customer-card{display:block}.hero{height:220px}.terms{padding-right:0}.seal{right:24px}}
 </style>
 </head>
 <body>
 <main class="page">
-<section class="top"><div class="brand"><h1>${esc(s.companyName)}</h1><p>${esc(s.tagline)}</p><p>${esc(s.serviceArea)}</p><p>${esc([s.phone,s.email].filter(Boolean).join(" - "))}</p></div><div class="doc"><h2>${label}</h2><p><strong>${esc(d.id)}</strong></p><p>${esc(d.created || today())}</p><p>Status: ${esc(d.status || "open")}</p></div></section>
-<section class="grid"><div class="box"><h3>Customer</h3><p><strong>${esc(d.customer)}</strong><br>${esc(d.contact)}<br>${esc(d.phone)}<br>${esc(d.email)}</p></div><div class="box"><h3>Project</h3><p><strong>${esc(d.title)}</strong><br>${esc(d.site)}<br>${esc(d.city)}<br>${esc(d.category)}</p></div></section>
-${img}
-<section class="box"><h3>Scope Summary</h3><p class="scope">${esc(d.summary)}</p></section>
-<section class="box"><h3>Scope Details</h3><p class="scope">${esc(d.details)}</p></section>
-<section class="grid"><div class="box"><h3>Exclusions / Notes</h3><p class="scope">${esc(d.notes)}</p></div><div class="box price-card"><h3>Price</h3><div class="price">${moneyWhole(d.total)}</div><p>Deposit: ${moneyWhole(d.deposit)}</p><p>Balance: ${moneyWhole(d.balance_due)}</p></div></section>
-<section class="terms"><p><strong>Terms:</strong> ${esc(s.defaultTerms)}</p><p><strong>Warranty:</strong> ${esc(s.warrantyNote)}</p></section>${seal}
+<section class="mast"><div class="company"><div class="kicker">Spray GenX Document</div><h1>${esc(s.companyName)}</h1><div class="info">${companyLines}</div></div><div class="docbox"><h2>${label}</h2><div class="docno">${esc(d.id)}</div><div class="customer-card"><div class="label">Customer / Project</div><strong>${esc(d.customer || "Customer")}</strong><br>${customerLines}<br><br><strong>${esc(d.title || "Project")}</strong><br>${esc(d.category || "")}</div></div></section>
+${img || '<div class="nohero"></div>'}
+<section class="section"><h3>Scope Summary</h3><p class="scope">${esc(d.summary)}</p></section>
+<section class="section"><h3>Scope of Work</h3><p class="scope">${esc(d.details)}</p></section>
+<section class="two"><div class="section"><h3>Notes / Exclusions</h3><p class="scope">${esc(d.notes)}</p></div><div class="section price-card"><h3>Pricing</h3><div class="total-label">Total</div><div class="total">${moneyWhole(d.total)}</div><div class="price-row"><span>${kind === "invoice" ? "Paid" : "Deposit"}</span><strong>${moneyWhole(d.deposit)}</strong></div><div class="price-row"><span>Balance</span><strong>${moneyWhole(d.balance_due)}</strong></div></div></section>
+<section class="terms"><p><strong>Terms:</strong> ${esc(s.defaultTerms)}</p><p><strong>Warranty:</strong> ${esc(s.warrantyNote)}</p></section>
+${seal}<div class="footerline">${esc(s.companyName)} - ${esc(s.serviceArea)} - ${esc([s.phone,s.email].filter(Boolean).join(" - "))}</div>
 </main>
 </body>
 </html>`;
@@ -547,7 +549,7 @@ function imageHtml(d) {
     const img = fm.readImage(path);
     if (!img) return "";
     const b64 = Data.fromJPEG(img, 0.86).toBase64String();
-    return `<img class="project-photo" src="data:image/jpeg;base64,${b64}" alt="Project photo">`;
+    return `<img class="hero" src="data:image/jpeg;base64,${b64}" alt="Project photo">`;
   } catch (e) { return ""; }
 }
 
@@ -604,7 +606,7 @@ function cleanText(v) {
     .replace(/â€”|â€“|â€\"|â€–/g, "-")
     .replace(/â€¢/g, "-")
     .replace(/â€˜|â€™|â€²/g, "'")
-    .replace(/â€œ|â€\u009d|â€�/g, '"')
+    .replace(/â€œ|â€�/g, '"')
     .replace(/â„¢/g, "TM")
     .replace(/Â /g, " ")
     .replace(/Â/g, "")
