@@ -1,6 +1,6 @@
 // Spray GenX WRA Manager — Stable Self-Contained Build
-// Version: 2026.07.02 Stable-1
-// Purpose: one complete Scriptable file with JSON helpers, array-safe indexes, current/archive browsing, backups, and proposal/invoice workflow.
+// Version: 2026.07.07 Letter-Proposal-1
+// Purpose: Scriptable proposal/invoice manager with fixed letter-page HTML output, proposal photo support, UTF-8 JSON helpers, indexes, archive browsing, backups, and invoice conversion.
 
 const fm = FileManager.iCloud();
 const ROOT = fm.joinPath(fm.documentsDirectory(), "SprayGenX");
@@ -12,7 +12,8 @@ const DIRS = {
   data: fm.joinPath(ROOT, "Data"),
   logs: fm.joinPath(ROOT, "Logs"),
   backups: fm.joinPath(ROOT, "Backups"),
-  exports: fm.joinPath(ROOT, "Exports")
+  exports: fm.joinPath(ROOT, "Exports"),
+  images: fm.joinPath(ROOT, "Images")
 };
 
 const FILES = {
@@ -24,14 +25,14 @@ const FILES = {
 
 const DEFAULT_SETTINGS = {
   companyName: "Spray GenX LLC",
-  tagline: "Painting & Refinishing",
+  tagline: "Commercial Painting & Refinishing",
   serviceArea: "Northeast Ohio",
   phone: "",
   email: "",
   nextProposalNumber: 1,
   nextInvoiceNumber: 1,
   defaultTerms: "Payment due upon completion unless otherwise noted.",
-  warrantyNote: "Warranty applies to listed scope and assumes sound existing substrates unless otherwise noted."
+  warrantyNote: "Warranty applies to listed scope and assumes sound existing substrates unless otherwise noted. Additional hidden damage, substrate failure, water intrusion, structural repairs, or unlisted work may require a written change order."
 };
 
 setup();
@@ -53,7 +54,7 @@ async function home() {
     const s = stats();
     const a = new Alert();
     a.title = "Spray GenX Manager";
-    a.message = `${s.active} active · ${s.proposals} proposals · ${s.invoices} invoices\nBalance due: ${money(s.balance)}\n\nStable build — self-contained helpers included.`;
+    a.message = `${s.active} active · ${s.proposals} proposals · ${s.invoices} invoices\nBalance due: ${money(s.balance)}\n\nStable letter-layout build — proposal photo support restored.`;
     a.addAction("+ New Proposal");
     a.addAction("Current Work");
     a.addAction("Find / Archive");
@@ -94,7 +95,7 @@ async function proposalFlow(seed) {
 async function proposalEditor(doc, title) {
   const base = new Alert();
   base.title = title;
-  base.message = `${doc.id}\nStep 1 of 3 — customer and job`;
+  base.message = `${doc.id}\nStep 1 of 4 — company/customer and job`;
   ["Customer name", "Contact / GC", "Phone", "Email", "Job title", "Site / address", "City", "Category"].forEach((label, i) => base.addTextField(label, [doc.customer, doc.contact, doc.phone, doc.email, doc.title, doc.site, doc.city, doc.category][i] || ""));
   base.addAction("Next");
   base.addCancelAction("Cancel");
@@ -110,7 +111,7 @@ async function proposalEditor(doc, title) {
 
   const price = new Alert();
   price.title = doc.id;
-  price.message = "Step 2 of 3 — pricing";
+  price.message = "Step 2 of 4 — pricing";
   price.addTextField("Total price", String(doc.total || ""));
   price.addTextField("Deposit / paid", String(doc.deposit || ""));
   price.addTextField("Status", doc.status || "open");
@@ -121,9 +122,10 @@ async function proposalEditor(doc, title) {
   doc.deposit = num(price.textFieldValue(1));
   doc.status = price.textFieldValue(2).trim() || "open";
 
-  doc.summary = await textStep("Step 3 of 3", "Short scope summary", doc.summary);
+  doc.summary = await textStep("Step 3 of 4", "Short scope summary", doc.summary);
   doc.details = await textStep("Scope Details", "Paste detailed scope here", doc.details);
   doc.notes = await textStep("Notes / Exclusions", "Anything excluded or special", doc.notes);
+  await photoStep(doc);
   doc.updated = today();
   sortKeys(doc);
   return doc;
@@ -132,7 +134,7 @@ async function proposalEditor(doc, title) {
 async function textStep(title, placeholder, current) {
   const a = new Alert();
   a.title = title;
-  a.message = "Long pasted scope text will save; Scriptable editing is basic.";
+  a.message = "Long pasted scope text will save. Use blank lines for clean proposal sections.";
   a.addTextField(placeholder, current || "");
   a.addAction("Save");
   a.addAction("Blank");
@@ -141,6 +143,30 @@ async function textStep(title, placeholder, current) {
   if (c === -1) return current || "";
   if (c === 1) return "";
   return a.textFieldValue(0);
+}
+
+async function photoStep(doc) {
+  const a = new Alert();
+  a.title = "Step 4 of 4 — proposal photo";
+  a.message = doc.imagePath ? "A job photo is attached. Keep, replace, or remove it." : "Attach a building/job photo for the proposal cover area, or skip it.";
+  a.addAction(doc.imagePath ? "Keep Current Photo" : "Skip Photo");
+  a.addAction(doc.imagePath ? "Replace Photo" : "Choose Photo");
+  if (doc.imagePath) a.addDestructiveAction("Remove Photo");
+  a.addCancelAction("Back / Keep Existing");
+  const c = await a.presentSheet();
+  if (c === -1 || c === 0) return;
+  if (doc.imagePath && c === 2) { doc.imagePath = ""; return; }
+  if (c === 1) {
+    try {
+      const img = await Photos.fromLibrary();
+      const path = fm.joinPath(DIRS.images, `${safeFile(doc.id)}-cover.jpg`);
+      if (fm.fileExists(path)) fm.remove(path);
+      fm.writeImage(path, img);
+      doc.imagePath = path;
+    } catch (e) {
+      await notice("Photo Not Added", String(e));
+    }
+  }
 }
 
 async function afterSave(doc, type) {
@@ -160,14 +186,14 @@ async function afterSave(doc, type) {
     if (type === "proposal" && c === 2) { await convertToInvoice(doc); back = true; }
     const copyIndex = type === "proposal" ? 3 : 2;
     const homeIndex = type === "proposal" ? 4 : 3;
-    if (c === copyIndex) { Pasteboard.copy(filePathFor(doc, type)); await notice("Copied", "File path copied."); }
+    if (c === copyIndex) { Pasteboard.copy(filePathFor(doc, type)); await notice("Copied", "JSON file path copied."); }
     if (c === homeIndex || c === -1) back = true;
   }
 }
 
 async function currentWork() {
   const docs = activeDocs();
-  await documentTable("Current Work", docs, "No active work yet. Create a test proposal first.");
+  await documentTable("Current Work", docs, "No active work yet. Create a proposal first.");
 }
 
 function activeDocs() {
@@ -340,7 +366,7 @@ async function testCenter() {
   const c = await a.presentSheet();
   if (c === 0) await sampleProposal();
   if (c === 1) await sampleInvoice();
-  if (c === 2) await notice("Storage", `${ROOT}\n\nProposals: ${DIRS.proposals}\nInvoices: ${DIRS.invoices}\nBackups: ${DIRS.backups}`);
+  if (c === 2) await notice("Storage", `${ROOT}\n\nProposals: ${DIRS.proposals}\nInvoices: ${DIRS.invoices}\nImages: ${DIRS.images}\nBackups: ${DIRS.backups}`);
   if (c === 3) { rebuildIndexes(); await notice("Indexes Rebuilt", "Lists rebuilt from JSON files."); }
   if (c === 4) await deleteTestRecords();
 }
@@ -399,6 +425,7 @@ function createBackup() {
   copyDir(DIRS.invoices, fm.joinPath(dir, "Invoices"));
   copyDir(DIRS.logs, fm.joinPath(dir, "Logs"));
   copyDir(DIRS.data, fm.joinPath(dir, "Data"));
+  copyDir(DIRS.images, fm.joinPath(dir, "Images"));
   log("backup_created", stamp);
   return dir;
 }
@@ -435,8 +462,8 @@ async function settingsMenu() {
 
 function blankProposal() {
   const s = getSettings();
-  const id = `PROP-${new Date().getFullYear()}-${String(s.nextProposalNumber || 1).padStart(4, "0")}`;
-  const d = { id, kind: "proposal", customer: "", contact: "", phone: "", email: "", title: "", site: "", city: "", category: "", summary: "", details: "", notes: "", total: 0, deposit: 0, status: "open", created: today(), updated: today() };
+  const id = nextProposalId(false);
+  const d = { id, kind: "proposal", customer: "", contact: "", phone: "", email: "", title: "", site: "", city: "", category: "", summary: "", details: "", notes: "", imagePath: "", total: 0, deposit: 0, status: "open", created: today(), updated: today() };
   sortKeys(d);
   return d;
 }
@@ -445,17 +472,92 @@ function saveProposal(d) { d.kind = "proposal"; d.balance_due = Math.max(0, Numb
 function saveInvoice(d) { d.kind = "invoice"; d.balance_due = Math.max(0, Number(d.total || 0) - Number(d.deposit || 0)); writeJson(filePathFor(d, "invoice"), d); upsert(FILES.invoices, d); }
 function filePathFor(d, type) { return fm.joinPath(type === "invoice" ? DIRS.invoices : DIRS.proposals, `${d.id}.json`); }
 function upsert(indexPath, d) { const list = asArray(readJson(indexPath, [])).filter(x => x.id !== d.id); list.push(slim(d)); list.sort((a, b) => String(b.updated || "").localeCompare(String(a.updated || ""))); writeJson(indexPath, list); }
-function slim(d) { return { id: d.id, kind: d.kind, customer: d.customer, title: d.title, site: d.site, city: d.city, status: d.status, total: d.total, deposit: d.deposit, balance_due: d.balance_due, created: d.created, updated: d.updated, sort_year: d.sort_year, sort_month: d.sort_month, sort_week: d.sort_week }; }
+function slim(d) { return { id: d.id, kind: d.kind, customer: d.customer, title: d.title, site: d.site, city: d.city, status: d.status, total: d.total, deposit: d.deposit, balance_due: d.balance_due, imagePath: d.imagePath || "", created: d.created, updated: d.updated, sort_year: d.sort_year, sort_month: d.sort_month, sort_week: d.sort_week }; }
 
 function writeHtml(d, type) {
   const s = getSettings();
   const path = fm.joinPath(type === "invoice" ? DIRS.invoices : DIRS.proposals, `${d.id}.html`);
-  const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#eee;color:#111;font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.page{background:white;max-width:820px;margin:0 auto;min-height:100vh;padding:34px;box-sizing:border-box}.top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid #111;padding-bottom:18px;margin-bottom:24px}.brand h1{margin:0;font-size:29px}.brand p,.doc p{margin:4px 0;color:#444}.doc{text-align:right}.doc h2{margin:0;text-transform:uppercase}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.box{border:1px solid #ddd;border-radius:9px;padding:14px;margin-bottom:18px}.box h3{margin:0 0 8px;text-transform:uppercase;font-size:13px;letter-spacing:.08em}.scope{white-space:pre-wrap}.price{font-size:30px;font-weight:800;text-align:right}.terms{border-top:1px solid #ddd;margin-top:18px;padding-top:12px;font-size:13px}@media(max-width:650px){.top,.grid{display:block}.doc{text-align:left;margin-top:18px}.page{padding:24px}}</style></head><body><main class="page"><section class="top"><div class="brand"><h1>${esc(s.companyName)}</h1><p>${esc(s.tagline)}</p><p>${esc(s.serviceArea)}</p><p>${esc([s.phone,s.email].filter(Boolean).join(" · "))}</p></div><div class="doc"><h2>${esc(type)}</h2><p><strong>${esc(d.id)}</strong></p><p>${esc(d.created || today())}</p><p>${esc(d.status || "open")}</p></div></section><section class="grid"><div class="box"><h3>Customer</h3><p><strong>${esc(d.customer)}</strong><br>${esc(d.contact)}<br>${esc(d.phone)}<br>${esc(d.email)}</p></div><div class="box"><h3>Project</h3><p><strong>${esc(d.title)}</strong><br>${esc(d.site)}<br>${esc(d.city)}<br>${esc(d.category)}</p></div></section><section class="box"><h3>Scope Summary</h3><p class="scope">${esc(d.summary)}</p></section><section class="box"><h3>Scope Details</h3><p class="scope">${esc(d.details)}</p></section><section class="grid"><div class="box"><h3>Notes / Exclusions</h3><p class="scope">${esc(d.notes)}</p></div><div class="box"><h3>Total</h3><p class="price">${money(d.total)}</p><p>Deposit / Paid: ${money(d.deposit)}</p><p>Balance Due: ${money(d.balance_due)}</p></div></section><section class="terms"><p><strong>Terms:</strong> ${esc(s.defaultTerms)}</p><p><strong>Warranty:</strong> ${esc(s.warrantyNote)}</p></section></main></body></html>`;
+  const docLabel = type === "invoice" ? "INVOICE" : "PROPOSAL";
+  const photo = (d.imagePath && fm.fileExists(d.imagePath)) ? `<section class="photo"><img src="${imageUrl(d.imagePath)}" alt="Project photo"></section>` : "";
+  const html = `<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(d.id)} ${esc(docLabel)}</title>
+<style>
+@page{size:letter;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#d9d9d9;color:#111;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:10.5pt;line-height:1.35}.sheet{position:relative;width:8.5in;min-height:11in;margin:0 auto;background:#fff;padding:.42in .46in .5in;overflow:hidden}.topline{height:5px;background:#111;margin:-.42in -.46in .28in}.header{display:grid;grid-template-columns:1fr 1fr;gap:.22in;align-items:start;margin-bottom:.18in}.brand,.customer{min-height:1.25in;border:1px solid #202020;padding:.14in .16in}.brand h1{margin:0 0 .03in;font-size:22pt;line-height:1;font-weight:850;letter-spacing:-.02em}.brand .tag{font-size:10pt;text-transform:uppercase;letter-spacing:.12em;color:#333;margin-bottom:.1in}.metaLine{margin:.025in 0;color:#222}.customer h3,.project h3,.box h3,.total h3{margin:0 0 .06in;font-size:8.5pt;letter-spacing:.13em;text-transform:uppercase;color:#333}.customer .name{font-size:13pt;font-weight:800}.docbar{display:grid;grid-template-columns:1.1fr .9fr .9fr .7fr;border:2px solid #111;margin-bottom:.16in}.docbar div{padding:.08in .1in;border-right:1px solid #111}.docbar div:last-child{border-right:0}.docbar strong{display:block;font-size:8pt;text-transform:uppercase;letter-spacing:.12em;color:#444}.docbar span{font-size:12pt;font-weight:800}.project{border:1px solid #222;padding:.12in .15in;margin-bottom:.16in}.projectTitle{font-size:15pt;font-weight:850;margin:.02in 0}.photo{height:1.55in;border:1px solid #222;margin-bottom:.16in;overflow:hidden;background:#f4f4f4}.photo img{width:100%;height:100%;object-fit:cover;display:block}.box{border:1px solid #222;margin-bottom:.14in;padding:.13in .15in;break-inside:avoid}.scope{white-space:pre-wrap;margin:0}.summary{font-size:11pt}.two{display:grid;grid-template-columns:1.2fr .8fr;gap:.16in;align-items:stretch}.total{border:2px solid #111;padding:.14in .16in;min-height:1.45in}.price{font-size:25pt;font-weight:900;text-align:right;margin:.07in 0 .1in}.moneyrow{display:flex;justify-content:space-between;border-top:1px solid #ccc;padding-top:.05in;margin-top:.05in}.terms{font-size:8.7pt;color:#222;border-top:1px solid #333;padding-top:.1in;margin-top:.08in}.seal{position:absolute;right:.42in;bottom:.28in;width:1.42in;height:.62in;border:2px solid #111;border-radius:999px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:7.5pt;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.94)}.seal small{display:block;font-size:6.4pt;font-weight:700;letter-spacing:.04em;margin-top:.02in}.footerPad{height:.55in}@media screen and (max-width:900px){.sheet{width:100%;min-height:100vh;padding:24px}.topline{margin:-24px -24px 20px}.header,.two{grid-template-columns:1fr}.docbar{grid-template-columns:1fr 1fr}.docbar div{border-bottom:1px solid #111}.docbar div:nth-child(even){border-right:0}.seal{position:static;margin:.2in 0 0 auto}}@media print{html,body{background:#fff}.sheet{margin:0;box-shadow:none}.photo{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<main class="sheet">
+  <div class="topline"></div>
+  <section class="header">
+    <div class="brand">
+      <h1>${esc(s.companyName)}</h1>
+      <div class="tag">${esc(s.tagline)}</div>
+      <div class="metaLine">${esc(s.serviceArea)}</div>
+      <div class="metaLine">${esc([s.phone, s.email].filter(Boolean).join(" · "))}</div>
+    </div>
+    <div class="customer">
+      <h3>Customer / Contractor</h3>
+      <div class="name">${esc(d.customer || "Customer")}</div>
+      <div class="metaLine">${esc(d.contact || "")}</div>
+      <div class="metaLine">${esc(d.phone || "")}</div>
+      <div class="metaLine">${esc(d.email || "")}</div>
+    </div>
+  </section>
+  <section class="docbar">
+    <div><strong>Document</strong><span>${esc(docLabel)}</span></div>
+    <div><strong>Number</strong><span>${esc(d.id)}</span></div>
+    <div><strong>Date</strong><span>${esc(d.created || today())}</span></div>
+    <div><strong>Status</strong><span>${esc(d.status || "open")}</span></div>
+  </section>
+  <section class="project">
+    <h3>Project</h3>
+    <div class="projectTitle">${esc(d.title || "Project Scope")}</div>
+    <div>${esc([d.site, d.city, d.category].filter(Boolean).join(" · "))}</div>
+  </section>
+  ${photo}
+  <section class="box">
+    <h3>Scope Summary</h3>
+    <p class="scope summary">${esc(d.summary || "")}</p>
+  </section>
+  <section class="box">
+    <h3>Scope Details</h3>
+    <p class="scope">${esc(d.details || "")}</p>
+  </section>
+  <section class="two">
+    <div class="box">
+      <h3>Notes / Exclusions</h3>
+      <p class="scope">${esc(d.notes || "")}</p>
+    </div>
+    <div class="total">
+      <h3>Total</h3>
+      <div class="price">${money(d.total)}</div>
+      <div class="moneyrow"><span>Deposit / Paid</span><strong>${money(d.deposit)}</strong></div>
+      <div class="moneyrow"><span>Balance Due</span><strong>${money(d.balance_due)}</strong></div>
+    </div>
+  </section>
+  <section class="terms">
+    <div><strong>Terms:</strong> ${esc(s.defaultTerms)}</div>
+    <div><strong>Warranty / Limitations:</strong> ${esc(s.warrantyNote)}</div>
+  </section>
+  <div class="footerPad"></div>
+  <div class="seal"><div>${esc(s.companyName)}<small>${esc(docLabel)} · ${esc(d.id)}</small></div></div>
+</main>
+</body>
+</html>`;
   fm.writeString(path, html);
   return path;
 }
 
-function nextProposalId() { const s = getSettings(); const id = `PROP-${new Date().getFullYear()}-${String(s.nextProposalNumber || 1).padStart(4, "0")}`; s.nextProposalNumber = Number(s.nextProposalNumber || 1) + 1; writeJson(FILES.settings, s); return id; }
+function nextProposalId(increment = true) {
+  const s = getSettings();
+  const id = `SGX-${new Date().getFullYear()}-${String(s.nextProposalNumber || 1).padStart(3, "0")}`;
+  if (increment) { s.nextProposalNumber = Number(s.nextProposalNumber || 1) + 1; writeJson(FILES.settings, s); }
+  return id;
+}
 function nextInvoiceId() { const s = getSettings(); const id = `INV-${new Date().getFullYear()}-${String(s.nextInvoiceNumber || 1).padStart(4, "0")}`; s.nextInvoiceNumber = Number(s.nextInvoiceNumber || 1) + 1; writeJson(FILES.settings, s); return id; }
 function bumpProposal(id) { const s = getSettings(); const n = Number(String(id).match(/(\d+)$/)?.[1] || 0) + 1; if (n > Number(s.nextProposalNumber || 1)) { s.nextProposalNumber = n; writeJson(FILES.settings, s); } }
 function rebuildIndexes() { writeJson(FILES.proposals, scan(DIRS.proposals, "proposal")); writeJson(FILES.invoices, scan(DIRS.invoices, "invoice")); }
@@ -477,5 +579,7 @@ function weekKey(date) { const d = new Date(Date.UTC(date.getFullYear(), date.ge
 function num(v) { return Number(String(v || "0").replace(/[^0-9.-]/g, "")) || 0; }
 function money(v) { return "$" + Number(v || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 function status(v) { return String(v || "").toLowerCase().trim(); }
-function esc(v) { return String(v ?? "").replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[ch])); }
+function safeFile(v) { return String(v || "file").replace(/[^a-z0-9_-]+/gi, "_"); }
+function imageUrl(path) { return "file://" + encodeURI(path); }
+function esc(v) { return String(v ?? "").replace(/[&<>\"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[ch])); }
 async function notice(title, message) { const a = new Alert(); a.title = title; a.message = String(message || ""); a.addAction("OK"); await a.presentAlert(); }
