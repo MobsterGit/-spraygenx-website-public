@@ -1,4 +1,4 @@
-// Spray GenX WRA Manager — UX Integrated
+// SprayGenX-WRA-Manager-GOOD-LAYOUT-DO-NOT-EDIT.js
 // Version: 2026.07.03 Integrated-1
 // Two-column dashboard + built-in legacy Data index import.
 
