@@ -1,0 +1,55 @@
+name: Northeast Ohio Industry Insights
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate briefing
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-5
+        run: node scripts/generate-regional-update.mjs
+
+      - name: Open editorial draft pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "No content changes were generated."
+            exit 0
+          fi
+
+          DATE="$(TZ=America/New_York date +%F)"
+          BRANCH="automated/industry-insights-${DATE}-${GITHUB_RUN_ID}"
+          git config user.name "Spray GenX Insights Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git add data/regional-updates
+          git commit -m "Draft Northeast Ohio Industry Insights for ${DATE}"
+          git push --set-upstream origin "$BRANCH"
+
+          gh pr create \
+            --draft \
+            --base main \
+            --head "$BRANCH" \
+            --title "Industry Insights draft — ${DATE}" \
+            --body "Automated weekly draft for editorial review. Verify every live bid deadline, company name, pricing statement, regulatory claim, and source link before merging. Merging publishes the update to the website."
