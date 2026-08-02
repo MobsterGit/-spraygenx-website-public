@@ -133,8 +133,9 @@
 
   const renderArchive = articles => {
     if (!archive) return;
+    archive.setAttribute('aria-busy', 'false');
     if (!articles.length) {
-      archive.textContent = 'The first edition will appear here after publication.';
+      archive.textContent = 'No published editions are listed.';
       return;
     }
     archive.innerHTML = articles.map((article, index) => {
@@ -170,7 +171,8 @@
     .then(async index => {
       const files = Array.isArray(index.updates) ? index.updates.slice(0, 52) : [];
       if (!files.length) {
-        feed.innerHTML = '<div class="insights-empty"><strong>First edition coming soon.</strong><br>The Commercial Painting & Coatings Report will publish sourced market, product, pricing, bidding, safety and technical coverage for industry professionals.</div>';
+        feed.setAttribute('aria-busy', 'false');
+        feed.innerHTML = '<div class="insights-empty"><strong>No published report is currently available.</strong></div>';
         renderArchive([]);
         return;
       }
@@ -179,11 +181,12 @@
         return response.json();
       })));
       const totalIssues = articles.length;
+      feed.setAttribute('aria-busy', 'false');
       feed.innerHTML = articles.map((article, index) => renderArticle(article, totalIssues - index)).join('');
       renderArchive(articles);
       bindArticleTools(articles);
       if (publicationMeta && articles[0]) {
-        publicationMeta.textContent = `${issueLabel(totalIssues)} • ${formatDate(articles[0].date)} • Weekly digital edition`;
+        publicationMeta.textContent = `${issueLabel(totalIssues)} • ${formatDate(articles[0].date)} • Digital edition`;
       }
       if (location.hash) {
         const target = document.querySelector(location.hash);
@@ -192,7 +195,11 @@
     })
     .catch(error => {
       console.error('Commercial Painting & Coatings Report failed to load:', error);
-      feed.innerHTML = '<div class="insights-error">The latest report could not be loaded. Please check back shortly.</div>';
-      if (archive) archive.textContent = 'Archive temporarily unavailable.';
+      feed.setAttribute('aria-busy', 'false');
+      feed.innerHTML = '<div class="insights-error">The published report could not be loaded. Reload the page or contact Spray GenX.</div>';
+      if (archive) {
+        archive.setAttribute('aria-busy', 'false');
+        archive.textContent = 'The archive could not be loaded.';
+      }
     });
 })();
