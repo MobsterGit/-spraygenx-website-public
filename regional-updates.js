@@ -1,6 +1,7 @@
 (() => {
   const feed = document.getElementById('regionalUpdates');
   const archive = document.getElementById('reportArchive');
+  const publicationMeta = document.getElementById('publicationMeta');
   if (!feed) return;
 
   const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, char => ({
@@ -24,6 +25,12 @@
   };
 
   const articleId = article => `report-${String(article.date || '').replace(/[^0-9-]/g, '')}`;
+  const issueLabel = issue => `Volume 1 • Issue ${String(issue).padStart(3, '0')}`;
+  const readingMinutes = article => {
+    const text = [article.summary, article.takeaway, ...(article.sections || []).map(section => section.content)].join(' ');
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    return Math.max(2, Math.ceil(words / 220));
+  };
 
   const showConfirmation = text => {
     const note = document.createElement('div');
@@ -36,7 +43,7 @@
   const copyText = async text => {
     try {
       await navigator.clipboard.writeText(text);
-      showConfirmation('Link copied');
+      showConfirmation('Copied');
     } catch {
       const area = document.createElement('textarea');
       area.value = text;
@@ -44,7 +51,7 @@
       area.select();
       document.execCommand('copy');
       area.remove();
-      showConfirmation('Link copied');
+      showConfirmation('Copied');
     }
   };
 
@@ -64,10 +71,11 @@
     }
   };
 
-  const renderArticle = article => {
+  const renderArticle = (article, issue) => {
     const sections = Array.isArray(article.sections) ? article.sections : [];
     const sources = Array.isArray(article.sources) ? article.sources : [];
     const id = articleId(article);
+    const minutes = readingMinutes(article);
     const sectionHtml = sections.map(section => `
       <section class="insights-card">
         <h3>${escapeHtml(section.heading)}</h3>
@@ -82,6 +90,7 @@
 
     return `<article class="insights-article" id="${id}" data-report-date="${escapeHtml(article.date)}">
       <header class="insights-article-header">
+        <div class="insights-issue-line"><span>${issueLabel(issue)}</span><span>${minutes} minute read</span></div>
         <div class="insights-meta"><span>${escapeHtml(formatDate(article.date))}</span><span>Commercial Painting &amp; Coatings Report</span></div>
         <h2>${escapeHtml(article.title)}</h2>
         <p class="insights-summary">${escapeHtml(article.summary)}</p>
@@ -128,7 +137,10 @@
       archive.textContent = 'The first edition will appear here after publication.';
       return;
     }
-    archive.innerHTML = articles.map(article => `<a href="#${articleId(article)}"><span>${escapeHtml(formatDate(article.date))}</span><span>View →</span></a>`).join('');
+    archive.innerHTML = articles.map((article, index) => {
+      const issue = articles.length - index;
+      return `<a href="#${articleId(article)}"><span>${escapeHtml(formatDate(article.date))}</span><span>${escapeHtml(issueLabel(issue))}</span></a>`;
+    }).join('');
   };
 
   const bindGlobalTools = () => {
@@ -166,9 +178,13 @@
         if (!response.ok) throw new Error(`Unable to load ${file}`);
         return response.json();
       })));
-      feed.innerHTML = articles.map(renderArticle).join('');
+      const totalIssues = articles.length;
+      feed.innerHTML = articles.map((article, index) => renderArticle(article, totalIssues - index)).join('');
       renderArchive(articles);
       bindArticleTools(articles);
+      if (publicationMeta && articles[0]) {
+        publicationMeta.textContent = `${issueLabel(totalIssues)} • ${formatDate(articles[0].date)} • Weekly digital edition`;
+      }
       if (location.hash) {
         const target = document.querySelector(location.hash);
         if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
