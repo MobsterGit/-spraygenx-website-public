@@ -1,0 +1,20 @@
+/* Commercial Painting & Coatings Report — publication refinements */
+.report-masthead{background:linear-gradient(135deg,#071a2d 0%,#0b3157 58%,#0b2744 100%);border-bottom:0;color:#fff}
+.report-masthead-inner{grid-template-columns:190px 1fr;min-height:220px;padding-top:34px;padding-bottom:34px}
+.report-publisher{border-right:1px solid rgba(255,255,255,.22);padding-right:34px}
+.report-publisher img{filter:brightness(0) invert(1);opacity:.96}
+.report-title-block{padding:0 18px}
+.report-edition{color:#8dc5ef}
+.report-title-block h1{color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.18)}
+.report-title-block h1 span{color:#ff6f61}
+.report-title-block p{color:rgba(255,255,255,.78)}
+.report-publication-meta{margin-top:16px;color:#d5e7f5;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.report-nav{border-top:1px solid rgba(255,255,255,.12);background:#061522}
+.report-nav a:hover,.report-nav a.active{background:#fff;color:#0a2947}
+.insights-issue-line{display:flex;justify-content:space-between;gap:18px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #d9e0e6;color:#36536b;font-size:.7rem;font-weight:900;letter-spacing:.095em;text-transform:uppercase}
+.insights-article{scroll-margin-top:22px}
+.insights-article:target{outline:3px solid rgba(20,113,177,.22);outline-offset:4px}
+.insights-card p{max-width:72ch}
+.report-single-developer-note{margin-top:14px;color:#6c8193;font-size:.78rem;line-height:1.55}
+@media(max-width:680px){.report-masthead-inner{min-height:auto}.report-publisher img{max-height:70px;object-fit:contain}.report-title-block{padding:0}.report-publication-meta{font-size:.66rem;line-height:1.55}.insights-issue-line{align-items:flex-start;flex-direction:column;gap:5px}}
+@media print{.report-masthead{background:#fff!important;color:#000!important}.report-publisher img{filter:none}.report-title-block h1,.report-title-block p,.report-edition,.report-publication-meta{color:#000!important;text-shadow:none}}
