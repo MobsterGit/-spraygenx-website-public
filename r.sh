@@ -37,7 +37,17 @@ if len(matches) != 1:
 
 app_id = matches[0]["appId"]
 with urllib.request.urlopen(RULES_URL, timeout=30) as response:
-    rules = json.load(response)
+    raw_rules = json.load(response)
+
+# Amplify's API requires optional fields such as condition to be omitted,
+# not sent as JSON null.
+rules = []
+for rule in raw_rules:
+    clean = {key: value for key, value in rule.items() if value is not None}
+    if not clean.get("condition"):
+        clean.pop("condition", None)
+    clean["status"] = str(clean["status"])
+    rules.append(clean)
 
 client.update_app(appId=app_id, customRules=rules)
 check = client.get_app(appId=app_id)["app"].get("customRules", [])
