@@ -1,5 +1,6 @@
 [
   {"source":"https://www.spraygenx.com","target":"https://spraygenx.com","status":"301","condition":null},
+  {"source":"https://www.spraygenx.com/<*>","target":"https://spraygenx.com/<*>","status":"301","condition":null},
   {"source":"/index.html","target":"https://spraygenx.com/","status":"301","condition":null},
 
   {"source":"/contact","target":"https://spraygenx.com/contact.html","status":"301","condition":null},
@@ -9,8 +10,8 @@
   {"source":"/news","target":"https://spraygenx.com/regional-updates.html","status":"301","condition":null},
   {"source":"/news/","target":"https://spraygenx.com/regional-updates.html","status":"301","condition":null},
 
-  {"source":"/spray-genx-industrial-painting","target":"https://spraygenx.com/services.html","status":"301","condition":null},
-  {"source":"/spray-genx-industrial-painting/","target":"https://spraygenx.com/services.html","status":"301","condition":null},
+  {"source":"/spray-genx-industrial-painting","target":"https://spraygenx.com/industrial-ceiling-painting/","status":"301","condition":null},
+  {"source":"/spray-genx-industrial-painting/","target":"https://spraygenx.com/industrial-ceiling-painting/","status":"301","condition":null},
   {"source":"/low-risk-and-high-result","target":"https://spraygenx.com/services.html","status":"301","condition":null},
   {"source":"/low-risk-and-high-result/","target":"https://spraygenx.com/services.html","status":"301","condition":null},
   {"source":"/industrial-paint-guide","target":"https://spraygenx.com/services.html","status":"301","condition":null},
