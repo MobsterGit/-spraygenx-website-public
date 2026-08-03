@@ -35,7 +35,7 @@ jobs:
       - name: Generate and validate sitemap
         run: python tools/generate_sitemap.py
 
-      - name: Open or update sitemap pull request
+      - name: Stage sitemap update safely
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SITEMAP_BRANCH: automation/update-sitemap
@@ -58,15 +58,23 @@ jobs:
             --base main \
             --state open \
             --json number \
-            --jq '.[0].number // empty')
+            --jq '.[0].number // empty' 2>/dev/null || true)
 
           if [ -n "$EXISTING_PR" ]; then
             echo "Updated existing sitemap pull request #$EXISTING_PR."
+            exit 0
+          fi
+
+          if gh pr create \
+            --repo "$GITHUB_REPOSITORY" \
+            --base main \
+            --head "$SITEMAP_BRANCH" \
+            --title "Automatically update sitemap" \
+            --body "Automated sitemap refresh generated from the current indexable pages."; then
+            echo "Created sitemap pull request."
           else
-            gh pr create \
-              --repo "$GITHUB_REPOSITORY" \
-              --base main \
-              --head "$SITEMAP_BRANCH" \
-              --title "Automatically update sitemap" \
-              --body "Automated sitemap refresh generated from the current indexable pages."
+            echo "::warning::The sitemap branch was updated, but repository settings prevent GitHub Actions from creating pull requests."
+            echo "### Sitemap update staged" >> "$GITHUB_STEP_SUMMARY"
+            echo "The generated sitemap is available on branch \`$SITEMAP_BRANCH\`." >> "$GITHUB_STEP_SUMMARY"
+            echo "Open a pull request from that branch to \`main\` when convenient." >> "$GITHUB_STEP_SUMMARY"
           fi
