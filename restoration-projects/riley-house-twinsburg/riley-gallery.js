@@ -68,6 +68,48 @@
     });
   }
 
+  // Add the completed exterior walkaround beneath the before-and-after presentation.
+  const caseMeta = document.querySelector('.case-meta');
+  if (caseMeta && !document.querySelector('.project-video-section')) {
+    const style = document.createElement('style');
+    style.textContent = `
+      .project-video-section{padding:72px 0;background:#f4f7fb}
+      .project-video-section .video-shell{width:min(1180px,calc(100% - 40px));margin:0 auto}
+      .project-video-section .video-copy{max-width:760px;margin-bottom:28px}
+      .project-video-section .video-copy h2{margin:8px 0 12px}
+      .project-video-frame{position:relative;aspect-ratio:16/9;background:#061325;border-radius:8px;overflow:hidden;box-shadow:0 20px 55px rgba(6,19,37,.18)}
+      .project-video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+      .project-video-link{margin-top:14px;font-size:.95rem}
+      .project-video-link a{font-weight:700}
+      @media(max-width:760px){.project-video-section{padding:48px 0}.project-video-section .video-shell{width:min(100% - 24px,1180px)}}
+    `;
+    document.head.appendChild(style);
+
+    const videoSection = document.createElement('section');
+    videoSection.className = 'project-video-section';
+    videoSection.setAttribute('aria-labelledby', 'rileyWalkaroundTitle');
+    videoSection.innerHTML = `
+      <div class="video-shell">
+        <div class="video-copy">
+          <div class="section-label">Completed Exterior Video</div>
+          <h2 id="rileyWalkaroundTitle">Riley House exterior walkaround</h2>
+          <p class="lead">A full exterior walkaround documenting the completed historic restoration from the front elevation through the side and rear architectural details.</p>
+        </div>
+        <div class="project-video-frame">
+          <iframe
+            src="https://www.canva.com/design/DAHRQ7PEzq0/view?embed"
+            title="Riley House completed exterior walkaround video"
+            loading="lazy"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="project-video-link"><a href="https://www.canva.com/d/YsixGzBL7YXCMw4" target="_blank" rel="noopener">Open the full walkaround video in a new window →</a></p>
+      </div>
+    `;
+    caseMeta.insertAdjacentElement('afterend', videoSection);
+  }
+
   const items = [...document.querySelectorAll('.gallery-item')];
   const lightbox = document.getElementById('projectLightbox');
   if (!items.length || !lightbox) return;
