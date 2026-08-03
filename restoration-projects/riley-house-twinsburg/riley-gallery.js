@@ -97,14 +97,15 @@
         </div>
         <div class="project-video-frame">
           <iframe
-            src="https://www.canva.com/design/DAHRQ7PEzq0/view?embed"
-            title="Riley House completed exterior walkaround video"
+            src="https://www.youtube-nocookie.com/embed/RaytRCK-6m0?rel=0"
+            title="Historic Riley House exterior restoration completed walkaround in Twinsburg, Ohio"
             loading="lazy"
-            allow="autoplay; fullscreen; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen>
           </iframe>
         </div>
-        <p class="project-video-link"><a href="https://www.canva.com/d/YsixGzBL7YXCMw4" target="_blank" rel="noopener">Open the full walkaround video in a new window →</a></p>
+        <p class="project-video-link"><a href="https://youtu.be/RaytRCK-6m0" target="_blank" rel="noopener">Watch the completed walkaround on YouTube →</a></p>
       </div>
     `;
     caseMeta.insertAdjacentElement('afterend', videoSection);
