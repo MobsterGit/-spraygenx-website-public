@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: generate-sitemap-${{ github.ref }}
@@ -34,7 +35,10 @@ jobs:
       - name: Generate and validate sitemap
         run: python tools/generate_sitemap.py
 
-      - name: Commit sitemap when changed
+      - name: Open or update sitemap pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SITEMAP_BRANCH: automation/update-sitemap
         run: |
           if git diff --quiet -- sitemap.xml; then
             echo "sitemap.xml is already current."
@@ -43,6 +47,26 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$SITEMAP_BRANCH"
           git add sitemap.xml
           git commit -m "Automatically update sitemap"
-          git push
+          git push --force origin "HEAD:$SITEMAP_BRANCH"
+
+          EXISTING_PR=$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --head "$SITEMAP_BRANCH" \
+            --base main \
+            --state open \
+            --json number \
+            --jq '.[0].number // empty')
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "Updated existing sitemap pull request #$EXISTING_PR."
+          else
+            gh pr create \
+              --repo "$GITHUB_REPOSITORY" \
+              --base main \
+              --head "$SITEMAP_BRANCH" \
+              --title "Automatically update sitemap" \
+              --body "Automated sitemap refresh generated from the current indexable pages."
+          fi
