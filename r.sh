@@ -61,6 +61,7 @@ PY
 sleep 8
 printf '\nLive checks:\n'
 for url in \
+  "https://www.spraygenx.com/spray-genx-industrial-painting/" \
   "https://spraygenx.com/spray-genx-industrial-painting/" \
   "https://spraygenx.com/contact/" \
   "https://spraygenx.com/competitive-ceiling-spray-rates/" \
