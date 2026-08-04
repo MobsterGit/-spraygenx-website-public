@@ -9,7 +9,10 @@ import boto3
 
 REGION = "us-east-1"
 REPO_MARKER = "MobsterGit/-spraygenx-website-public"
-RULES_URL = "https://raw.githubusercontent.com/MobsterGit/-spraygenx-website-public/main/amplify-redirects.json"
+RULES_URLS = [
+    "https://raw.githubusercontent.com/MobsterGit/-spraygenx-website-public/main/amplify-redirects-recovery.json",
+    "https://raw.githubusercontent.com/MobsterGit/-spraygenx-website-public/main/amplify-redirects.json",
+]
 
 client = boto3.client("amplify", region_name=REGION)
 apps = []
@@ -36,8 +39,21 @@ if len(matches) != 1:
     sys.exit(1)
 
 app_id = matches[0]["appId"]
-with urllib.request.urlopen(RULES_URL, timeout=30) as response:
-    raw_rules = json.load(response)
+
+# Recovery rules are loaded first so they override older mappings with the
+# same source. The base redirect file supplies the remaining site rules and
+# the final 404 catch-all.
+raw_rules = []
+seen = set()
+for rules_url in RULES_URLS:
+    with urllib.request.urlopen(rules_url, timeout=30) as response:
+        source_rules = json.load(response)
+    for rule in source_rules:
+        key = (rule.get("source"), rule.get("condition"))
+        if key in seen:
+            continue
+        seen.add(key)
+        raw_rules.append(rule)
 
 # Amplify's API requires optional fields such as condition to be omitted,
 # not sent as JSON null.
@@ -62,10 +78,13 @@ sleep 8
 printf '\nLive checks:\n'
 for url in \
   "https://www.spraygenx.com/spray-genx-industrial-painting/" \
-  "https://spraygenx.com/spray-genx-industrial-painting/" \
-  "https://spraygenx.com/contact/" \
-  "https://spraygenx.com/competitive-ceiling-spray-rates/" \
-  "https://www.spraygenx.com/services.html"
+  "https://www.spraygenx.com/flat-black-ceiling-spray/" \
+  "https://www.spraygenx.com/commercial-dryfall-ceiling-painting-dealership/" \
+  "https://spraygenx.com/ceiling-spray-painting/" \
+  "https://spraygenx.com/industrial-painting/dry-fall-painting/" \
+  "https://spraygenx.com/industrial-spray/" \
+  "https://spraygenx.com/projects/" \
+  "https://spraygenx.com/contact-us/"
 do
   printf '%s -> ' "$url"
   curl -sSI "$url" | awk 'BEGIN{s="";l=""} /^HTTP\//{s=$2} /^[Ll]ocation:/{l=$2} END{gsub("\r","",l); print s, l}'
