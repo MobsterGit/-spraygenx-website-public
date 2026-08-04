@@ -1,4 +1,6 @@
 [
+  {"source":"https://www.spraygenx.com/spray-genx-industrial-painting","target":"https://spraygenx.com/industrial-ceiling-painting/","status":"301","condition":null},
+  {"source":"https://www.spraygenx.com/spray-genx-industrial-painting/","target":"https://spraygenx.com/industrial-ceiling-painting/","status":"301","condition":null},
   {"source":"https://www.spraygenx.com","target":"https://spraygenx.com","status":"301","condition":null},
   {"source":"https://www.spraygenx.com/<*>","target":"https://spraygenx.com/<*>","status":"301","condition":null},
   {"source":"/index.html","target":"https://spraygenx.com/","status":"301","condition":null},
