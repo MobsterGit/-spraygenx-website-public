@@ -1,5 +1,6 @@
-// Spray GenX Image Manager — Recovered Master v3.0
+// Spray GenX Image Manager — Recovered Master v3.1
 // Merged from working Portfolio Studio, Inbox Uploader, and WRA photo picker.
+// Adds true multi-photo import through the iOS Share Sheet and true multi-file selection through Files.
 // Private Scriptable control panel. Replace only GITHUB_TOKEN yourself.
 // No Keychain, no token prompts, no hidden auth behavior.
 
@@ -36,8 +37,6 @@ async function confirm(title,msg,yes="Yes"){let a=new Alert();a.title=title;a.me
 async function ask(title,placeholder,value=""){let a=new Alert();a.title=title;a.addTextField(placeholder,value);a.addAction("OK");a.addCancelAction("Cancel");let r=await a.presentAlert();if(r<0)return null;return a.textFieldValue(0).trim()}
 async function askMany(title,msg,fields){let a=new Alert();a.title=title;if(msg)a.message=msg;fields.forEach(f=>a.addTextField(f.p||"",f.v||""));a.addAction("OK");a.addCancelAction("Cancel");let r=await a.presentAlert();if(r<0)return null;return fields.map((_,i)=>a.textFieldValue(i).trim())}
 async function choose(title,items,msg=""){let a=new Alert();a.title=title;if(msg)a.message=msg;items.forEach(x=>a.addAction(x.label||String(x)));a.addCancelAction("Cancel");let i=await a.presentSheet();return i<0?null:items[i]}
-async function yesNo(title,msg,yes="Add More",no="Done"){let a=new Alert();a.title=title;a.message=msg;a.addAction(yes);a.addCancelAction(no);return await a.presentAlert()===0}
-async function pickerOnce(){let out;try{out=await DocumentPicker.openFile([],true)}catch(e){out=await DocumentPicker.openFile()}return Array.isArray(out)?out:[out]}
 
 async function gh(path,method="GET",body=null){
   if(!GITHUB_TOKEN||GITHUB_TOKEN==="PASTE_NEW_TOKEN_HERE") throw new Error("Paste your GitHub token into GITHUB_TOKEN first.");
@@ -52,49 +51,59 @@ async function getJson(path){let f=await gh(path);return{json:JSON.parse(decode(
 async function putJson(path,obj,sha,msg){return await gh(path,"PUT",{message:msg,content:b64(JSON.stringify(obj,null,2)+"\n"),sha,branch:BRANCH})}
 async function putBinary(path,data,msg){return await gh(path,"PUT",{message:msg,content:data.toBase64String(),branch:BRANCH})}
 
-async function uploadPhotos(){
+async function uploadImageObjects(images,sourceLabel="Photos"){
+  images=(images||[]).filter(Boolean).slice(0,MAX_BATCH);
+  if(!images.length){await alertMsg("No Photos","No photos were received.");return}
   let folder=await ask("Upload Batch / Project","Example: westfield-control-room-floor",today());
   if(folder===null)return;
   folder=cleanFolder(folder);
-  let selected=[];
-  while(selected.length<MAX_BATCH){
-    let img;
-    try{img=await Photos.fromLibrary()}catch(e){break}
-    if(!img)break;
-    selected.push(img);
-    if(selected.length>=MAX_BATCH)break;
-    let more=await yesNo("Add Another Photo?",`${selected.length} selected. Add another?\n\nLimit: ${MAX_BATCH}`,"Add Another","Upload Now");
-    if(!more)break;
-  }
-  if(!selected.length){await alertMsg("No Photos","No photos selected.");return}
   let run=stamp(),uploaded=[],fm=FileManager.local();
-  for(let i=0;i<selected.length;i++){
+  for(let i=0;i<images.length;i++){
     let n=String(i+1).padStart(3,"0"),safe=`photo-${run}-${n}.jpg`;
     let temp=fm.joinPath(fm.temporaryDirectory(),safe);
-    fm.writeImage(temp,selected[i]);
+    fm.writeImage(temp,images[i]);
     let repoPath=`${INBOX_ROOT}/${folder}/${safe}`;
     await putBinary(repoPath,fm.read(temp),`Inbox upload: ${safe}`);
     uploaded.push(repoPath);
     try{fm.remove(temp)}catch(_){}
   }
-  await alertMsg("Upload Complete",`${uploaded.length} photo(s) uploaded to:\n${INBOX_ROOT}/${folder}/\n\nThey are already true JPEG files. The existing GitHub conversion/index workflow can process them normally.`);
+  await alertMsg("Upload Complete",`${uploaded.length} photo(s) uploaded from ${sourceLabel} to:\n${INBOX_ROOT}/${folder}/`);
 }
 
-async function uploadRawLegacy(){
+async function uploadOnePhoto(){
+  let img;
+  try{img=await Photos.fromLibrary()}catch(e){return}
+  if(!img)return;
+  await uploadImageObjects([img],"Photo Library");
+}
+
+async function uploadSharedPhotos(){
+  let images=Array.isArray(args.images)?args.images.filter(Boolean):[];
+  if(!images.length){
+    await alertMsg("No Shared Photos","To import several photos at once:\n\n1. Open Photos\n2. Tap Select\n3. Choose multiple photos\n4. Tap Share\n5. Choose Scriptable / this Image Manager");
+    return false;
+  }
+  await uploadImageObjects(images,`Share Sheet (${images.length} selected)`);
+  return true;
+}
+
+async function uploadMultipleFiles(){
   let folder=await ask("Inbox Folder Name","Example: westfield-control-room-floor",today());
   if(folder===null)return;
   folder=cleanFolder(folder);
-  let paths=[],seen=new Set();
-  while(paths.length<MAX_BATCH){
-    let picked=await pickerOnce();
-    for(let p of picked){if(!p||seen.has(p))continue;seen.add(p);paths.push(p);if(paths.length>=MAX_BATCH)break}
-    if(paths.length>=MAX_BATCH||picked.length>1)break;
-    if(!await yesNo("Add More Files?",`${paths.length} file(s) selected.\n\nLimit: ${MAX_BATCH}`,"Add More","Upload Now"))break;
+  let paths=[];
+  try{
+    paths=await DocumentPicker.open(["public.image"]);
+  }catch(e){
+    await alertMsg("File Picker Error",String(e.message||e));
+    return;
   }
+  if(!Array.isArray(paths))paths=paths?[paths]:[];
+  paths=unique(paths).slice(0,MAX_BATCH);
   if(!paths.length){await alertMsg("No Files","No files selected.");return}
   let bad=paths.filter(p=>!RAW_ALLOWED.includes(ext(p)));
   if(bad.length){
-    await alertMsg("Unsupported File",`Detected: ${unique(bad.map(p=>ext(p)||"(no extension)")).join(", ")}\n\nChoose supported image files or use \"Choose Photos — One at a Time\".`);
+    await alertMsg("Unsupported File",`Detected: ${unique(bad.map(p=>ext(p)||"(no extension)")).join(", ")}\n\nChoose supported image files.`);
     return;
   }
   let fm=FileManager.local(),run=stamp(),uploaded=[];
@@ -109,13 +118,20 @@ async function uploadRawLegacy(){
 }
 
 async function uploadMenu(){
-  let a=await choose("Upload Images",[
-    {label:`Select Multiple Images / Files — Batch (up to ${MAX_BATCH})`,id:"batch"},
-    {label:"Choose Photos — One at a Time",id:"photos"}
-  ],"Batch lets you select multiple image files at once. Photos uses your iPhone Photo Library.");
+  let shared=Array.isArray(args.images)&&args.images.length;
+  let items=[];
+  if(shared)items.push({label:`Import ${Math.min(args.images.length,MAX_BATCH)} Shared Photos Now`,id:"shared"});
+  items.push(
+    {label:"Import Multiple Photos — Share Sheet",id:"sharehelp"},
+    {label:`Select Multiple Files — Files (up to ${MAX_BATCH})`,id:"files"},
+    {label:"Choose One Photo — Photo Library",id:"one"}
+  );
+  let a=await choose("Upload Images",items,"For true multi-photo selection from Photos, select the photos in Apple Photos first and send them to this script with the Share button.");
   if(!a)return;
-  if(a.id==="batch")await uploadRawLegacy();
-  if(a.id==="photos")await uploadPhotos();
+  if(a.id==="shared")await uploadSharedPhotos();
+  if(a.id==="sharehelp")await alertMsg("Multiple Photos","Open Apple Photos → Select → choose all photos → Share → Scriptable → run this Image Manager. The entire selection will upload as one batch.");
+  if(a.id==="files")await uploadMultipleFiles();
+  if(a.id==="one")await uploadOnePhoto();
 }
 
 function normalizeLibrary(l){
@@ -171,13 +187,19 @@ async function publishConverted(){let cf;try{cf=await getJson(CONVERTED_PATH)}ca
 async function healthCheck(){let rows=[];LIB.json.blocks.forEach(b=>{let h=health(b);if(h.length)rows.push(`${b.title}: ${h.join(", ")}`)});await alertMsg("Health Check",rows.length?rows.join("\n\n"):"No obvious issues found.")}
 async function counts(){let blocks=LIB.json.blocks||[],imgs=blocks.reduce((n,b)=>n+b.images.filter(i=>i.visible!==false).length,0),published=blocks.filter(b=>b.visible!==false&&b.status!=="draft").length;await alertMsg("Studio Counts",`Blocks: ${blocks.length}\nPublished: ${published}\nVisible images: ${imgs}\nCategories: ${(LIB.json.categories||[]).length}`)}
 async function exportJson(){Pasteboard.copy(JSON.stringify(LIB.json,null,2));await alertMsg("Exported","Current image-library.json copied to clipboard.")}
-async function main(){while(true){let a=await choose("Spray GenX Image Manager v3.0",[
-  {label:"Upload Images",id:"upload"},{label:"Publish Converted Images",id:"converted"},{label:"+ New Image Block",id:"new"},{label:"Edit / View Image Blocks",id:"manage"},{label:"Health Check",id:"health"},{label:"Counts",id:"counts"},{label:"Export JSON",id:"export"},{label:"Reload Library",id:"reload"},{label:"Done",id:"done"}
-]); if(!a||a.id==="done")break;
-  if(a.id==="upload"){await uploadMenu();continue}
-  if(a.id==="reload"){LIB=null;PORT=null;await ensureLoaded();continue}
-  if(!await ensureLoaded())continue;
-  if(a.id==="new")await newBlock(); if(a.id==="manage")await manageBlock(); if(a.id==="converted")await publishConverted(); if(a.id==="health")await healthCheck(); if(a.id==="counts")await counts(); if(a.id==="export")await exportJson();
-}}
+async function main(){
+  if(Array.isArray(args.images)&&args.images.length){
+    await uploadSharedPhotos();
+    return;
+  }
+  while(true){let a=await choose("Spray GenX Image Manager v3.1",[
+    {label:"Upload Images",id:"upload"},{label:"Publish Converted Images",id:"converted"},{label:"+ New Image Block",id:"new"},{label:"Edit / View Image Blocks",id:"manage"},{label:"Health Check",id:"health"},{label:"Counts",id:"counts"},{label:"Export JSON",id:"export"},{label:"Reload Library",id:"reload"},{label:"Done",id:"done"}
+  ]); if(!a||a.id==="done")break;
+    if(a.id==="upload"){await uploadMenu();continue}
+    if(a.id==="reload"){LIB=null;PORT=null;await ensureLoaded();continue}
+    if(!await ensureLoaded())continue;
+    if(a.id==="new")await newBlock(); if(a.id==="manage")await manageBlock(); if(a.id==="converted")await publishConverted(); if(a.id==="health")await healthCheck(); if(a.id==="counts")await counts(); if(a.id==="export")await exportJson();
+  }
+}
 
 main().catch(async e=>{await alertMsg("Studio Error",String(e.message||e))});
