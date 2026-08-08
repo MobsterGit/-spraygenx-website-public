@@ -1,6 +1,15 @@
 (() => {
   'use strict';
 
+  const recordGrid = document.querySelector('.record-grid');
+  if (recordGrid && !recordGrid.querySelector('[data-record="westfield-floor"]')) {
+    const article = document.createElement('article');
+    article.className = 'record-card';
+    article.dataset.record = 'westfield-floor';
+    article.innerHTML = '<span class="record-id">SGX-J-2026-007</span><p>Failure Analysis</p><h3>Westfield Control Room Floor Repaint</h3><a href="westfield-control-room-floor-repaint/">Read failure analysis →</a>';
+    recordGrid.prepend(article);
+  }
+
   const input = document.getElementById('journalSearch');
   const grid = document.querySelector('[data-journal-grid]');
   const status = document.getElementById('journalSearchStatus');
