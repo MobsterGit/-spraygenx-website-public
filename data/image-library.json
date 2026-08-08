@@ -51,6 +51,8 @@
   ],
   "blocks": [
     {
+      "id": "industrial-floors-watrrborne-20260808072351",
+      "slug": "industrial-floors-watrrborne",
       "title": "Industrial-Floors-Watrrborne",
       "summary": "Completed Spray GenX project.",
       "customer": "Westfield",
@@ -62,24 +64,23 @@
         "jobsite-process"
       ],
       "tags": [],
+      "status": "hidden",
+      "visible": false,
       "weight": 25,
-      "status": "draft",
-      "siteLocations": [
-        "library",
-        "latest",
-        "search"
-      ],
-      "images": [],
-      "cover": "",
       "priority": 25,
       "views": {
         "library": true,
         "latest": true,
         "search": true
       },
-      "visible": true,
-      "id": "industrial-floors-watrrborne-20260808072351",
-      "slug": "industrial-floors-watrrborne"
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "",
+      "images": []
     },
     {
       "id": "industrial-floors-waterborne-20260808014411",
