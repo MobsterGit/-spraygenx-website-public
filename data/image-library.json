@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-02",
+  "updated": "2026-08-08",
   "notes": "Bulk image library for Spray GenX job photos. Scriptable/AI uploads will add image blocks here and the public photo-library.html page will render them.",
   "categories": [
     {
@@ -51,6 +51,37 @@
   ],
   "blocks": [
     {
+      "title": "Industrial Floors Waterborne",
+      "summary": "Completed Spray GenX project.",
+      "customer": "Westfield",
+      "location": "Westfield Ohio",
+      "date": "2026-08-08",
+      "category": "uncategorized",
+      "categories": [
+        "uncategorized",
+        "jobsite-process"
+      ],
+      "tags": [],
+      "weight": 25,
+      "status": "draft",
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "images": [],
+      "cover": "",
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "visible": true,
+      "id": "industrial-floors-waterborne-20260808014411",
+      "slug": "industrial-floors-waterborne"
+    },
+    {
       "id": "commercial-painting-storefront-and-ceilings-20260629160807",
       "slug": "commercial-painting-storefront-and-ceilings",
       "title": "commercial Painting storefront and ceilings",
@@ -96,8 +127,8 @@
       "date": "2026-06-29",
       "category": "residential-interiors",
       "categories": [
-        "uncategorized",
-        "residential-interiors"
+        "residential-interiors",
+        "uncategorized"
       ],
       "tags": [
         "black ceiling",
