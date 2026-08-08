@@ -63,7 +63,10 @@
         "uncategorized",
         "jobsite-process"
       ],
-      "tags": [],
+      "tags": [
+        "Floor",
+        "Commercial"
+      ],
       "status": "published",
       "visible": true,
       "weight": 25,
