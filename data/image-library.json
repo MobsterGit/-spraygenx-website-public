@@ -64,8 +64,8 @@
         "jobsite-process"
       ],
       "tags": [],
-      "status": "hidden",
-      "visible": false,
+      "status": "published",
+      "visible": true,
       "weight": 25,
       "priority": 25,
       "views": {
