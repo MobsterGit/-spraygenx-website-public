@@ -94,7 +94,7 @@ async function uploadRawLegacy(){
   if(!paths.length){await alertMsg("No Files","No files selected.");return}
   let bad=paths.filter(p=>!RAW_ALLOWED.includes(ext(p)));
   if(bad.length){
-    await alertMsg("Unsupported Raw File",`Detected: ${unique(bad.map(p=>ext(p)||"(no extension)")).join(", ")}\n\nUse \"Upload Photos\" instead. That route uses Scriptable's Photos picker and avoids iPhone file-extension problems.`);
+    await alertMsg("Unsupported File",`Detected: ${unique(bad.map(p=>ext(p)||"(no extension)")).join(", ")}\n\nChoose supported image files or use \"Choose Photos — One at a Time\".`);
     return;
   }
   let fm=FileManager.local(),run=stamp(),uploaded=[];
@@ -105,17 +105,17 @@ async function uploadRawLegacy(){
     await putBinary(repoPath,fm.read(p),`Inbox upload: ${safe}`);
     uploaded.push(repoPath);
   }
-  await alertMsg("Raw Upload Complete",`${uploaded.length} file(s) uploaded to:\n${INBOX_ROOT}/${folder}/`);
+  await alertMsg("Batch Upload Complete",`${uploaded.length} file(s) uploaded to:\n${INBOX_ROOT}/${folder}/`);
 }
 
 async function uploadMenu(){
   let a=await choose("Upload Images",[
-    {label:"Upload Photos — Recommended",id:"photos"},
-    {label:"Upload Raw Files — Legacy",id:"raw"}
-  ],"Recommended uses the proven WRA Photos picker and writes real JPEG files before upload.");
+    {label:`Select Multiple Images / Files — Batch (up to ${MAX_BATCH})`,id:"batch"},
+    {label:"Choose Photos — One at a Time",id:"photos"}
+  ],"Batch lets you select multiple image files at once. Photos uses your iPhone Photo Library.");
   if(!a)return;
+  if(a.id==="batch")await uploadRawLegacy();
   if(a.id==="photos")await uploadPhotos();
-  if(a.id==="raw")await uploadRawLegacy();
 }
 
 function normalizeLibrary(l){
