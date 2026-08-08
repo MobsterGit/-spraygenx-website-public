@@ -51,6 +51,102 @@
   ],
   "blocks": [
     {
+      "id": "2026-08-08-20260808142126",
+      "slug": "2026-08-08",
+      "title": "2026 08 08",
+      "summary": "Completed Spray GenX project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-08-08",
+      "category": "uncategorized",
+      "categories": [
+        "uncategorized",
+        "jobsite-process"
+      ],
+      "tags": [],
+      "status": "published",
+      "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/inbox/2026-08-08/img-4370-20260808142105-001.jpg",
+      "images": [
+        {
+          "path": "images/inbox/2026-08-08/img-4370-20260808142105-001.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": "cover"
+        },
+        {
+          "path": "images/inbox/2026-08-08/img-4377-20260808142105-002.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/2026-08-08/img-4371-20260808142105-003.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/2026-08-08/img-4407-20260808142105-004.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/2026-08-08/img-4399-20260808142105-005.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/2026-08-08/img-4362-20260808142105-006.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/2026-08-08/img-4380-20260808142105-007.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/2026-08-08/img-4369-20260808142105-008.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/2026-08-08/img-4368-20260808142105-009.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        }
+      ]
+    },
+    {
       "id": "industrial-floors-waterborne-20260808014411",
       "slug": "industrial-floors-waterborne",
       "title": "Industrial Floors Waterborne",
