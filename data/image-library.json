@@ -51,10 +51,10 @@
   ],
   "blocks": [
     {
-      "title": "Industrial Floors Waterborne",
+      "title": "Industrial-Floors-Watrrborne",
       "summary": "Completed Spray GenX project.",
       "customer": "Westfield",
-      "location": "Westfield Ohio",
+      "location": "Westfield, Ohio",
       "date": "2026-08-08",
       "category": "uncategorized",
       "categories": [
@@ -78,8 +78,40 @@
         "search": true
       },
       "visible": true,
+      "id": "industrial-floors-watrrborne-20260808072351",
+      "slug": "industrial-floors-watrrborne"
+    },
+    {
       "id": "industrial-floors-waterborne-20260808014411",
-      "slug": "industrial-floors-waterborne"
+      "slug": "industrial-floors-waterborne",
+      "title": "Industrial Floors Waterborne",
+      "summary": "Completed Spray GenX project.",
+      "customer": "Westfield",
+      "location": "Westfield Ohio",
+      "date": "2026-08-08",
+      "category": "uncategorized",
+      "categories": [
+        "uncategorized",
+        "jobsite-process"
+      ],
+      "tags": [],
+      "status": "draft",
+      "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "",
+      "images": []
     },
     {
       "id": "commercial-painting-storefront-and-ceilings-20260629160807",
