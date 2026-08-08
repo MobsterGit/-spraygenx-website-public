@@ -51,38 +51,6 @@
   ],
   "blocks": [
     {
-      "id": "industrial-floors-watrrborne-20260808072351",
-      "slug": "industrial-floors-watrrborne",
-      "title": "Industrial-Floors-Watrrborne",
-      "summary": "Completed Spray GenX project.",
-      "customer": "Westfield",
-      "location": "Westfield, Ohio",
-      "date": "2026-08-08",
-      "category": "uncategorized",
-      "categories": [
-        "uncategorized",
-        "jobsite-process"
-      ],
-      "tags": [],
-      "status": "published",
-      "visible": true,
-      "weight": 25,
-      "priority": 25,
-      "views": {
-        "library": true,
-        "latest": true,
-        "search": true
-      },
-      "siteLocations": [
-        "library",
-        "latest",
-        "search"
-      ],
-      "fallback": "latest",
-      "cover": "",
-      "images": []
-    },
-    {
       "id": "industrial-floors-waterborne-20260808014411",
       "slug": "industrial-floors-waterborne",
       "title": "Industrial Floors Waterborne",
