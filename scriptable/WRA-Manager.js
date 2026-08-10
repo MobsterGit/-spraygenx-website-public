@@ -2,34 +2,280 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: orange; icon-glyph: magic;
 // Spray GenX WRA Manager
-// Version: 2026.08.09 Canonical-6 Same-Folder Images
-// QuickLook print/save. Real files only. No Base64.
-const fm=FileManager.iCloud(),ROOT=fm.joinPath(fm.documentsDirectory(),"SprayGenX");
-const D={p:fm.joinPath(ROOT,"Proposals"),i:fm.joinPath(ROOT,"Invoices"),data:fm.joinPath(ROOT,"Data"),logs:fm.joinPath(ROOT,"Logs"),b:fm.joinPath(ROOT,"Backups"),photos:fm.joinPath(ROOT,"Photos"),images:fm.joinPath(ROOT,"Images")};
+// Version: 2026.08.09 Canonical-7 iCloud-Safe Preview
+// QuickLook print/save. Real image files only. No Base64.
+const fm = FileManager.iCloud();
+const ROOT = fm.joinPath(fm.documentsDirectory(), "SprayGenX");
+const D = {
+p: fm.joinPath(ROOT, "Proposals"),
+i: fm.joinPath(ROOT, "Invoices"),
+data: fm.joinPath(ROOT, "Data"),
+logs: fm.joinPath(ROOT, "Logs"),
+b: fm.joinPath(ROOT, "Backups"),
+photos: fm.joinPath(ROOT, "Photos"),
+images: fm.joinPath(ROOT, "Images")
+};
 Object.values(D).forEach(ensure);
-const F={s:fm.joinPath(D.data,"settings.json"),pi:fm.joinPath(D.logs,"proposal_index.json"),ii:fm.joinPath(D.logs,"invoice_index.json")};
-const DEF={companyName:"Spray GenX LLC",tagline:"Painting & Refinishing",serviceArea:"Northeast Ohio",phone:"(330) 620-8199",email:"spraygenx@gmail.com",nextProposalNumber:1,nextInvoiceNumber:1,defaultTerms:"Payment due upon completion unless otherwise noted.",warrantyNote:"Warranty applies to listed scope and assumes sound existing substrates unless otherwise noted."};
-write(F.s,Object.assign({},DEF,read(F.s,{}))); rebuild(); sync(); await home();
-async function home(){let t=new UITable(),s=stats(),h=new UITableRow();h.isHeader=true;h.addText("Spray GenX WRA Manager",`${s.a} active · ${s.p} proposals · ${s.i} invoices`);t.addRow(h);pair(t,"+ Proposal",()=>flow(blank("proposal"),"proposal"),"+ Invoice",()=>flow(blank("invoice"),"invoice"));pair(t,"Current Work",()=>table("Current Work",all().filter(x=>!["archived","declined","paid","void","converted_to_invoice"].includes(st(x.status)))),"Proposals",()=>list("proposal"));pair(t,"Invoices",()=>list("invoice"),"Rebuild Data",async()=>{let r=rebuild();sync();await note("Data Rebuilt",`${r.p} proposals\n${r.i} invoices`)});pair(t,"Storage Paths",()=>note("Paths",`Images:\n${D.images}\n\nPhotos:\n${D.photos}`),"Backup",backup);await t.present()}
-function pair(t,a,fa,b,fb){let r=new UITableRow(),x=r.addButton(a),y=r.addButton(b);x.widthWeight=y.widthWeight=50;x.onTap=fa;y.onTap=fb;t.addRow(r)}
-async function flow(d,k){d=await edit(norm(d,k),k);if(!d)return;save(d,k);html(d,k);bump(d.id,k);await after(d,k)}
-async function edit(d,k){let a=new Alert();a.title=d.path?`Edit ${cap(k)}`:`New ${cap(k)}`;let v=[d.customer,d.contact,d.phone,d.email,d.title,d.site,d.city,d.category];["Customer","Contact / GC","Phone","Email","Job title","Site / address","City","Category"].forEach((n,j)=>a.addTextField(n,v[j]||""));a.addAction("Next");a.addCancelAction("Cancel");if(await a.presentAlert()===-1)return null;[d.customer,d.contact,d.phone,d.email,d.title,d.site,d.city,d.category]=Array.from({length:8},(_,j)=>clean(a.textFieldValue(j)));let p=new Alert();p.title=d.id;p.addTextField("Total",String(d.total||""));p.addTextField(k==="invoice"?"Paid":"Deposit",String(d.deposit||""));p.addTextField("Status",d.status);p.addAction("Next");p.addCancelAction("Cancel");if(await p.presentAlert()===-1)return null;d.total=num(p.textFieldValue(0));d.deposit=num(p.textFieldValue(1));d.balance_due=Math.max(0,d.total-d.deposit);d.status=clean(p.textFieldValue(2))||(k==="invoice"?"unpaid":"open");d.summary=await text("Scope Summary",d.summary);d.details=await text("Scope Details",d.details);d.notes=await text("Notes / Exclusions",d.notes);await photo(d);d.updated=day();return d}
-async function text(title,cur){let a=new Alert();a.title=title;a.addTextField(title,cur||"");a.addAction("Save");a.addAction("Use Clipboard");a.addAction("Blank");a.addCancelAction("Keep Existing");let c=await a.presentAlert();if(c===-1)return cur||"";if(c===1)return clean(Pasteboard.pasteString()||"");if(c===2)return"";return clean(a.textFieldValue(0))}
-async function photo(d){d.media=d.media||{project_image_path:""};let a=new Alert();a.title="Project Image";a.addAction("Keep / Skip");a.addAction("Choose Photo");a.addAction("Take Photo");if(d.media.project_image_path)a.addAction("Remove Photo");a.addCancelAction("Back");let c=await a.presentSheet();if(c===1||c===2){try{let im=c===1?await Photos.fromLibrary():await Photos.fromCamera(),p=fm.joinPath(D.photos,`${d.id}-project.jpg`);fm.writeImage(p,im);d.media.project_image_path=p}catch(e){await note("Image Not Added",e)}}else if(c===3)d.media.project_image_path=""}
-async function after(d,k){let a=new Alert();a.title="Saved";a.message=`${d.id}\n${d.customer}\n${money(d.total)}`;a.addAction("Preview / Print");a.addAction("Edit Again");if(k==="proposal")a.addAction("Convert to Invoice");a.addAction("Done");let c=await a.presentSheet();if(c===0)await QuickLook.present(html(d,k));if(c===1)await flow(d,k);if(k==="proposal"&&c===2)await convert(d)}
-async function list(k){await table(k==="invoice"?"Invoices":"Proposals",read(k==="invoice"?F.ii:F.pi,[]))}
-async function table(title,docs){if(!docs.length)return note(title,"No documents found.");let t=new UITable(),h=new UITableRow();h.isHeader=true;h.addText(title,`${docs.length} item(s)`);t.addRow(h);docs.forEach(m=>{let d=load(m),r=new UITableRow();r.height=78;r.addText(`${d.kind==="invoice"?"INVOICE":"PROPOSAL"} ${d.id}`,[d.customer,d.title,d.status].filter(Boolean).join(" | "));let q=r.addText(money(d.total));q.rightAligned();r.onSelect=()=>open(d);t.addRow(r)});await t.present()}
-async function open(d){let k=d.kind==="invoice"?"invoice":"proposal",a=new Alert();a.title=d.id;a.addAction("Preview / Print");a.addAction("Edit");a.addAction("Project Image");a.addAction("Regenerate HTML");if(k==="proposal")a.addAction("Convert to Invoice");a.addAction("Archive");a.addCancelAction("Back");let c=await a.presentSheet();if(c===0)await QuickLook.present(html(d,k));if(c===1)await flow(d,k);if(c===2){await photo(d);save(d,k);html(d,k)}if(c===3){html(d,k);await note("HTML Regenerated",d.id)}if(k==="proposal"&&c===4)await convert(d);let ai=k==="proposal"?5:4;if(c===ai){d.status="archived";save(d,k)}}
-async function convert(p){let i=Object.assign({},p,{id:next("invoice"),kind:"invoice",status:"unpaid",source_proposal:p.id,created:day(),updated:day(),path:""});p.status="converted_to_invoice";save(p,"proposal");save(i,"invoice");html(p,"proposal");html(i,"invoice");bump(i.id,"invoice");await note("Invoice Created",i.id)}
-function html(d,k){let s=settings(),out=k==="invoice"?D.i:D.p,path=fm.joinPath(out,`${d.id}.html`),ln=brand("logo",out),mn=brand("medallion",out),pn=proj(d,out);let logo=ln?`<img class="brand-logo" src="${attr(ln)}">`:"",seal=mn?`<div class="seal"><img src="${attr(mn)}"></div>`:"",pic=pn?`<section class="project-photo"><img src="${attr(pn)}"></section>`:"";let H=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>@page{size:letter;margin:.35in}body{margin:0;background:#fff;color:#111;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.page{max-width:820px;margin:auto;padding:24px 26px 48px}.top{display:flex;justify-content:space-between;gap:22px;border-bottom:3px solid #111;padding-bottom:12px}.brand{display:flex;gap:10px;max-width:56%}.brand-logo{max-width:150px;max-height:68px;object-fit:contain}.brand h1{margin:0;font-size:21px}.brand p,.customer p,.docline p{margin:2px 0;color:#444}.customer{text-align:right;max-width:42%}.customer .name{font-size:18px;font-weight:800}.label,.box h3{text-transform:uppercase;font-size:11px;letter-spacing:.08em;color:#444}.docline{display:flex;justify-content:space-between;gap:18px;margin:12px 0}.project-photo img{width:100%;max-height:220px;object-fit:cover;border:1px solid #ddd;border-radius:7px}.box{border:1px solid #ddd;border-radius:8px;padding:10px 12px;margin:10px 0}.scope{white-space:pre-wrap}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.total-box{display:grid;grid-template-columns:92px 1fr;align-items:center}.seal{width:82px;height:82px}.seal img{width:100%;height:100%;object-fit:contain}.price{font-size:27px;font-weight:800;text-align:right}.total-copy p{text-align:right}.terms{border-top:1px solid #ddd;margin-top:8px;padding-top:7px;font-size:11px}@media print{.page{max-width:none;padding:0}}</style></head><body><main class="page"><section class="top"><div class="brand">${logo}<div><h1>${esc(s.companyName)}</h1><p>${esc(s.tagline)}</p><p>${esc(s.serviceArea)}</p><p>${esc([s.phone,s.email].join(" | "))}</p></div></div><div class="customer"><div class="label">Customer</div><div class="name">${esc(d.customer)}</div><p>${esc([d.contact,d.phone,d.email].filter(Boolean).join(" | "))}</p><p>${esc([d.site,d.city].filter(Boolean).join(", "))}</p></div></section><section class="docline"><div><h2>${k.toUpperCase()}</h2><p><strong>${esc(d.id)}</strong> | ${esc(d.created)} | ${esc(d.status)}</p></div><div><p><strong>Project:</strong> ${esc(d.title)}</p><p>${esc(d.category)}</p></div></section>${pic}<section class="box"><h3>Scope Summary</h3><p class="scope">${esc(d.summary)}</p></section><section class="box"><h3>Scope Details</h3><p class="scope">${esc(d.details)}</p></section><section class="grid"><div class="box"><h3>Notes / Exclusions</h3><p class="scope">${esc(d.notes)}</p></div><div class="box"><h3>Total</h3><div class="total-box">${seal}<div class="total-copy"><p class="price">${money(d.total)}</p><p>Deposit / Paid: ${money(d.deposit)}</p><p>Balance Due: ${money(d.balance_due)}</p></div></div></div></section><section class="terms"><p><strong>Terms:</strong> ${esc(s.defaultTerms)}</p><p><strong>Warranty:</strong> ${esc(s.warrantyNote)}</p></section></main></body></html>`;fm.writeString(path,H);return path}
-function brand(type,out){let names=type==="logo"?["SprayGenX-Logo.PNG","SprayGenX-Logo.png","SprayGenX-Logo.jpg","SprayGenX-Logo.jpeg"]:["SprayGenX-Medallion.PNG","SprayGenX-Medallion.png","SprayGenX-Medallion.jpg","SprayGenX-Medallion.jpeg"],src="";for(let n of names){let p=fm.joinPath(D.images,n);if(fm.fileExists(p)){src=p;break}}if(!src)return"";let n=src.split("/").pop(),dst=fm.joinPath(out,n);cp(src,dst);return n}
-function proj(d,out){let p=d.media&&d.media.project_image_path;if(!p||!fm.fileExists(p))return"";let ext=(p.match(/\.(png|jpe?g)$/i)||[0,".jpg"])[1],n=`${d.id}-project${ext}`,dst=fm.joinPath(out,n);cp(p,dst);return n}
-function cp(a,b){if(a===b)return;if(fm.fileExists(b))fm.remove(b);fm.copy(a,b)}
-function rebuild(){let P=[],I=[];for(let [dir,k] of [[D.p,"proposal"],[D.i,"invoice"],[D.data,""]])if(fm.fileExists(dir))for(let n of fm.listContents(dir)){if(!/\.json$/i.test(n)||["settings.json","proposal_index.json","invoice_index.json","activity_log.json","customers.json"].includes(n))continue;let p=fm.joinPath(dir,n),r=read(p,null);if(!r)continue;let d=legacy(r,n,p,k);if(d)(d.kind==="invoice"?I:P).push(slim(d))}write(F.pi,uniq(P));write(F.ii,uniq(I));return{p:P.length,i:I.length}}
-function legacy(r,n,path,forced){let m=r.manager||{},c=typeof r.customer==="object"?r.customer:{},j=r.job||{},sc=r.scope||{},pr=r.pricing||{},kind=forced||(/invoice|\binv-/i.test([n,r.kind,m.invoice_id,r.id].join(" "))?"invoice":"proposal"),id=first(r.id,r.docNo,r.number,m.invoice_id,m.proposal_id,(String(n).match(/(SGX|PROP|INV)-\d{4}-\d+/i)||[])[0]);if(!id)return null;let total=num(first(pr.total,pr.price,r.total,r.price,r.amount)),paid=num(first(pr.amount_paid,pr.paid,pr.deposit,r.amount_paid,r.paid,r.deposit,m.amount_paid));return{id,kind,path,customer:first(c.name,c.client,r.client,r.customerName,typeof r.customer==="string"?r.customer:"",r.name),contact:first(c.contact,r.contact,r.gc),phone:first(c.phone,r.phone),email:first(c.email,r.email),title:first(j.title,r.project,r.title,r.jobName),site:first(j.site,j.address,c.address,r.site,r.address,r.location),city:first(j.city,c.city,r.city),category:first(j.category,r.category),summary:first(sc.summary,r.summary),details:first(sc.details,sc.description,r.details,typeof r.scope==="string"?r.scope:"",r.description),notes:[sc.exclusions,sc.notes,r.exclusions,r.notes].filter(Boolean).join("\n\n"),media:{project_image_path:first(r.media&&r.media.project_image_path,r.project_image_path,r.projectImagePath)},total,deposit:paid,balance_due:num(first(pr.balance_due,r.balance_due,r.balanceDue,m.balance_due,total-paid)),status:first(m.status,m.payment_status,r.status,kind==="invoice"?"unpaid":"open"),created:iso(first(m.created_date,r.date,r.created,r.createdDate,day())),updated:iso(first(m.updated_date,r.updated,r.updatedDate,r.created,r.date,day()))}}
-function norm(r,k){return legacy(r,r.id||"",r.path||"",k)||blank(k)}function blank(k){return{id:next(k),kind:k,customer:"",contact:"",phone:"",email:"",title:"",site:"",city:"",category:"",summary:"",details:"",notes:"",media:{project_image_path:""},total:0,deposit:0,balance_due:0,status:k==="invoice"?"unpaid":"open",created:day(),updated:day()}}
-function save(d,k){d.kind=k;d.balance_due=Math.max(0,num(d.total)-num(d.deposit));let p=fm.joinPath(k==="invoice"?D.i:D.p,`${d.id}.json`);d.path=p;write(p,d);rebuild()}function load(m){return legacy(read(m.path,m),m.path?m.path.split("/").pop():m.id,m.path||"",m.kind)||m}
-function next(k){let s=settings(),n=k==="invoice"?s.nextInvoiceNumber:s.nextProposalNumber;return`${k==="invoice"?"INV":"SGX"}-${new Date().getFullYear()}-${String(n||1).padStart(3,"0")}`}function bump(id,k){let s=settings(),n=Number((String(id).match(/(\d+)$/)||[0,0])[1])+1;if(k==="invoice")s.nextInvoiceNumber=Math.max(num(s.nextInvoiceNumber),n);else s.nextProposalNumber=Math.max(num(s.nextProposalNumber),n);write(F.s,s)}function sync(){let s=settings(),a=all(),pn=a.filter(x=>x.kind!=="invoice").map(x=>last(x.id)),ii=a.filter(x=>x.kind==="invoice").map(x=>last(x.id));s.nextProposalNumber=Math.max(num(s.nextProposalNumber)||1,1+Math.max(0,...pn));s.nextInvoiceNumber=Math.max(num(s.nextInvoiceNumber)||1,1+Math.max(0,...ii));write(F.s,s)}
-function all(){return read(F.pi,[]).concat(read(F.ii,[]))}function stats(){let p=read(F.pi,[]),i=read(F.ii,[]);return{p:p.length,i:i.length,a:p.concat(i).filter(x=>!["archived","declined","paid","void","converted_to_invoice"].includes(st(x.status))).length}}function slim(d){return{id:d.id,kind:d.kind,path:d.path||"",customer:d.customer||"",title:d.title||"",status:d.status||"open",total:num(d.total),created:d.created||day(),updated:d.updated||d.created||day()}}function uniq(a){let m={};a.forEach(x=>m[x.id]=x);return Object.values(m).sort((a,b)=>String(b.updated).localeCompare(String(a.updated)))}
-function backup(){let dst=fm.joinPath(D.b,new Date().toISOString().replace(/[:.]/g,"-"));ensure(dst);[D.data,D.logs,D.p,D.i,D.photos,D.images].forEach(src=>copydir(src,fm.joinPath(dst,src.split("/").pop())));return note("Backup Created",dst)}function copydir(a,b){if(!fm.fileExists(a))return;ensure(b);for(let n of fm.listContents(a)){let s=fm.joinPath(a,n),d=fm.joinPath(b,n);if(fm.isDirectory(s))copydir(s,d);else cp(s,d)}}
-function settings(){return Object.assign({},DEF,read(F.s,{}))}function read(p,f){try{return fm.fileExists(p)?JSON.parse(fm.readString(p)):f}catch(e){return f}}function write(p,v){fm.writeString(p,JSON.stringify(v,null,2))}function ensure(p){if(!fm.fileExists(p))fm.createDirectory(p,true)}function day(){return new Date().toISOString().slice(0,10)}function iso(v){let d=new Date(v);return isNaN(d)?day():d.toISOString().slice(0,10)}function num(v){return Number(String(v??0).replace(/[^0-9.-]/g,""))||0}function money(v){return"$"+num(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}function st(v){return String(v||"").toLowerCase().trim()}function clean(v){return String(v??"").replace(/\r\n/g,"\n").replace(/\r/g,"\n")}function esc(v){return clean(v).replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;"}[c]))}function attr(v){return esc(v)}function first(...a){for(let v of a)if(v!==undefined&&v!==null&&String(v).trim()!=="")return v;return""}function last(id){return Number((String(id).match(/(\d+)$/)||[0,0])[1])}function cap(v){return String(v)[0].toUpperCase()+String(v).slice(1)}async function note(t,m){let a=new Alert();a.title=t;a.message=String(m||"");a.addAction("OK");await a.presentAlert()}
+const F = {
+s: fm.joinPath(D.data, "settings.json"),
+pi: fm.joinPath(D.logs, "proposal_index.json"),
+ii: fm.joinPath(D.logs, "invoice_index.json")
+};
+const DEF = {
+companyName: "Spray GenX LLC",
+tagline: "Painting & Refinishing",
+serviceArea: "Northeast Ohio",
+phone: "(330) 620-8199",
+email: "spraygenx@gmail.com",
+nextProposalNumber: 1,
+nextInvoiceNumber: 1,
+defaultTerms: "Payment due upon completion unless otherwise noted.",
+warrantyNote: "Warranty applies to listed scope and assumes sound existing substrates unless otherwise noted."
+};
+write(F.s, Object.assign({}, DEF, read(F.s, {})));
+rebuild();
+sync();
+await home();
+async function home() {
+const t = new UITable(), s = stats(), h = new UITableRow();
+h.isHeader = true;
+h.addText("Spray GenX WRA Manager", `${s.a} active · ${s.p} proposals · ${s.i} invoices`);
+t.addRow(h);
+pair(t, "+ Proposal", () => flow(blank("proposal"), "proposal"), "+ Invoice", () => flow(blank("invoice"), "invoice"));
+pair(t, "Current Work", () => table("Current Work", all().filter(x => !["archived", "declined", "paid", "void", "converted_to_invoice"].includes(st(x.status)))), "Proposals", () => list("proposal"));
+pair(t, "Invoices", () => list("invoice"), "Rebuild Data", async () => { const r = rebuild(); sync(); await note("Data Rebuilt", `${r.p} proposals\n${r.i} invoices`); });
+pair(t, "Storage Paths", () => note("Paths", `Images:\n${D.images}\n\nPhotos:\n${D.photos}`), "Backup", backup);
+await t.present();
+}
+function pair(t, a, fa, b, fb) {
+const r = new UITableRow(), x = r.addButton(a), y = r.addButton(b);
+x.widthWeight = y.widthWeight = 50;
+x.onTap = fa; y.onTap = fb;
+t.addRow(r);
+}
+async function flow(d, k) {
+d = await edit(norm(d, k), k);
+if (!d) return;
+save(d, k);
+await buildHtml(d, k);
+bump(d.id, k);
+await after(d, k);
+}
+async function edit(d, k) {
+const a = new Alert();
+a.title = d.path ? `Edit ${cap(k)}` : `New ${cap(k)}`;
+const v = [d.customer, d.contact, d.phone, d.email, d.title, d.site, d.city, d.category];
+["Customer", "Contact / GC", "Phone", "Email", "Job title", "Site / address", "City", "Category"].forEach((n, j) => a.addTextField(n, v[j] || ""));
+a.addAction("Next"); a.addCancelAction("Cancel");
+if (await a.presentAlert() === -1) return null;
+[d.customer, d.contact, d.phone, d.email, d.title, d.site, d.city, d.category] = Array.from({ length: 8 }, (_, j) => clean(a.textFieldValue(j)));
+const p = new Alert(); p.title = d.id;
+p.addTextField("Total", String(d.total || ""));
+p.addTextField(k === "invoice" ? "Paid" : "Deposit", String(d.deposit || ""));
+p.addTextField("Status", d.status);
+p.addAction("Next"); p.addCancelAction("Cancel");
+if (await p.presentAlert() === -1) return null;
+d.total = num(p.textFieldValue(0));
+d.deposit = num(p.textFieldValue(1));
+d.balance_due = Math.max(0, d.total - d.deposit);
+d.status = clean(p.textFieldValue(2)) || (k === "invoice" ? "unpaid" : "open");
+d.summary = await text("Scope Summary", d.summary);
+d.details = await text("Scope Details", d.details);
+d.notes = await text("Notes / Exclusions", d.notes);
+await photo(d);
+d.updated = day();
+return d;
+}
+async function text(title, cur) {
+const a = new Alert(); a.title = title; a.addTextField(title, cur || "");
+a.addAction("Save"); a.addAction("Use Clipboard"); a.addAction("Blank"); a.addCancelAction("Keep Existing");
+const c = await a.presentAlert();
+if (c === -1) return cur || "";
+if (c === 1) return clean(Pasteboard.pasteString() || "");
+if (c === 2) return "";
+return clean(a.textFieldValue(0));
+}
+async function photo(d) {
+d.media = d.media || { project_image_path: "" };
+const a = new Alert(); a.title = "Project Image";
+a.addAction("Keep / Skip"); a.addAction("Choose Photo"); a.addAction("Take Photo");
+if (d.media.project_image_path) a.addAction("Remove Photo");
+a.addCancelAction("Back");
+const c = await a.presentSheet();
+if (c === 1 || c === 2) {
+try {
+const im = c === 1 ? await Photos.fromLibrary() : await Photos.fromCamera();
+const p = fm.joinPath(D.photos, `${d.id}-project.jpg`);
+fm.writeImage(p, im);
+d.media.project_image_path = p;
+} catch (e) { await note("Image Not Added", e); }
+} else if (c === 3) d.media.project_image_path = "";
+}
+async function preview(d, k) {
+try {
+const p = await buildHtml(d, k);
+await fm.downloadFileFromiCloud(p);
+await QuickLook.present(p);
+} catch (e) {
+await note("Preview Error", String(e));
+}
+}
+async function after(d, k) {
+const a = new Alert();
+a.title = "Saved";
+a.message = `${d.id}\n${d.customer}\n${money(d.total)}`;
+a.addAction("Preview / Print"); a.addAction("Edit Again");
+if (k === "proposal") a.addAction("Convert to Invoice");
+a.addAction("Done");
+const c = await a.presentSheet();
+if (c === 0) await preview(d, k);
+if (c === 1) await flow(d, k);
+if (k === "proposal" && c === 2) await convert(d);
+}
+async function list(k) { await table(k === "invoice" ? "Invoices" : "Proposals", read(k === "invoice" ? F.ii : F.pi, [])); }
+async function table(title, docs) {
+if (!docs.length) return note(title, "No documents found.");
+const t = new UITable(), h = new UITableRow(); h.isHeader = true;
+h.addText(title, `${docs.length} item(s)`); t.addRow(h);
+docs.forEach(m => {
+const d = load(m), r = new UITableRow(); r.height = 78;
+r.addText(`${d.kind === "invoice" ? "INVOICE" : "PROPOSAL"} ${d.id}`, [d.customer, d.title, d.status].filter(Boolean).join(" | "));
+const q = r.addText(money(d.total)); q.rightAligned();
+r.onSelect = () => open(d); t.addRow(r);
+});
+await t.present();
+}
+async function open(d) {
+const k = d.kind === "invoice" ? "invoice" : "proposal", a = new Alert();
+a.title = d.id;
+a.addAction("Preview / Print"); a.addAction("Edit"); a.addAction("Project Image"); a.addAction("Regenerate HTML");
+if (k === "proposal") a.addAction("Convert to Invoice");
+a.addAction("Archive"); a.addCancelAction("Back");
+const c = await a.presentSheet();
+if (c === 0) await preview(d, k);
+if (c === 1) await flow(d, k);
+if (c === 2) { await photo(d); save(d, k); await buildHtml(d, k); }
+if (c === 3) { await buildHtml(d, k); await note("HTML Regenerated", d.id); }
+if (k === "proposal" && c === 4) await convert(d);
+const ai = k === "proposal" ? 5 : 4;
+if (c === ai) { d.status = "archived"; save(d, k); }
+}
+async function convert(p) {
+const i = Object.assign({}, p, { id: next("invoice"), kind: "invoice", status: "unpaid", source_proposal: p.id, created: day(), updated: day(), path: "" });
+p.status = "converted_to_invoice";
+save(p, "proposal"); save(i, "invoice");
+await buildHtml(p, "proposal"); await buildHtml(i, "invoice");
+bump(i.id, "invoice");
+await note("Invoice Created", i.id);
+}
+async function buildHtml(d, k) {
+const s = settings(), out = k === "invoice" ? D.i : D.p;
+const path = fm.joinPath(out, `${d.id}.html`);
+const ln = await stageBrand("logo", out);
+const mn = await stageBrand("medallion", out);
+const pn = await stageProject(d, out);
+const logo = ln ? `<img class="brand-logo" src="${attr(ln)}" alt="Spray GenX LLC logo">` : "";
+const seal = mn ? `<div class="seal"><img src="${attr(mn)}" alt="Spray GenX medallion"></div>` : "";
+const pic = pn ? `<section class="project-photo"><img src="${attr(pn)}" alt="Project photo"></section>` : "";
+const H = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+@page{size:letter;margin:.35in}body{margin:0;background:#fff;color:#111;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.page{max-width:820px;margin:auto;padding:24px 26px 48px}.top{display:flex;justify-content:space-between;gap:22px;border-bottom:3px solid #111;padding-bottom:12px}.brand{display:flex;gap:10px;max-width:56%}.brand-logo{max-width:150px;max-height:68px;object-fit:contain}.brand h1{margin:0;font-size:21px}.brand p,.customer p,.docline p{margin:2px 0;color:#444}.customer{text-align:right;max-width:42%}.customer .name{font-size:18px;font-weight:800}.label,.box h3{text-transform:uppercase;font-size:11px;letter-spacing:.08em;color:#444}.docline{display:flex;justify-content:space-between;gap:18px;margin:12px 0}.project-photo img{width:100%;max-height:220px;object-fit:cover;border:1px solid #ddd;border-radius:7px}.box{border:1px solid #ddd;border-radius:8px;padding:10px 12px;margin:10px 0}.scope{white-space:pre-wrap}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.total-box{display:grid;grid-template-columns:92px 1fr;align-items:center}.seal{width:82px;height:82px}.seal img{width:100%;height:100%;object-fit:contain}.price{font-size:27px;font-weight:800;text-align:right}.total-copy p{text-align:right}.terms{border-top:1px solid #ddd;margin-top:8px;padding-top:7px;font-size:11px}@media print{.page{max-width:none;padding:0}}</style></head><body><main class="page"><section class="top"><div class="brand">${logo}<div><h1>${esc(s.companyName)}</h1><p>${esc(s.tagline)}</p><p>${esc(s.serviceArea)}</p><p>${esc([s.phone,s.email].join(" | "))}</p></div></div><div class="customer"><div class="label">Customer</div><div class="name">${esc(d.customer)}</div><p>${esc([d.contact,d.phone,d.email].filter(Boolean).join(" | "))}</p><p>${esc([d.site,d.city].filter(Boolean).join(", "))}</p></div></section><section class="docline"><div><h2>${k.toUpperCase()}</h2><p><strong>${esc(d.id)}</strong> | ${esc(d.created)} | ${esc(d.status)}</p></div><div><p><strong>Project:</strong> ${esc(d.title)}</p><p>${esc(d.category)}</p></div></section>${pic}<section class="box"><h3>Scope Summary</h3><p class="scope">${esc(d.summary)}</p></section><section class="box"><h3>Scope Details</h3><p class="scope">${esc(d.details)}</p></section><section class="grid"><div class="box"><h3>Notes / Exclusions</h3><p class="scope">${esc(d.notes)}</p></div><div class="box"><h3>Total</h3><div class="total-box">${seal}<div class="total-copy"><p class="price">${money(d.total)}</p><p>Deposit / Paid: ${money(d.deposit)}</p><p>Balance Due: ${money(d.balance_due)}</p></div></div></div></section><section class="terms"><p><strong>Terms:</strong> ${esc(s.defaultTerms)}</p><p><strong>Warranty:</strong> ${esc(s.warrantyNote)}</p></section></main></body></html>`;
+fm.writeString(path, H);
+return path;
+}
+function findBrand(type) {
+const wanted = type === "logo" ? "spraygenx-logo" : "spraygenx-medallion";
+try {
+const names = fm.listContents(D.images);
+const exact = names.find(n => n.replace(/\.(png|jpe?g)$/i, "").toLowerCase() === wanted);
+if (exact) return fm.joinPath(D.images, exact);
+const loose = names.find(n => /\.(png|jpe?g)$/i.test(n) && n.toLowerCase().includes(type));
+return loose ? fm.joinPath(D.images, loose) : "";
+} catch (e) { return ""; }
+}
+async function stageBrand(type, out) {
+const src = findBrand(type);
+if (!src) return "";
+await fm.downloadFileFromiCloud(src);
+const name = src.split("/").pop();
+const dst = fm.joinPath(out, name);
+const data = fm.read(src);
+if (fm.fileExists(dst)) fm.remove(dst);
+fm.write(dst, data);
+return name;
+}
+async function stageProject(d, out) {
+const p = d.media && d.media.project_image_path;
+if (!p || !fm.fileExists(p)) return "";
+await fm.downloadFileFromiCloud(p);
+const match = p.match(/\.(png|jpe?g)$/i);
+const ext = match ? "." + match[1].toLowerCase().replace("jpeg", "jpg") : ".jpg";
+const name = `${d.id}-project${ext}`;
+const dst = fm.joinPath(out, name);
+const data = fm.read(p);
+if (fm.fileExists(dst)) fm.remove(dst);
+fm.write(dst, data);
+return name;
+}
+function rebuild() {
+const P = [], I = [];
+for (const [dir, k] of [[D.p, "proposal"], [D.i, "invoice"], [D.data, ""]]) {
+if (!fm.fileExists(dir)) continue;
+for (const n of fm.listContents(dir)) {
+if (!/\.json$/i.test(n) || ["settings.json", "proposal_index.json", "invoice_index.json", "activity_log.json", "customers.json"].includes(n)) continue;
+const p = fm.joinPath(dir, n), r = read(p, null);
+if (!r) continue;
+const d = legacy(r, n, p, k);
+if (d) (d.kind === "invoice" ? I : P).push(slim(d));
+}
+}
+write(F.pi, uniq(P)); write(F.ii, uniq(I));
+return { p: P.length, i: I.length };
+}
+function legacy(r, n, path, forced) {
+const m = r.manager || {}, c = typeof r.customer === "object" ? r.customer : {}, j = r.job || {}, sc = r.scope || {}, pr = r.pricing || {};
+const kind = forced || (/invoice|\binv-/i.test([n, r.kind, m.invoice_id, r.id].join(" ")) ? "invoice" : "proposal");
+const id = first(r.id, r.docNo, r.number, m.invoice_id, m.proposal_id, (String(n).match(/(SGX|PROP|INV)-\d{4}-\d+/i) || [])[0]);
+if (!id) return null;
+const total = num(first(pr.total, pr.price, r.total, r.price, r.amount));
+const paid = num(first(pr.amount_paid, pr.paid, pr.deposit, r.amount_paid, r.paid, r.deposit, m.amount_paid));
+return {
+id, kind, path,
+customer: first(c.name, c.client, r.client, r.customerName, typeof r.customer === "string" ? r.customer : "", r.name),
+contact: first(c.contact, r.contact, r.gc), phone: first(c.phone, r.phone), email: first(c.email, r.email),
+title: first(j.title, r.project, r.title, r.jobName), site: first(j.site, j.address, c.address, r.site, r.address, r.location), city: first(j.city, c.city, r.city), category: first(j.category, r.category),
+summary: first(sc.summary, r.summary), details: first(sc.details, sc.description, r.details, typeof r.scope === "string" ? r.scope : "", r.description), notes: [sc.exclusions, sc.notes, r.exclusions, r.notes].filter(Boolean).join("\n\n"),
+media: { project_image_path: first(r.media && r.media.project_image_path, r.project_image_path, r.projectImagePath) },
+total, deposit: paid, balance_due: num(first(pr.balance_due, r.balance_due, r.balanceDue, m.balance_due, total - paid)),
+status: first(m.status, m.payment_status, r.status, kind === "invoice" ? "unpaid" : "open"),
+created: iso(first(m.created_date, r.date, r.created, r.createdDate, day())), updated: iso(first(m.updated_date, r.updated, r.updatedDate, r.created, r.date, day()))
+};
+}
+function norm(r, k) { return legacy(r, r.id || "", r.path || "", k) || blank(k); }
+function blank(k) { return { id: next(k), kind: k, customer: "", contact: "", phone: "", email: "", title: "", site: "", city: "", category: "", summary: "", details: "", notes: "", media: { project_image_path: "" }, total: 0, deposit: 0, balance_due: 0, status: k === "invoice" ? "unpaid" : "open", created: day(), updated: day() }; }
+function save(d, k) { d.kind = k; d.balance_due = Math.max(0, num(d.total) - num(d.deposit)); const p = fm.joinPath(k === "invoice" ? D.i : D.p, `${d.id}.json`); d.path = p; write(p, d); rebuild(); }
+function load(m) { return legacy(read(m.path, m), m.path ? m.path.split("/").pop() : m.id, m.path || "", m.kind) || m; }
+function next(k) { const s = settings(), n = k === "invoice" ? s.nextInvoiceNumber : s.nextProposalNumber; return `${k === "invoice" ? "INV" : "SGX"}-${new Date().getFullYear()}-${String(n || 1).padStart(3, "0")}`; }
+function bump(id, k) { const s = settings(), n = Number((String(id).match(/(\d+)$/) || [0, 0])[1]) + 1; if (k === "invoice") s.nextInvoiceNumber = Math.max(num(s.nextInvoiceNumber), n); else s.nextProposalNumber = Math.max(num(s.nextProposalNumber), n); write(F.s, s); }
+function sync() { const s = settings(), a = all(), pn = a.filter(x => x.kind !== "invoice").map(x => last(x.id)), ii = a.filter(x => x.kind === "invoice").map(x => last(x.id)); s.nextProposalNumber = Math.max(num(s.nextProposalNumber) || 1, 1 + Math.max(0, ...pn)); s.nextInvoiceNumber = Math.max(num(s.nextInvoiceNumber) || 1, 1 + Math.max(0, ...ii)); write(F.s, s); }
+function all() { return read(F.pi, []).concat(read(F.ii, [])); }
+function stats() { const p = read(F.pi, []), i = read(F.ii, []); return { p: p.length, i: i.length, a: p.concat(i).filter(x => !["archived", "declined", "paid", "void", "converted_to_invoice"].includes(st(x.status))).length }; }
+function slim(d) { return { id: d.id, kind: d.kind, path: d.path || "", customer: d.customer || "", title: d.title || "", status: d.status || "open", total: num(d.total), created: d.created || day(), updated: d.updated || d.created || day() }; }
+function uniq(a) { const m = {}; a.forEach(x => m[x.id] = x); return Object.values(m).sort((a, b) => String(b.updated).localeCompare(String(a.updated))); }
+async function backup() { const dst = fm.joinPath(D.b, new Date().toISOString().replace(/[:.]/g, "-")); ensure(dst); for (const src of [D.data, D.logs, D.p, D.i, D.photos, D.images]) await copydir(src, fm.joinPath(dst, src.split("/").pop())); await note("Backup Created", dst); }
+async function copydir(a, b) { if (!fm.fileExists(a)) return; ensure(b); for (const n of fm.listContents(a)) { const s = fm.joinPath(a, n), d = fm.joinPath(b, n); if (fm.isDirectory(s)) await copydir(s, d); else { await fm.downloadFileFromiCloud(s); const data = fm.read(s); if (fm.fileExists(d)) fm.remove(d); fm.write(d, data); } } }
+function settings() { return Object.assign({}, DEF, read(F.s, {})); }
+function read(p, f) { try { return fm.fileExists(p) ? JSON.parse(fm.readString(p)) : f; } catch (e) { return f; } }
+function write(p, v) { fm.writeString(p, JSON.stringify(v, null, 2)); }
+function ensure(p) { if (!fm.fileExists(p)) fm.createDirectory(p, true); }
+function day() { return new Date().toISOString().slice(0, 10); }
+function iso(v) { const d = new Date(v); return isNaN(d) ? day() : d.toISOString().slice(0, 10); }
+function num(v) { return Number(String(v ?? 0).replace(/[^0-9.-]/g, "")) || 0; }
+function money(v) { return "$" + num(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function st(v) { return String(v || "").toLowerCase().trim(); }
+function clean(v) { return String(v ?? "").replace(/\r\n/g, "\n").replace(/\r/g, "\n"); }
+function esc(v) { return clean(v).replace(/[&<>\"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '\"': "&quot;" }[c])); }
+function attr(v) { return esc(v); }
+function first(...a) { for (const v of a) if (v !== undefined && v !== null && String(v).trim() !== "") return v; return ""; }
+function last(id) { return Number((String(id).match(/(\d+)$/) || [0, 0])[1]); }
+function cap(v) { return String(v)[0].toUpperCase() + String(v).slice(1); }
+async function note(t, m) { const a = new Alert(); a.title = t; a.message = String(m || ""); a.addAction("OK"); await a.presentAlert(); }
