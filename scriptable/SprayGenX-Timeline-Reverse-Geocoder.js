@@ -1,6 +1,8 @@
 // Timeline Reverse Geocoder for Scriptable (iPhone/iPad)
 // Reads a Google Maps Timeline JSON export, reverse-geocodes unique visit locations,
-// caches progress, and exports a CSV with addresses.
+// caches progress, and exports two CSV files:
+// 1) Timeline-Destinations-Geocoded.csv  -> one row per unique destination
+// 2) Timeline-All-Visits.csv             -> one row per chronological visit
 //
 // SAFE RESUME VERSION:
 // - Only tries a small batch per run.
@@ -12,7 +14,8 @@
 const fm = FileManager.iCloud();
 const docs = fm.documentsDirectory();
 const cachePath = fm.joinPath(docs, "Timeline-Geocode-Cache.json");
-const outputPath = fm.joinPath(docs, "Timeline-Destinations-Geocoded.csv");
+const destinationsOutputPath = fm.joinPath(docs, "Timeline-Destinations-Geocoded.csv");
+const visitsOutputPath = fm.joinPath(docs, "Timeline-All-Visits.csv");
 
 const BATCH_SIZE = 20;
 const REQUEST_PAUSE_SECONDS = 1.5;
@@ -74,6 +77,14 @@ function placemarkToAddress(p) {
   return { name, street, city, state, zip, country, fullAddress };
 }
 
+function durationMinutes(start, end) {
+  if (!start || !end) return "";
+  const a = new Date(start);
+  const b = new Date(end);
+  if (!Number.isFinite(a.getTime()) || !Number.isFinite(b.getTime())) return "";
+  return Math.max(0, Math.round((b.getTime() - a.getTime()) / 60000));
+}
+
 async function loadCache() {
   if (!fm.fileExists(cachePath)) return {};
   try {
@@ -88,7 +99,7 @@ function saveCache(cache) {
   fm.writeString(cachePath, JSON.stringify(cache, null, 2));
 }
 
-function buildCSV(rows) {
+function buildDestinationsCSV(rows) {
   const headers = [
     "Rank", "Visits", "Semantic Type", "Place ID", "Latitude", "Longitude",
     "Place / POI", "Street Address", "City", "State", "ZIP", "Country",
@@ -122,17 +133,60 @@ function buildCSV(rows) {
   return lines.join("\n");
 }
 
-function applyCache(rows, cache) {
+function buildVisitsCSV(visits) {
+  const headers = [
+    "Visit #", "Start Time", "End Time", "Duration Minutes", "Semantic Type",
+    "Place ID", "Latitude", "Longitude", "Place / POI", "Street Address",
+    "City", "State", "ZIP", "Country", "Full Address", "Google Maps"
+  ];
+  const lines = [headers.map(csvCell).join(",")];
+
+  visits.forEach((v, i) => {
+    const a = v.address || {};
+    const maps = `https://www.google.com/maps/search/?api=1&query=${v.latitude},${v.longitude}`;
+    lines.push([
+      i + 1,
+      isoDate(v.startTime),
+      isoDate(v.endTime),
+      durationMinutes(v.startTime, v.endTime),
+      v.semanticType,
+      v.placeID,
+      v.latitude.toFixed(6),
+      v.longitude.toFixed(6),
+      a.name || "",
+      a.street || "",
+      a.city || "",
+      a.state || "",
+      a.zip || "",
+      a.country || "",
+      a.fullAddress || "",
+      maps
+    ].map(csvCell).join(","));
+  });
+
+  return lines.join("\n");
+}
+
+function applyCacheToRows(rows, cache) {
   for (const r of rows) {
     const cached = cache[r.placeID];
     if (cached && cached.address) r.address = cached.address;
   }
 }
 
-function saveProgress(rows, cache) {
-  applyCache(rows, cache);
+function applyCacheToVisits(visits, cache) {
+  for (const v of visits) {
+    const cached = cache[v.placeID];
+    if (cached && cached.address) v.address = cached.address;
+  }
+}
+
+function saveProgress(rows, visits, cache) {
+  applyCacheToRows(rows, cache);
+  applyCacheToVisits(visits, cache);
   saveCache(cache);
-  fm.writeString(outputPath, buildCSV(rows));
+  fm.writeString(destinationsOutputPath, buildDestinationsCSV(rows));
+  fm.writeString(visitsOutputPath, buildVisitsCSV(visits));
 }
 
 function looksThrottled(message) {
@@ -141,6 +195,18 @@ function looksThrottled(message) {
     s.includes("being limited") ||
     s.includes("too many requests") ||
     (s.includes("geocod") && s.includes("limited"));
+}
+
+async function offerExports(title, message) {
+  const a = new Alert();
+  a.title = title;
+  a.message = message;
+  a.addAction("Export All Visits CSV");
+  a.addAction("Export Destinations CSV");
+  a.addCancelAction("Done");
+  const choice = await a.presentAlert();
+  if (choice === 0) await DocumentPicker.export(visitsOutputPath);
+  if (choice === 1) await DocumentPicker.export(destinationsOutputPath);
 }
 
 async function main() {
@@ -163,8 +229,12 @@ async function main() {
     );
   }
 
-  // 2) Collapse Timeline visits into unique Google place IDs.
+  // 2) Build both datasets:
+  //    - rows   = one row per unique destination
+  //    - visits = one row per visit in chronological order
   const byPlace = new Map();
+  const visits = [];
+
   for (const item of timeline) {
     const visit = item && item.visit;
     const tc = visit && visit.topCandidate;
@@ -174,6 +244,10 @@ async function main() {
     if (!geo) continue;
 
     const placeID = tc.placeID || `${geo.latitude.toFixed(6)},${geo.longitude.toFixed(6)}`;
+    const sem = tc.semanticType || "Unknown";
+    const startTime = item.startTime || visit.startTime || "";
+    const endTime = item.endTime || visit.endTime || "";
+
     let r = byPlace.get(placeID);
     if (!r) {
       r = {
@@ -182,17 +256,26 @@ async function main() {
         longitude: geo.longitude,
         visits: 0,
         semanticCounts: {},
-        firstVisit: item.startTime || "",
-        lastVisit: item.endTime || ""
+        firstVisit: startTime,
+        lastVisit: endTime
       };
       byPlace.set(placeID, r);
     }
 
     r.visits += 1;
-    const sem = tc.semanticType || "Unknown";
     r.semanticCounts[sem] = (r.semanticCounts[sem] || 0) + 1;
-    if (item.startTime && (!r.firstVisit || item.startTime < r.firstVisit)) r.firstVisit = item.startTime;
-    if (item.endTime && (!r.lastVisit || item.endTime > r.lastVisit)) r.lastVisit = item.endTime;
+    if (startTime && (!r.firstVisit || startTime < r.firstVisit)) r.firstVisit = startTime;
+    if (endTime && (!r.lastVisit || endTime > r.lastVisit)) r.lastVisit = endTime;
+
+    visits.push({
+      startTime,
+      endTime,
+      semanticType: sem,
+      placeID,
+      latitude: geo.latitude,
+      longitude: geo.longitude,
+      address: emptyAddress()
+    });
   }
 
   const rows = Array.from(byPlace.values()).map(r => {
@@ -201,22 +284,26 @@ async function main() {
     return { ...r, semanticType: bestSemantic };
   }).sort((a, b) => b.visits - a.visits);
 
+  visits.sort((a, b) => {
+    const ta = a.startTime ? new Date(a.startTime).getTime() : 0;
+    const tb = b.startTime ? new Date(b.startTime).getTime() : 0;
+    return ta - tb;
+  });
+
   // 3) Resume from the cache. Only unresolved locations enter this run's batch.
   const cache = await loadCache();
-  applyCache(rows, cache);
+  applyCacheToRows(rows, cache);
+  applyCacheToVisits(visits, cache);
 
   const resolvedBefore = rows.filter(r => cache[r.placeID]?.status === "ok").length;
   const unresolved = rows.filter(r => cache[r.placeID]?.status !== "ok");
 
   if (unresolved.length === 0) {
-    saveProgress(rows, cache);
-    const done = new Alert();
-    done.title = "Timeline geocoding complete";
-    done.message = `${rows.length} unique destinations\nAll ${rows.length} are resolved.\n\nThe CSV is ready.`;
-    done.addAction("Export CSV");
-    done.addCancelAction("Done");
-    const choice = await done.presentAlert();
-    if (choice === 0) await DocumentPicker.export(outputPath);
+    saveProgress(rows, visits, cache);
+    await offerExports(
+      "Timeline geocoding complete",
+      `${rows.length} unique destinations\nAll ${rows.length} are resolved.\n\nBoth CSV files are already saved in your Scriptable folder:\n- Timeline-All-Visits.csv\n- Timeline-Destinations-Geocoded.csv`
+    );
     return;
   }
 
@@ -229,7 +316,7 @@ async function main() {
 
   const start = new Alert();
   start.title = "Timeline Geocoder";
-  start.message = `${resolvedBefore} of ${rows.length} resolved\n${unresolved.length} remaining\n\nThis run will try up to ${batch.length} locations and save after each one.`;
+  start.message = `${resolvedBefore} of ${rows.length} destinations resolved\n${unresolved.length} destinations remaining\n${visits.length} visits available\n\nThis run will try up to ${batch.length} locations and save after each one.`;
   start.addAction("Run Batch");
   start.addCancelAction("Cancel");
   if (await start.presentAlert() !== 0) return;
@@ -287,7 +374,7 @@ async function main() {
       else consecutiveThrottles = 0;
     }
 
-    saveProgress(rows, cache);
+    saveProgress(rows, visits, cache);
 
     if (consecutiveThrottles >= STOP_AFTER_CONSECUTIVE_THROTTLES) {
       stoppedForThrottle = true;
@@ -298,31 +385,30 @@ async function main() {
   }
 
   // 4) Finish this batch and report remaining work.
-  saveProgress(rows, cache);
+  saveProgress(rows, visits, cache);
   const resolvedTotal = rows.filter(r => cache[r.placeID]?.status === "ok").length;
   const remaining = rows.length - resolvedTotal;
 
-  const a = new Alert();
-  a.title = remaining === 0 ? "Timeline geocoding complete" : "Timeline batch complete";
-  a.message = [
-    `${resolvedTotal} of ${rows.length} resolved`,
-    `${remaining} still unresolved`,
-    "",
-    `This run: ${attempted} attempted`,
-    `${resolvedThisRun} resolved`,
-    `${failedThisRun} failed`,
-    stoppedForThrottle ? "" : null,
-    stoppedForThrottle
-      ? "Stopped early because the geocoder appears to be throttling. Your progress is saved; run the script again later."
-      : null,
-    "",
-    "Timeline-Destinations-Geocoded.csv has been updated."
-  ].filter(v => v != null).join("\n");
-
-  a.addAction("Export CSV");
-  a.addCancelAction("Done");
-  const choice = await a.presentAlert();
-  if (choice === 0) await DocumentPicker.export(outputPath);
+  await offerExports(
+    remaining === 0 ? "Timeline geocoding complete" : "Timeline batch complete",
+    [
+      `${resolvedTotal} of ${rows.length} destinations resolved`,
+      `${remaining} still unresolved`,
+      `${visits.length} chronological visits saved`,
+      "",
+      `This run: ${attempted} attempted`,
+      `${resolvedThisRun} resolved`,
+      `${failedThisRun} failed`,
+      stoppedForThrottle ? "" : null,
+      stoppedForThrottle
+        ? "Stopped early because the geocoder appears to be throttling. Your progress is saved; run the script again later."
+        : null,
+      "",
+      "Both CSV files are already saved in your Scriptable folder:",
+      "- Timeline-All-Visits.csv",
+      "- Timeline-Destinations-Geocoded.csv"
+    ].filter(v => v != null).join("\n")
+  );
 }
 
 await main();
