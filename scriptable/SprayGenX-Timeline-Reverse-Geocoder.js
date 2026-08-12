@@ -1,14 +1,28 @@
 // Timeline Reverse Geocoder for Scriptable (iPhone/iPad)
-// Reads a Google Maps Timeline JSON export, reverse-geocodes unique visit locations
-// with Apple's geocoding service, caches progress, and exports a CSV with addresses.
+// Reads a Google Maps Timeline JSON export, reverse-geocodes unique visit locations,
+// caches progress, and exports a CSV with addresses.
+//
+// SAFE RESUME VERSION:
+// - Only tries a small batch per run.
+// - Never re-geocodes successful cache entries.
+// - Retries failed entries on later runs.
+// - Stops early when Scriptable/Apple appears to be throttling requests.
+// - Saves after every location so iOS suspension does not lose progress.
 
 const fm = FileManager.iCloud();
 const docs = fm.documentsDirectory();
 const cachePath = fm.joinPath(docs, "Timeline-Geocode-Cache.json");
 const outputPath = fm.joinPath(docs, "Timeline-Destinations-Geocoded.csv");
 
+const BATCH_SIZE = 20;
+const REQUEST_PAUSE_SECONDS = 1.5;
+const RETRY_PAUSE_SECONDS = 4;
+const MAX_ATTEMPTS_PER_LOCATION = 2;
+const STOP_AFTER_CONSECUTIVE_THROTTLES = 2;
+
 function sleep(seconds) {
-  return new Promise(resolve => Timer.schedule(seconds, false, resolve));
+  // Scriptable Timer.schedule() uses MILLISECONDS.
+  return new Promise(resolve => Timer.schedule(seconds * 1000, false, resolve));
 }
 
 function parseGeo(s) {
@@ -35,10 +49,12 @@ function firstNonEmpty(...values) {
   return "";
 }
 
+function emptyAddress() {
+  return { name: "", street: "", city: "", state: "", zip: "", country: "", fullAddress: "" };
+}
+
 function placemarkToAddress(p) {
-  if (!p) return {
-    name: "", street: "", city: "", state: "", zip: "", country: "", fullAddress: ""
-  };
+  if (!p) return emptyAddress();
 
   const street = [p.subThoroughfare, p.thoroughfare].filter(Boolean).join(" ").trim();
   const city = firstNonEmpty(p.locality, p.subAdministrativeArea);
@@ -51,7 +67,8 @@ function placemarkToAddress(p) {
   );
 
   const line1 = street || (name && !/^\d+\s/.test(name) ? name : "");
-  const line2 = [city, state, zip].filter(Boolean).join(", ").replace(/, ([A-Z]{2}), (\d{5})$/, ", $1 $2");
+  const line2 = [city, state, zip].filter(Boolean).join(", ")
+    .replace(/, ([A-Z]{2}), (\d{5})$/, ", $1 $2");
   const fullAddress = [line1, line2, country].filter(Boolean).join(", ");
 
   return { name, street, city, state, zip, country, fullAddress };
@@ -105,145 +122,208 @@ function buildCSV(rows) {
   return lines.join("\n");
 }
 
-// 1) Pick the Google Timeline export JSON.
-const inputPath = await DocumentPicker.openFile();
-if (!inputPath) throw new Error("No file selected.");
-
-const inputFM = FileManager.local();
-let raw;
-try {
-  raw = inputFM.readString(inputPath);
-} catch (_) {
-  // Some Files/iCloud selections are better handled as Data.
-  raw = Data.fromFile(inputPath).toRawString();
+function applyCache(rows, cache) {
+  for (const r of rows) {
+    const cached = cache[r.placeID];
+    if (cached && cached.address) r.address = cached.address;
+  }
 }
 
-const timeline = JSON.parse(raw);
-if (!Array.isArray(timeline)) throw new Error("The selected file is not the expected Google Timeline JSON array.");
-
-// 2) Collapse Timeline visits into unique Google place IDs.
-const byPlace = new Map();
-for (const item of timeline) {
-  const visit = item && item.visit;
-  const tc = visit && visit.topCandidate;
-  if (!tc) continue;
-
-  const geo = parseGeo(tc.placeLocation);
-  if (!geo) continue;
-
-  const placeID = tc.placeID || `${geo.latitude.toFixed(6)},${geo.longitude.toFixed(6)}`;
-  let r = byPlace.get(placeID);
-  if (!r) {
-    r = {
-      placeID,
-      latitude: geo.latitude,
-      longitude: geo.longitude,
-      visits: 0,
-      semanticCounts: {},
-      firstVisit: item.startTime || "",
-      lastVisit: item.endTime || ""
-    };
-    byPlace.set(placeID, r);
-  }
-
-  r.visits += 1;
-  const sem = tc.semanticType || "Unknown";
-  r.semanticCounts[sem] = (r.semanticCounts[sem] || 0) + 1;
-  if (item.startTime && (!r.firstVisit || item.startTime < r.firstVisit)) r.firstVisit = item.startTime;
-  if (item.endTime && (!r.lastVisit || item.endTime > r.lastVisit)) r.lastVisit = item.endTime;
+function saveProgress(rows, cache) {
+  applyCache(rows, cache);
+  saveCache(cache);
+  fm.writeString(outputPath, buildCSV(rows));
 }
 
-const rows = Array.from(byPlace.values()).map(r => {
-  const bestSemantic = Object.entries(r.semanticCounts)
-    .sort((a, b) => b[1] - a[1])[0]?.[0] || "Unknown";
-  return { ...r, semanticType: bestSemantic };
-}).sort((a, b) => b.visits - a.visits);
+function looksThrottled(message) {
+  const s = String(message || "").toLowerCase();
+  return s.includes("rate limit") ||
+    s.includes("being limited") ||
+    s.includes("too many requests") ||
+    (s.includes("geocod") && s.includes("limited"));
+}
 
-// 3) Resume from cache if this has been run before.
-const cache = await loadCache();
-let resolved = 0;
-let failed = 0;
+async function main() {
+  // 1) Pick the ORIGINAL Google Timeline JSON, not the cache JSON.
+  const inputPath = await DocumentPicker.openFile();
+  if (!inputPath) return;
 
-for (let i = 0; i < rows.length; i++) {
-  const r = rows[i];
-  const key = r.placeID;
-
-  if (cache[key] && cache[key].status === "ok") {
-    r.address = cache[key].address;
-    resolved++;
-    continue;
+  const inputFM = FileManager.local();
+  let raw;
+  try {
+    raw = inputFM.readString(inputPath);
+  } catch (_) {
+    raw = Data.fromFile(inputPath).toRawString();
   }
 
-  let success = false;
-  let lastError = "";
+  const timeline = JSON.parse(raw);
+  if (!Array.isArray(timeline)) {
+    throw new Error(
+      "That is not the original Google Timeline JSON. Select the Timeline export, not Timeline-Geocode-Cache.json."
+    );
+  }
 
-  for (let attempt = 1; attempt <= 4; attempt++) {
-    try {
-      const marks = await Location.reverseGeocode(r.latitude, r.longitude, "en_US");
-      const p = Array.isArray(marks) && marks.length ? marks[0] : null;
-      const address = placemarkToAddress(p);
-      r.address = address;
+  // 2) Collapse Timeline visits into unique Google place IDs.
+  const byPlace = new Map();
+  for (const item of timeline) {
+    const visit = item && item.visit;
+    const tc = visit && visit.topCandidate;
+    if (!tc) continue;
+
+    const geo = parseGeo(tc.placeLocation);
+    if (!geo) continue;
+
+    const placeID = tc.placeID || `${geo.latitude.toFixed(6)},${geo.longitude.toFixed(6)}`;
+    let r = byPlace.get(placeID);
+    if (!r) {
+      r = {
+        placeID,
+        latitude: geo.latitude,
+        longitude: geo.longitude,
+        visits: 0,
+        semanticCounts: {},
+        firstVisit: item.startTime || "",
+        lastVisit: item.endTime || ""
+      };
+      byPlace.set(placeID, r);
+    }
+
+    r.visits += 1;
+    const sem = tc.semanticType || "Unknown";
+    r.semanticCounts[sem] = (r.semanticCounts[sem] || 0) + 1;
+    if (item.startTime && (!r.firstVisit || item.startTime < r.firstVisit)) r.firstVisit = item.startTime;
+    if (item.endTime && (!r.lastVisit || item.endTime > r.lastVisit)) r.lastVisit = item.endTime;
+  }
+
+  const rows = Array.from(byPlace.values()).map(r => {
+    const bestSemantic = Object.entries(r.semanticCounts)
+      .sort((a, b) => b[1] - a[1])[0]?.[0] || "Unknown";
+    return { ...r, semanticType: bestSemantic };
+  }).sort((a, b) => b.visits - a.visits);
+
+  // 3) Resume from the cache. Only unresolved locations enter this run's batch.
+  const cache = await loadCache();
+  applyCache(rows, cache);
+
+  const resolvedBefore = rows.filter(r => cache[r.placeID]?.status === "ok").length;
+  const unresolved = rows.filter(r => cache[r.placeID]?.status !== "ok");
+
+  if (unresolved.length === 0) {
+    saveProgress(rows, cache);
+    const done = new Alert();
+    done.title = "Timeline geocoding complete";
+    done.message = `${rows.length} unique destinations\nAll ${rows.length} are resolved.\n\nThe CSV is ready.`;
+    done.addAction("Export CSV");
+    done.addCancelAction("Done");
+    const choice = await done.presentAlert();
+    if (choice === 0) await DocumentPicker.export(outputPath);
+    return;
+  }
+
+  const batch = unresolved.slice(0, BATCH_SIZE);
+  let attempted = 0;
+  let resolvedThisRun = 0;
+  let failedThisRun = 0;
+  let consecutiveThrottles = 0;
+  let stoppedForThrottle = false;
+
+  const start = new Alert();
+  start.title = "Timeline Geocoder";
+  start.message = `${resolvedBefore} of ${rows.length} resolved\n${unresolved.length} remaining\n\nThis run will try up to ${batch.length} locations and save after each one.`;
+  start.addAction("Run Batch");
+  start.addCancelAction("Cancel");
+  if (await start.presentAlert() !== 0) return;
+
+  for (let i = 0; i < batch.length; i++) {
+    const r = batch[i];
+    const key = r.placeID;
+    let success = false;
+    let lastError = "";
+    let throttleHit = false;
+
+    attempted++;
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS_PER_LOCATION; attempt++) {
+      try {
+        const marks = await Location.reverseGeocode(r.latitude, r.longitude, "en_US");
+        const p = Array.isArray(marks) && marks.length ? marks[0] : null;
+        const address = placemarkToAddress(p);
+
+        r.address = address;
+        cache[key] = {
+          status: "ok",
+          latitude: r.latitude,
+          longitude: r.longitude,
+          address,
+          rawPlacemark: p || null,
+          resolvedAt: new Date().toISOString()
+        };
+
+        resolvedThisRun++;
+        consecutiveThrottles = 0;
+        success = true;
+        break;
+      } catch (e) {
+        lastError = String(e);
+        throttleHit = looksThrottled(lastError);
+        if (throttleHit) break;
+        if (attempt < MAX_ATTEMPTS_PER_LOCATION) await sleep(RETRY_PAUSE_SECONDS);
+      }
+    }
+
+    if (!success) {
+      r.address = cache[key]?.address || emptyAddress();
       cache[key] = {
-        status: "ok",
+        status: "failed",
         latitude: r.latitude,
         longitude: r.longitude,
-        address,
-        rawPlacemark: p || null
+        error: lastError,
+        address: r.address,
+        lastTriedAt: new Date().toISOString()
       };
-      resolved++;
-      success = true;
-      break;
-    } catch (e) {
-      lastError = String(e);
-      await sleep(Math.min(1.5 * attempt, 5));
+      failedThisRun++;
+
+      if (throttleHit) consecutiveThrottles++;
+      else consecutiveThrottles = 0;
     }
+
+    saveProgress(rows, cache);
+
+    if (consecutiveThrottles >= STOP_AFTER_CONSECUTIVE_THROTTLES) {
+      stoppedForThrottle = true;
+      break;
+    }
+
+    if (i < batch.length - 1) await sleep(REQUEST_PAUSE_SECONDS);
   }
 
-  if (!success) {
-    r.address = cache[key]?.address || {
-      name: "", street: "", city: "", state: "", zip: "", country: "", fullAddress: ""
-    };
-    cache[key] = {
-      status: "failed",
-      latitude: r.latitude,
-      longitude: r.longitude,
-      error: lastError,
-      address: r.address
-    };
-    failed++;
-  }
+  // 4) Finish this batch and report remaining work.
+  saveProgress(rows, cache);
+  const resolvedTotal = rows.filter(r => cache[r.placeID]?.status === "ok").length;
+  const remaining = rows.length - resolvedTotal;
 
-  // Save constantly so a long run can be resumed without losing work.
-  if ((i + 1) % 10 === 0 || i === rows.length - 1) {
-    saveCache(cache);
-    const partial = buildCSV(rows.map(x => ({
-      ...x,
-      address: x.address || (cache[x.placeID] && cache[x.placeID].address) || {}
-    })));
-    fm.writeString(outputPath, partial);
-  }
+  const a = new Alert();
+  a.title = remaining === 0 ? "Timeline geocoding complete" : "Timeline batch complete";
+  a.message = [
+    `${resolvedTotal} of ${rows.length} resolved`,
+    `${remaining} still unresolved`,
+    "",
+    `This run: ${attempted} attempted`,
+    `${resolvedThisRun} resolved`,
+    `${failedThisRun} failed`,
+    stoppedForThrottle ? "" : null,
+    stoppedForThrottle
+      ? "Stopped early because the geocoder appears to be throttling. Your progress is saved; run the script again later."
+      : null,
+    "",
+    "Timeline-Destinations-Geocoded.csv has been updated."
+  ].filter(v => v != null).join("\n");
 
-  // Small pause keeps Apple's geocoder happier during a large batch.
-  await sleep(0.35);
+  a.addAction("Export CSV");
+  a.addCancelAction("Done");
+  const choice = await a.presentAlert();
+  if (choice === 0) await DocumentPicker.export(outputPath);
 }
 
-// 4) Build final CSV from cache + current run and save/export it.
-for (const r of rows) {
-  if (!r.address && cache[r.placeID]) r.address = cache[r.placeID].address || {};
-}
-
-const csv = buildCSV(rows);
-fm.writeString(outputPath, csv);
-saveCache(cache);
-
-const a = new Alert();
-a.title = "Timeline geocoding complete";
-a.message = `${rows.length} unique destinations\n${resolved} resolved\n${failed} unresolved\n\nSaved as Timeline-Destinations-Geocoded.csv in Scriptable iCloud.`;
-a.addAction("Export CSV");
-a.addCancelAction("Done");
-const choice = await a.presentAlert();
-if (choice === 0) {
-  await DocumentPicker.export(outputPath);
-}
-
+await main();
 Script.complete();
