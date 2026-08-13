@@ -4,7 +4,7 @@
 
 const fm = FileManager.iCloud();
 const docs = fm.documentsDirectory();
-const PURCHASE_HISTORY_URL = "https://www.homedepot.com/c/view-your-purchase-history";
+const PURCHASE_HISTORY_URL = "https://www.homedepot.com/myaccount/purchase-history";
 const csvPath = fm.joinPath(docs, "Home-Depot-Purchase-History.csv");
 const htmlPath = fm.joinPath(docs, "Home-Depot-Purchase-History-Raw.html");
 const jsonPath = fm.joinPath(docs, "Home-Depot-Purchase-History-Raw.json");
