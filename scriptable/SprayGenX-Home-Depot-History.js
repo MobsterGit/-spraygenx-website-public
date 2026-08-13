@@ -1,29 +1,43 @@
+// Spray GenX - Home Depot Desktop Purchase History launcher
+// iPhone-first helper for opening Home Depot purchase history in Safari
+// so desktop-only CSV/export controls can be used.
+
 const PURCHASE_HISTORY_URL = "https://www.homedepot.com/c/view-your-purchase-history";
 const PRO_XTRA_URL = "https://www.homedepot.com/c/Pro_Xtra";
 
-async function menu() {
+async function openDesktopHelp() {
   const a = new Alert();
-  a.title = "Spray GenX - Home Depot";
-  a.message = "iPhone launcher for Home Depot Pro Xtra purchase history and receipt downloads.";
-  a.addAction("Open Purchase History");
-  a.addAction("Open Pro Xtra");
-  a.addAction("Desktop Setup Help");
-  a.addCancelAction("Cancel");
-  return await a.presentAlert();
-}
-
-async function help() {
-  const a = new Alert();
-  a.title = "Safari desktop setup";
-  a.message = "Open Home Depot Purchase History in Safari, use Website Settings / Request Desktop Website, then return to Purchase History and use Home Depot's receipt download/export controls. Keep downloads together in iCloud so they can later be matched to Timeline-All-Visits.csv.";
+  a.title = "Home Depot Desktop Export";
+  a.message = [
+    "1. Home Depot will open in Safari.",
+    "2. In Safari, tap the page menu (••• / aA).",
+    "3. Choose Request Desktop Website.",
+    "4. Return to Purchase History if needed.",
+    "5. Use Home Depot's desktop Export / CSV controls.",
+    "6. Save the file to iCloud Drive so it can be matched with Timeline-All-Visits.csv."
+  ].join("\n\n");
   a.addAction("Open Purchase History");
   a.addCancelAction("Done");
   const c = await a.presentAlert();
   if (c === 0) Safari.open(PURCHASE_HISTORY_URL);
 }
 
-const c = await menu();
-if (c === 0) Safari.open(PURCHASE_HISTORY_URL);
-else if (c === 1) Safari.open(PRO_XTRA_URL);
-else if (c === 2) await help();
+const a = new Alert();
+a.title = "Spray GenX - Home Depot";
+a.message = "Open Home Depot Purchase History in Safari and use the desktop site for CSV exports.";
+a.addAction("Open Desktop Purchase History");
+a.addAction("Desktop Export Instructions");
+a.addAction("Open Pro Xtra");
+a.addCancelAction("Cancel");
+
+const choice = await a.presentAlert();
+
+if (choice === 0) {
+  Safari.open(PURCHASE_HISTORY_URL);
+} else if (choice === 1) {
+  await openDesktopHelp();
+} else if (choice === 2) {
+  Safari.open(PRO_XTRA_URL);
+}
+
 Script.complete();
