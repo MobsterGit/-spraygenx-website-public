@@ -1,3 +1,6 @@
+// Variables used by Scriptable.
+// These must be at the very top of the file. Do not edit.
+// icon-color: light-gray; icon-glyph: magic;
 // Timeline Reverse Geocoder for Scriptable (iPhone/iPad)
 // Reads a Google Maps Timeline JSON export, reverse-geocodes unique visit locations,
 // caches progress, and exports two CSV files:
@@ -222,11 +225,46 @@ async function main() {
     raw = Data.fromFile(inputPath).toRawString();
   }
 
-  const timeline = JSON.parse(raw);
+  // Normalize the selected file and fail gracefully if the wrong file was picked.
+  raw = String(raw || "").replace(/^\uFEFF/, "").trim();
+
+  if (!raw) {
+    const bad = new Alert();
+    bad.title = "Empty file selected";
+    bad.message = "Select your original Google Timeline JSON export.";
+    bad.addAction("OK");
+    await bad.presentAlert();
+    return;
+  }
+
+  if (raw.startsWith("//") || raw.startsWith("/*")) {
+    const bad = new Alert();
+    bad.title = "Wrong file selected";
+    bad.message = "You selected a JavaScript file. Run this script, then choose the original Google Timeline JSON export when the Files picker opens.";
+    bad.addAction("OK");
+    await bad.presentAlert();
+    return;
+  }
+
+  let timeline;
+  try {
+    timeline = JSON.parse(raw);
+  } catch (e) {
+    const bad = new Alert();
+    bad.title = "Not a Timeline JSON file";
+    bad.message = "The selected file could not be read as JSON. Choose the original Google Timeline export file, not the geocoder script, cache, or CSV.";
+    bad.addAction("OK");
+    await bad.presentAlert();
+    return;
+  }
+
   if (!Array.isArray(timeline)) {
-    throw new Error(
-      "That is not the original Google Timeline JSON. Select the Timeline export, not Timeline-Geocode-Cache.json."
-    );
+    const bad = new Alert();
+    bad.title = "Wrong JSON file";
+    bad.message = "This JSON is not the Timeline visit array this script expects. Choose the original Google Timeline export used for the previous geocoder run.";
+    bad.addAction("OK");
+    await bad.presentAlert();
+    return;
   }
 
   // 2) Build both datasets:
