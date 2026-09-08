@@ -10,15 +10,22 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
+
+concurrency:
+  group: convert-inbox-images-main
+  cancel-in-progress: true
 
 jobs:
   convert:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,14 +40,55 @@ jobs:
       - name: Convert inbox images to web JPEG
         run: python tools/convert_inbox_images.py
 
-      - name: Commit converted images
+      - name: Commit converted images to automation branch
+        id: commit
+        shell: bash
         run: |
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add images/converted data/converted-images.json
-            git commit -m "Convert inbox images to web JPEG"
-            git push
-          else
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No converted image changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          BRANCH="automation/converted-images-${GITHUB_RUN_ID}"
+          git switch -c "$BRANCH"
+          git add images/converted data/converted-images.json
+          git commit -m "Convert inbox images to web JPEG"
+          git push --set-upstream origin "$BRANCH"
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Open conversion pull request
+        if: steps.commit.outputs.changed == 'true'
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.commit.outputs.branch }}
+        shell: bash
+        run: |
+          PR_URL=$(gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "Convert inbox images to web JPEG" \
+            --body "Automated conversion of newly uploaded inbox images into web-ready JPEG files. This pull request is created because the main branch requires changes to arrive through a pull request.")
+          echo "url=$PR_URL" >> "$GITHUB_OUTPUT"
+          echo "Created $PR_URL"
+
+      - name: Merge conversion pull request when allowed
+        if: steps.pr.outputs.url != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+        shell: bash
+        run: |
+          if gh pr merge "$PR_URL" --squash --delete-branch; then
+            echo "Conversion pull request merged."
+          elif gh pr merge "$PR_URL" --squash --auto --delete-branch; then
+            echo "Auto-merge enabled; the pull request will merge when repository requirements are satisfied."
+          else
+            echo "The pull request was created successfully but requires manual merge approval."
           fi
