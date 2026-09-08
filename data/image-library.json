@@ -62,7 +62,9 @@
       "categories": [
         "uncategorized"
       ],
-      "tags": [],
+      "tags": [
+        "Freeman"
+      ],
       "status": "draft",
       "visible": true,
       "weight": 25,
