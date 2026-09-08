@@ -51,6 +51,37 @@
   ],
   "blocks": [
     {
+      "id": "freeman-restoration-20260908142546",
+      "slug": "freeman-restoration",
+      "title": "Freeman Restoration",
+      "summary": "Completed Spray GenX project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-09-08",
+      "category": "uncategorized",
+      "categories": [
+        "uncategorized"
+      ],
+      "tags": [],
+      "status": "draft",
+      "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "",
+      "images": []
+    },
+    {
       "id": "2026-09-08-20260908141957",
       "slug": "2026-09-08",
       "title": "2026 09 08",
