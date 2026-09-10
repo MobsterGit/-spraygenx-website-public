@@ -434,42 +434,6 @@
       "images": []
     },
     {
-      "id": "commercial-painting-storefront-and-ceilings-20260629160807",
-      "slug": "commercial-painting-storefront-and-ceilings",
-      "title": "commercial Painting storefront and ceilings",
-      "summary": "Completed Spray GenX project.",
-      "customer": "Cambria's Bistro",
-      "location": "Wadsworth Ohio",
-      "date": "2026-06-29",
-      "category": "commercial-interiors",
-      "categories": [
-        "commercial-interiors",
-        "uncategorized"
-      ],
-      "tags": [
-        "store front",
-        "ceiling",
-        "dryfall"
-      ],
-      "status": "draft",
-      "visible": true,
-      "weight": 25,
-      "priority": 25,
-      "views": {
-        "library": true,
-        "latest": true,
-        "search": true
-      },
-      "siteLocations": [
-        "library",
-        "latest",
-        "search"
-      ],
-      "fallback": "latest",
-      "cover": "",
-      "images": []
-    },
-    {
       "id": "commercial-black-ceiling-20260627162306",
       "slug": "commercial-black-ceiling",
       "title": "Commercial Black Ceiling",
