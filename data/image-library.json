@@ -58,9 +58,8 @@
       "customer": "Twinsburg Historical Society",
       "location": "Twinsburg, Ohio",
       "date": "2026-09-10",
-      "category": "uncategorized",
+      "category": "jobsite-process",
       "categories": [
-        "uncategorized",
         "jobsite-process"
       ],
       "tags": [
@@ -69,7 +68,7 @@
         "painting"
       ],
       "status": "published",
-      "visible": false,
+      "visible": true,
       "weight": 25,
       "priority": 25,
       "views": {
@@ -163,7 +162,7 @@
           "role": ""
         }
       ],
-      "projectStatus": "draft"
+      "projectStatus": "work-in-progress"
     },
     {
       "id": "2026-08-08-20260808142126",
