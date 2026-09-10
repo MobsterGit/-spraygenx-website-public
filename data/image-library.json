@@ -163,49 +163,6 @@
           "role": ""
         }
       ]
-    },
-    {
-      "id": "2026-08-08-20260808142126",
-      "slug": "westfield",
-      "title": "Westfield",
-      "summary": "Completed Spray GenX project.",
-      "customer": "Westfield",
-      "location": "Westfield, Ohio",
-      "date": "2026-09-10",
-      "category": "uncategorized",
-      "categories": [
-        "uncategorized",
-        "jobsite-process"
-      ],
-      "tags": [
-        "Floor",
-        "Commercial"
-      ],
-      "status": "published",
-      "visible": true,
-      "weight": 25,
-      "priority": 25,
-      "views": {
-        "library": true,
-        "latest": true,
-        "search": true
-      },
-      "siteLocations": [
-        "library",
-        "latest",
-        "search"
-      ],
-      "fallback": "latest",
-      "cover": "images/inbox/2026-08-08/img-4370-20260808142105-001.jpg",
-      "images": [
-        {
-          "path": "images/inbox/2026-08-08/img-4370-20260808142105-001.jpg",
-          "caption": "",
-          "alt": "2026 08 08",
-          "visible": true,
-          "role": "cover"
-        }
-      ]
     }
   ]
 }
