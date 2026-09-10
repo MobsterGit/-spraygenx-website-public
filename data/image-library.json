@@ -68,8 +68,8 @@
         "vintage",
         "painting"
       ],
-      "status": "published",
-      "visible": true,
+      "status": "draft",
+      "visible": false,
       "weight": 25,
       "priority": 25,
       "views": {
