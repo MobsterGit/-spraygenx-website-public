@@ -247,7 +247,7 @@
       "summary": "Completed Spray GenX project.",
       "customer": "Westfield",
       "location": "Westfield, Ohio",
-      "date": "2026-08-08",
+      "date": "2026-09-10",
       "category": "uncategorized",
       "categories": [
         "uncategorized",
@@ -332,6 +332,97 @@
         },
         {
           "path": "images/inbox/2026-08-08/img-4368-20260808142105-009.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4362-20260808072141-001-72012cef26.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4368-20260808081353-004-cd31c86e33.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4369-20260808072428-009-efbfc02cc5.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4370-20260808072428-005-d17d437981.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4371-20260808072141-004-08d18c0054.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4377-20260808072141-005-544a0a7c97.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4380-20260808072428-008-b446c53ecf.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4399-20260808072428-006-d88be53f01.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4401-20260808072712-007-7ed1ad3628.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4402-20260808072141-002-208a017ff1.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4407-20260808072428-003-51d5609bcf.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/img-4408-20260808072141-003-573ae58e91.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-08-08/photo-20260808081525-001-fd2066d4ca.jpg",
           "caption": "",
           "alt": "2026 08 08",
           "visible": true,
