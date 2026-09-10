@@ -52,8 +52,8 @@
   "blocks": [
     {
       "id": "2026-09-08-20260908141957",
-      "slug": "freeman-restoration",
-      "title": "Freeman Restoration",
+      "slug": "freeman-restoration-progress",
+      "title": "Freeman Restoration Progress",
       "summary": "Spray GenX twinsburg Historical Society Freeman barn progress",
       "customer": "Twinsburg Historical Society",
       "location": "Twinsburg, Ohio",
@@ -68,7 +68,7 @@
         "vintage",
         "painting"
       ],
-      "status": "draft",
+      "status": "published",
       "visible": false,
       "weight": 25,
       "priority": 25,
@@ -162,7 +162,8 @@
           "visible": true,
           "role": ""
         }
-      ]
+      ],
+      "projectStatus": "draft"
     },
     {
       "id": "2026-08-08-20260808142126",
