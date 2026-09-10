@@ -3,166 +3,34 @@
   "updated": "2026-09-10",
   "notes": "Bulk image library for Spray GenX job photos. Scriptable/AI uploads will add image blocks here and the public photo-library.html page will render them.",
   "categories": [
-    {
-      "id": "commercial-ceilings",
-      "label": "Commercial Ceilings",
-      "sort": 10
-    },
-    {
-      "id": "commercial-interiors",
-      "label": "Commercial Interiors",
-      "sort": 20
-    },
-    {
-      "id": "residential-interiors",
-      "label": "Residential Interiors",
-      "sort": 30
-    },
-    {
-      "id": "exteriors",
-      "label": "Exterior Painting",
-      "sort": 40
-    },
-    {
-      "id": "machinery-cranes",
-      "label": "Machinery & Cranes",
-      "sort": 50
-    },
-    {
-      "id": "drywall-restoration",
-      "label": "Drywall & Restoration",
-      "sort": 60
-    },
-    {
-      "id": "before-after",
-      "label": "Before & After",
-      "sort": 70
-    },
-    {
-      "id": "jobsite-process",
-      "label": "Jobsite & Process",
-      "sort": 80
-    },
-    {
-      "id": "uncategorized",
-      "label": "Uncategorized",
-      "sort": 999
-    }
+    {"id":"commercial-ceilings","label":"Commercial Ceilings","sort":10},
+    {"id":"commercial-interiors","label":"Commercial Interiors","sort":20},
+    {"id":"residential-interiors","label":"Residential Interiors","sort":30},
+    {"id":"exteriors","label":"Exterior Painting","sort":40},
+    {"id":"machinery-cranes","label":"Machinery & Cranes","sort":50},
+    {"id":"drywall-restoration","label":"Drywall & Restoration","sort":60},
+    {"id":"before-after","label":"Before & After","sort":70},
+    {"id":"jobsite-process","label":"Jobsite & Process","sort":80},
+    {"id":"uncategorized","label":"Uncategorized","sort":999}
   ],
   "blocks": [
     {
-      "id": "2026-09-08-20260908141957",
-      "slug": "freeman-restoration",
-      "title": "Freeman Restoration",
-      "summary": "Spray GenX twinsburg Historical Society Freeman barn progress",
-      "customer": "Twinsburg Historical Society",
-      "location": "Twinsburg, Ohio",
-      "date": "2026-09-10",
-      "category": "uncategorized",
-      "categories": [
-        "uncategorized",
-        "jobsite-process"
-      ],
-      "tags": [
-        "restoration",
-        "vintage",
-        "painting"
-      ],
-      "status": "draft",
-      "visible": false,
-      "weight": 25,
-      "priority": 25,
-      "views": {
-        "library": true,
-        "latest": true,
-        "search": true
-      },
-      "siteLocations": [
-        "library",
-        "latest",
-        "search"
-      ],
-      "fallback": "latest",
-      "cover": "images/inbox/2026-09-08/photo-20260908141955-001.jpg",
-      "images": [
-        {
-          "path": "images/inbox/2026-09-08/photo-20260908141955-001.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": "cover"
-        },
-        {
-          "path": "images/converted/2026-09-08/205e344c-9f83-4639-861f-970c38c1d4cb-20260908142431-003-b64f829a4d.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        },
-        {
-          "path": "images/converted/2026-09-08/35ecfee1-9903-4816-a56d-93c6d8fa3e9a-20260908142623-005-9cdb0fe6e9.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        },
-        {
-          "path": "images/converted/2026-09-08/d5f72cba-2f63-4b3c-bd39-47faddb482cd-2-20260908142431-005-9c220175ab.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        },
-        {
-          "path": "images/converted/2026-09-08/img-1171-20260908142623-006-d1191d0792.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        },
-        {
-          "path": "images/converted/2026-09-08/img-1173-20260908142623-001-f118f2b2a4.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        },
-        {
-          "path": "images/converted/2026-09-08/img-1177-20260908142431-001-cea098188b.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        },
-        {
-          "path": "images/converted/2026-09-08/img-2690-2-20260908142623-004-ad8c2c0e9a.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        },
-        {
-          "path": "images/converted/2026-09-08/img-2690-20260908142431-004-8ed29d129a.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        },
-        {
-          "path": "images/converted/2026-09-08/img-3318-20260908142431-002-10ef5af9c9.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        },
-        {
-          "path": "images/converted/2026-09-08/photo-20260908141955-001-baa5198079.jpg",
-          "caption": "",
-          "alt": "2026 09 08",
-          "visible": true,
-          "role": ""
-        }
-      ]
-    }
+      "id":"freeman-20260910100424","slug":"freeman","title":"Freeman Barn Restoration — Work in Progress","summary":"Ongoing historic preservation project for the Twinsburg Historical Society. Follow the restoration as work progresses.","customer":"","location":"","date":"2026-09-10","category":"uncategorized","categories":["uncategorized","jobsite-process"],"tags":[],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/converted/freeman/img-1172-20260908142840-006-2c64dcc9a5.jpg","images":[{"path":"images/converted/freeman/img-1172-20260908142840-006-2c64dcc9a5.jpg","caption":"","alt":"Freeman","visible":true,"role":"cover"},{"path":"images/converted/freeman/img-1175-20260908142840-005-f35a591e9c.jpg","caption":"","alt":"Freeman","visible":true,"role":""}]
+    },
+    {
+      "id":"2026-09-08-20260908141957","slug":"freeman-restoration","title":"Freeman Restoration","summary":"Spray GenX twinsburg Historical Society Freeman barn progress","customer":"Twinsburg Historical Society","location":"Twinsburg, Ohio","date":"2026-09-10","category":"uncategorized","categories":["uncategorized","jobsite-process"],"tags":["restoration","vintage","painting"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/inbox/2026-09-08/photo-20260908141955-001.jpg","images":[{"path":"images/inbox/2026-09-08/photo-20260908141955-001.jpg","caption":"","alt":"2026 09 08","visible":true,"role":"cover"},{"path":"images/converted/2026-09-08/205e344c-9f83-4639-861f-970c38c1d4cb-20260908142431-003-b64f829a4d.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/35ecfee1-9903-4816-a56d-93c6d8fa3e9a-20260908142623-005-9cdb0fe6e9.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/d5f72cba-2f63-4b3c-bd39-47faddb482cd-2-20260908142431-005-9c220175ab.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-1171-20260908142623-006-d1191d0792.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-1173-20260908142623-001-f118f2b2a4.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-1177-20260908142431-001-cea098188b.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-2690-2-20260908142623-004-ad8c2c0e9a.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-2690-20260908142431-004-8ed29d129a.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-3318-20260908142431-002-10ef5af9c9.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/photo-20260908141955-001-baa5198079.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""}]
+    },
+    {
+      "id":"2026-08-08-20260808142126","slug":"westfield","title":"Westfield","summary":"Completed Spray GenX project.","customer":"Westfield","location":"Westfield, Ohio","date":"2026-09-10","category":"uncategorized","categories":["uncategorized","jobsite-process"],"tags":["Floor","Commercial"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/inbox/2026-08-08/img-4370-20260808142105-001.jpg","images":[{"path":"images/inbox/2026-08-08/img-4370-20260808142105-001.jpg","caption":"","alt":"2026 08 08","visible":true,"role":"cover"},{"path":"images/inbox/2026-08-08/img-4377-20260808142105-002.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/inbox/2026-08-08/img-4371-20260808142105-003.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/inbox/2026-08-08/img-4407-20260808142105-004.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/inbox/2026-08-08/img-4399-20260808142105-005.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/inbox/2026-08-08/img-4362-20260808142105-006.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/inbox/2026-08-08/img-4380-20260808142105-007.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/inbox/2026-08-08/img-4369-20260808142105-008.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/inbox/2026-08-08/img-4368-20260808142105-009.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4362-20260808072141-001-72012cef26.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4368-20260808081353-004-cd31c86e33.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4369-20260808072428-009-efbfc02cc5.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4370-20260808072428-005-d17d437981.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4371-20260808072141-004-08d18c0054.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4377-20260808072141-005-544a0a7c97.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4380-20260808072428-008-b446c53ecf.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4399-20260808072428-006-d88be53f01.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4401-20260808072712-007-7ed1ad3628.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4402-20260808072141-002-208a017ff1.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4407-20260808072428-003-51d5609bcf.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/img-4408-20260808072141-003-573ae58e91.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""},{"path":"images/converted/2026-08-08/photo-20260808081525-001-fd2066d4ca.jpg","caption":"","alt":"2026 08 08","visible":true,"role":""}]
+    },
+    {"id":"commercial-black-ceiling-20260627162306","slug":"commercial-black-ceiling","title":"Commercial Black Ceiling","summary":"Completed Spray GenX painting project.","customer":"","location":"","date":"2026-06-27","category":"commercial-ceilings","categories":["commercial-ceilings"],"tags":["painting","refinishing","completed work"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/library/commercial-ceilings/commercial-black-ceiling-20260627162306-001.jpg","images":[{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627162306-001.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""}]},
+    {"id":"commercial-black-ceiling-20260627162429","slug":"commercial-black-ceiling","title":"Commercial Black Ceiling","summary":"Completed Spray GenX painting project.","customer":"","location":"","date":"2026-06-27","category":"commercial-ceilings","categories":["commercial-ceilings"],"tags":["painting","refinishing","completed work"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/library/commercial-ceilings/commercial-black-ceiling-20260627162429-001.jpg","images":[{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627162429-001.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""}]},
+    {"id":"commercial-black-ceiling-20260627162551","slug":"commercial-black-ceiling","title":"Commercial Black Ceiling","summary":"Completed Spray GenX painting project.","customer":"","location":"","date":"2026-06-27","category":"commercial-ceilings","categories":["commercial-ceilings"],"tags":["painting","refinishing","completed work"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/library/commercial-ceilings/commercial-black-ceiling-20260627162551-001.jpg","images":[{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627162551-001.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""}]},
+    {"id":"commercial-black-ceiling-20260627174502","slug":"commercial-black-ceiling","title":"Commercial Black Ceiling","summary":"Completed Spray GenX painting project.","customer":"","location":"","date":"2026-06-27","category":"commercial-ceilings","categories":["commercial-ceilings"],"tags":["painting","refinishing","completed work"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-001.jpg","images":[{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-001.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""},{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-002.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""},{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-003.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""},{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-004.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""},{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627174502-005.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""}]},
+    {"id":"commercial-black-ceiling-20260627190522","slug":"commercial-black-ceiling","title":"Commercial Black Ceiling","summary":"Completed Spray GenX painting project.","customer":"","location":"","date":"2026-06-27","category":"commercial-ceilings","categories":["commercial-ceilings"],"tags":["painting","refinishing","completed work"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-001.jpg","images":[{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-001.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""},{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-002.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""},{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-003.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""},{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-004.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""},{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-005.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""},{"path":"images/library/commercial-ceilings/commercial-black-ceiling-20260627190522-006.jpg","caption":"","alt":"Commercial Black Ceiling","visible":true,"role":""}]},
+    {"id":"2026-06-27-20260627191729","slug":"2026-06-27","title":"2026 06 27","summary":"Completed Spray GenX painting project.","customer":"","location":"","date":"2026-06-27","category":"commercial-ceilings","categories":["commercial-ceilings"],"tags":["painting","refinishing","completed work"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/converted/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004-44af5c2cf3.jpg","images":[{"path":"images/converted/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004-44af5c2cf3.jpg","caption":"","alt":"2026 06 27","visible":true,"role":""},{"path":"images/converted/2026-06-27/2026-03-16-08-54-20-1-20260627184528-003-caa8c9ccf0.jpg","caption":"","alt":"2026 06 27","visible":true,"role":""},{"path":"images/converted/2026-06-27/2026-03-16-08-55-44-1-20260627184528-002-802495aecb.jpg","caption":"","alt":"2026 06 27","visible":true,"role":""},{"path":"images/converted/2026-06-27/2026-03-16-08-58-51-1-20260627184528-001-5270d4dafe.jpg","caption":"","alt":"2026 06 27","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-0771-20260627191028-002-1844502203.jpg","caption":"","alt":"2026 06 27","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-0781-20260627191028-003-365bc7abb7.jpg","caption":"","alt":"2026 06 27","visible":true,"role":""}]},
+    {"id":"2026-06-27-20260627193318","slug":"residential-interiors","title":"Residential Interiors","summary":"Completed Spray GenX residential interior painting project.","customer":"","location":"","date":"2026-06-27","category":"residential-interiors","categories":["residential-interiors"],"tags":["painting","refinishing","completed work"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/converted/2026-06-27/2026-06-19-15-22-35-20260627192932-014-b07e41dd1f.jpg","images":[{"path":"images/converted/2026-06-27/2026-06-19-15-22-35-20260627192932-014-b07e41dd1f.jpg","caption":"Residential Interior 001","alt":"Residential Interior 001","visible":true,"role":""},{"path":"images/converted/2026-06-27/fe1ad99f-d1f2-4c37-9ab3-57101bd666d1-20260627192932-002-9ba808cbca.jpg","caption":"Residential Interior 002","alt":"Residential Interior 002","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-0018-20260627192932-011-0cdc133e42.jpg","caption":"Residential Interior 003","alt":"Residential Interior 003","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-0703-20260627192932-012-0b37f0af46.jpg","caption":"Residential Interior 004","alt":"Residential Interior 004","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-0707-20260627192932-013-a1231d1af9.jpg","caption":"Residential Interior 005","alt":"Residential Interior 005","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-0866-20260627192932-003-0d648cc45e.jpg","caption":"Residential Interior 006","alt":"Residential Interior 006","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-1128-20260627192932-005-b8ea244eb4.jpg","caption":"Residential Interior 007","alt":"Residential Interior 007","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-1129-20260627192932-004-33543438ae.jpg","caption":"Residential Interior 008","alt":"Residential Interior 008","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-1199-20260627192932-006-285d677bc1.jpg","caption":"Residential Interior 009","alt":"Residential Interior 009","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-1651-20260627192932-007-e59c7316a5.jpg","caption":"Residential Interior 010","alt":"Residential Interior 010","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-1653-20260627192932-009-01590ca537.jpg","caption":"Residential Interior 011","alt":"Residential Interior 011","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-1691-20260627192932-008-b44ea5f4a4.jpg","caption":"Residential Interior 012","alt":"Residential Interior 012","visible":true,"role":""},{"path":"images/converted/2026-06-27/img-1693-20260627192932-010-4cf8c9afe8.jpg","caption":"Residential Interior 013","alt":"Residential Interior 013","visible":true,"role":""}]},
+    {"id":"weston-inc-advertising-building-sign-20260629062152","slug":"weston-inc-advertising-building-sign","title":"Weston Inc - Advertising Building Sign","summary":"Completed Spray GenX painting project.","customer":"","location":"","date":"2026-06-29","category":"exteriors","categories":["exteriors"],"tags":["painting","refinishing","completed work"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/converted/batch-3/2022-05-24-23-45-57-20260629061948-009-7fcb4cc340.jpg","images":[{"path":"images/converted/batch-3/2022-05-24-23-45-57-20260629061948-009-7fcb4cc340.jpg","caption":"Cleveland, Ohio 001","alt":"Cleveland, Ohio 001","visible":true,"role":""},{"path":"images/converted/batch-3/img-1377-2-20260629061948-010-6a055fc1a9.jpg","caption":"Cleveland, Ohio 002","alt":"Cleveland, Ohio 002","visible":true,"role":""},{"path":"images/converted/batch-3/img-1381-20260629061948-008-cb3626bf41.jpg","caption":"Cleveland, Ohio 003","alt":"Cleveland, Ohio 003","visible":true,"role":""},{"path":"images/converted/batch-3/img-1391-20260629061948-011-05343c03b7.jpg","caption":"Cleveland, Ohio 004","alt":"Cleveland, Ohio 004","visible":true,"role":""},{"path":"images/converted/batch-3/img-1402-2-20260629061948-006-cddc6dc40d.jpg","caption":"Cleveland, Ohio 005","alt":"Cleveland, Ohio 005","visible":true,"role":""},{"path":"images/converted/batch-3/qvzkmwhlujhurw11ne02tq-20260629061948-003-76ee44467a.jpg","caption":"Cleveland, Ohio 006","alt":"Cleveland, Ohio 006","visible":true,"role":""},{"path":"images/converted/batch-3/qvzkvxbgt0h2dvq3rg9gbq-20260629061948-005-df2ec8fbee.jpg","caption":"Cleveland, Ohio 007","alt":"Cleveland, Ohio 007","visible":true,"role":""},{"path":"images/converted/batch-3/qvzlv083x3dzzwtsys10qq-20260629061948-002-474bee3243.jpg","caption":"Cleveland, Ohio 008","alt":"Cleveland, Ohio 008","visible":true,"role":""},{"path":"images/converted/batch-3/qvzmeurlbte3zlytnedicw-20260629061948-004-f84e40f657.jpg","caption":"Cleveland, Ohio 009","alt":"Cleveland, Ohio 009","visible":true,"role":""},{"path":"images/converted/batch-3/qvzmndbda2zoejbvavd1rq-20260629061948-001-8b489c54bc.jpg","caption":"Cleveland, Ohio 010","alt":"Cleveland, Ohio 010","visible":true,"role":""}]},
+    {"id":"weston-after-20260629101848","slug":"weston-after","title":"Weston After","summary":"Completed Spray GenX painting project.","customer":"Weston Inc","location":"Cleveland, Ohio","date":"2026-06-29","category":"jobsite-process","categories":["jobsite-process","exteriors","before-after"],"tags":["painting","refinishing","completed work"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/converted/weston-after/img-1405-20260629101603-001-22f1a48136.jpg","images":[{"path":"images/converted/weston-after/img-1405-20260629101603-001-22f1a48136.jpg","caption":"","alt":"Weston After","visible":true,"role":"cover"},{"path":"images/converted/weston-after/img-1406-20260629101603-002-677f40eb4d.jpg","caption":"","alt":"Weston After","visible":true,"role":""}]}
   ]
 }
