@@ -3,23 +3,209 @@
   "updated": "2026-09-10",
   "notes": "Bulk image library for Spray GenX job photos. Scriptable/AI uploads will add image blocks here and the public photo-library.html page will render them.",
   "categories": [
-    {"id":"commercial-ceilings","label":"Commercial Ceilings","sort":10},
-    {"id":"commercial-interiors","label":"Commercial Interiors","sort":20},
-    {"id":"residential-interiors","label":"Residential Interiors","sort":30},
-    {"id":"exteriors","label":"Exterior Painting","sort":40},
-    {"id":"machinery-cranes","label":"Machinery & Cranes","sort":50},
-    {"id":"drywall-restoration","label":"Drywall & Restoration","sort":60},
-    {"id":"before-after","label":"Before & After","sort":70},
-    {"id":"jobsite-process","label":"Jobsite & Process","sort":80},
-    {"id":"uncategorized","label":"Uncategorized","sort":999}
+    {
+      "id": "commercial-ceilings",
+      "label": "Commercial Ceilings",
+      "sort": 10
+    },
+    {
+      "id": "commercial-interiors",
+      "label": "Commercial Interiors",
+      "sort": 20
+    },
+    {
+      "id": "residential-interiors",
+      "label": "Residential Interiors",
+      "sort": 30
+    },
+    {
+      "id": "exteriors",
+      "label": "Exterior Painting",
+      "sort": 40
+    },
+    {
+      "id": "machinery-cranes",
+      "label": "Machinery & Cranes",
+      "sort": 50
+    },
+    {
+      "id": "drywall-restoration",
+      "label": "Drywall & Restoration",
+      "sort": 60
+    },
+    {
+      "id": "before-after",
+      "label": "Before & After",
+      "sort": 70
+    },
+    {
+      "id": "jobsite-process",
+      "label": "Jobsite & Process",
+      "sort": 80
+    },
+    {
+      "id": "uncategorized",
+      "label": "Uncategorized",
+      "sort": 999
+    }
   ],
   "blocks": [
     {
-      "id":"freeman-20260910100424","slug":"freeman","title":"Freeman Barn Restoration — Work in Progress","summary":"Ongoing historic preservation project for the Twinsburg Historical Society. Follow the restoration as work progresses.","customer":"Twinsburg Historical Society","location":"Twinsburg, Ohio","date":"2026-09-10","category":"uncategorized","categories":["uncategorized","jobsite-process"],"tags":["restoration","historic preservation","work in progress"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/converted/freeman/img-1172-20260908142840-006-2c64dcc9a5.jpg","images":[{"path":"images/converted/freeman/img-1172-20260908142840-006-2c64dcc9a5.jpg","caption":"","alt":"Freeman Barn Restoration","visible":true,"role":"cover"},{"path":"images/converted/freeman/img-1175-20260908142840-005-f35a591e9c.jpg","caption":"","alt":"Freeman Barn Restoration","visible":true,"role":""}]
+      "id": "2026-09-08-20260908141957",
+      "slug": "freeman-restoration",
+      "title": "Freeman Restoration",
+      "summary": "Spray GenX twinsburg Historical Society Freeman barn progress",
+      "customer": "Twinsburg Historical Society",
+      "location": "Twinsburg, Ohio",
+      "date": "2026-09-10",
+      "category": "uncategorized",
+      "categories": [
+        "uncategorized",
+        "jobsite-process"
+      ],
+      "tags": [
+        "restoration",
+        "vintage",
+        "painting"
+      ],
+      "status": "published",
+      "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/inbox/2026-09-08/photo-20260908141955-001.jpg",
+      "images": [
+        {
+          "path": "images/inbox/2026-09-08/photo-20260908141955-001.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": "cover"
+        },
+        {
+          "path": "images/converted/2026-09-08/205e344c-9f83-4639-861f-970c38c1d4cb-20260908142431-003-b64f829a4d.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-09-08/35ecfee1-9903-4816-a56d-93c6d8fa3e9a-20260908142623-005-9cdb0fe6e9.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-09-08/d5f72cba-2f63-4b3c-bd39-47faddb482cd-2-20260908142431-005-9c220175ab.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-09-08/img-1171-20260908142623-006-d1191d0792.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-09-08/img-1173-20260908142623-001-f118f2b2a4.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-09-08/img-1177-20260908142431-001-cea098188b.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-09-08/img-2690-2-20260908142623-004-ad8c2c0e9a.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-09-08/img-2690-20260908142431-004-8ed29d129a.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-09-08/img-3318-20260908142431-002-10ef5af9c9.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/converted/2026-09-08/photo-20260908141955-001-baa5198079.jpg",
+          "caption": "",
+          "alt": "2026 09 08",
+          "visible": true,
+          "role": ""
+        }
+      ]
     },
     {
-      "id":"2026-09-08-20260908141957","slug":"freeman-restoration","title":"Freeman Restoration","summary":"Spray GenX twinsburg Historical Society Freeman barn progress","customer":"Twinsburg Historical Society","location":"Twinsburg, Ohio","date":"2026-09-10","category":"uncategorized","categories":["uncategorized","jobsite-process"],"tags":["restoration","vintage","painting"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/inbox/2026-09-08/photo-20260908141955-001.jpg","images":[{"path":"images/inbox/2026-09-08/photo-20260908141955-001.jpg","caption":"","alt":"2026 09 08","visible":true,"role":"cover"},{"path":"images/converted/2026-09-08/205e344c-9f83-4639-861f-970c38c1d4cb-20260908142431-003-b64f829a4d.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/35ecfee1-9903-4816-a56d-93c6d8fa3e9a-20260908142623-005-9cdb0fe6e9.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/d5f72cba-2f63-4b3c-bd39-47faddb482cd-2-20260908142431-005-9c220175ab.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-1171-20260908142623-006-d1191d0792.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-1173-20260908142623-001-f118f2b2a4.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-1177-20260908142431-001-cea098188b.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-2690-2-20260908142623-004-ad8c2c0e9a.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-2690-20260908142431-004-8ed29d129a.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/img-3318-20260908142431-002-10ef5af9c9.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""},{"path":"images/converted/2026-09-08/photo-20260908141955-001-baa5198079.jpg","caption":"","alt":"2026 09 08","visible":true,"role":""}]
-    },
-    {"id":"2026-08-08-20260808142126","slug":"westfield","title":"Westfield","summary":"Completed Spray GenX project.","customer":"Westfield","location":"Westfield, Ohio","date":"2026-09-10","category":"uncategorized","categories":["uncategorized","jobsite-process"],"tags":["Floor","Commercial"],"status":"published","visible":true,"weight":25,"priority":25,"views":{"library":true,"latest":true,"search":true},"siteLocations":["library","latest","search"],"fallback":"latest","cover":"images/inbox/2026-08-08/img-4370-20260808142105-001.jpg","images":[{"path":"images/inbox/2026-08-08/img-4370-20260808142105-001.jpg","caption":"","alt":"2026 08 08","visible":true,"role":"cover"}]}
+      "id": "2026-08-08-20260808142126",
+      "slug": "westfield",
+      "title": "Westfield",
+      "summary": "Completed Spray GenX project.",
+      "customer": "Westfield",
+      "location": "Westfield, Ohio",
+      "date": "2026-09-10",
+      "category": "uncategorized",
+      "categories": [
+        "uncategorized",
+        "jobsite-process"
+      ],
+      "tags": [
+        "Floor",
+        "Commercial"
+      ],
+      "status": "published",
+      "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/inbox/2026-08-08/img-4370-20260808142105-001.jpg",
+      "images": [
+        {
+          "path": "images/inbox/2026-08-08/img-4370-20260808142105-001.jpg",
+          "caption": "",
+          "alt": "2026 08 08",
+          "visible": true,
+          "role": "cover"
+        }
+      ]
+    }
   ]
 }
