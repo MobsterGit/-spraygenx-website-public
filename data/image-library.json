@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-09-10",
+  "updated": "2026-09-12",
   "notes": "Bulk image library for Spray GenX job photos. Scriptable/AI uploads will add image blocks here and the public photo-library.html page will render them.",
   "categories": [
     {
@@ -50,6 +50,53 @@
     }
   ],
   "blocks": [
+    {
+      "id": "freeman-barn-20260912123856",
+      "slug": "freeman-barn",
+      "title": "Freeman Barn",
+      "summary": "Completed Spray GenX project.",
+      "customer": "",
+      "location": "",
+      "date": "2026-09-12",
+      "category": "uncategorized",
+      "categories": [
+        "uncategorized",
+        "jobsite-process"
+      ],
+      "tags": [],
+      "status": "published",
+      "visible": true,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "images/converted/freeman/img-1172-20260908142840-006-2c64dcc9a5.jpg",
+      "images": [
+        {
+          "path": "images/converted/freeman/img-1172-20260908142840-006-2c64dcc9a5.jpg",
+          "caption": "",
+          "alt": "Freeman Barn",
+          "visible": true,
+          "role": "cover"
+        },
+        {
+          "path": "images/converted/freeman/img-1175-20260908142840-005-f35a591e9c.jpg",
+          "caption": "",
+          "alt": "Freeman Barn",
+          "visible": true,
+          "role": ""
+        }
+      ]
+    },
     {
       "id": "2026-09-08-20260908141957",
       "slug": "freeman-restoration-progress-the-restoration-is-underway",
@@ -161,8 +208,7 @@
           "visible": true,
           "role": ""
         }
-      ],
-      "projectStatus": "work-in-progress"
+      ]
     },
     {
       "id": "2026-08-08-20260808142126",
