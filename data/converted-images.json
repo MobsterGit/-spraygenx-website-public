@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-09-08T14:39:11+00:00",
+  "updated": "2026-09-12T13:37:24+00:00",
   "images": [
     {
       "source": "images/inbox/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004.png",
@@ -504,6 +504,15 @@
       "source_ext": "heic",
       "converted_ext": "jpg",
       "converted_at": "2026-09-08T14:39:11+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/photo-20260912133707-01.jpg",
+      "converted": "images/converted/2026-06-27/photo-20260912133707-01-e2ad26a7d4.jpg",
+      "sha256": "e2ad26a7d477c194207676c94af454b66f585859c9ed7b6fa6f722e5da0b8cd8",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-12T13:37:24+00:00",
       "status": "converted"
     }
   ]
