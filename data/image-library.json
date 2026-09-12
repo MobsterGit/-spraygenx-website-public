@@ -175,10 +175,10 @@
       "summary": "Completed Spray GenX project.",
       "customer": "Westfield",
       "location": "Westfield, Ohio",
-      "date": "2026-09-10",
-      "category": "uncategorized",
+      "date": "2026-09-12",
+      "category": "machinery-cranes",
       "categories": [
-        "uncategorized",
+        "machinery-cranes",
         "jobsite-process"
       ],
       "tags": [
@@ -356,7 +356,8 @@
           "visible": true,
           "role": ""
         }
-      ]
+      ],
+      "projectStatus": "completed"
     },
     {
       "id": "commercial-black-ceiling-20260627162306",
