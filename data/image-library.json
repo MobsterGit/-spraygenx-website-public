@@ -47,6 +47,11 @@
       "id": "uncategorized",
       "label": "Uncategorized",
       "sort": 999
+    },
+    {
+      "id": "historical-restoration",
+      "label": "Historical Restoration",
+      "sort": 1009
     }
   ],
   "blocks": [
@@ -639,8 +644,9 @@
       "customer": "",
       "location": "",
       "date": "2026-06-27",
-      "category": "commercial-ceilings",
+      "category": "historical-restoration",
       "categories": [
+        "historical-restoration",
         "commercial-ceilings"
       ],
       "tags": [
