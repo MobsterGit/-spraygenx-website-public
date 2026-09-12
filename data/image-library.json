@@ -685,14 +685,15 @@
     },
     {
       "id": "2026-06-27-20260627191729",
-      "slug": "2026-06-27",
-      "title": "2026 06 27",
+      "slug": "interior-home-painting",
+      "title": "Interior Home Painting",
       "summary": "Completed Spray GenX painting project.",
-      "customer": "",
-      "location": "",
-      "date": "2026-06-27",
-      "category": "historical-restoration",
+      "customer": "Terri",
+      "location": "Wadsworth, Ohio",
+      "date": "2026-09-12",
+      "category": "residential-interiors",
       "categories": [
+        "residential-interiors",
         "historical-restoration",
         "commercial-ceilings"
       ],
@@ -760,7 +761,8 @@
           "visible": true,
           "role": ""
         }
-      ]
+      ],
+      "projectStatus": "completed"
     },
     {
       "id": "2026-06-27-20260627193318",
