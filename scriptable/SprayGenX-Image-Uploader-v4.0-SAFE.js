@@ -1,5 +1,5 @@
 // Spray GenX Image Uploader — v4.0 SAFE
-// Existing-block selector + single and bulk uploads.
+// Destination-first project search + single and bulk uploads.
 // Automatically resizes large iPhone photos before GitHub upload.
 // Paste your GitHub token below. This uploader NEVER creates a block by guessing a typed name.
 
@@ -24,6 +24,7 @@ function mb(n){return (n/1024/1024).toFixed(1)}
 
 async function alertMsg(title,msg){let a=new Alert();a.title=title;a.message=msg||"";a.addAction("OK");await a.presentAlert()}
 async function choose(title,items,msg=""){let a=new Alert();a.title=title;if(msg)a.message=msg;items.forEach(x=>a.addAction(x.label));a.addCancelAction("Cancel");let i=await a.presentSheet();return i<0?null:items[i]}
+async function askText(title,placeholder,msg=""){let a=new Alert();a.title=title;if(msg)a.message=msg;a.addTextField(placeholder,"");a.addAction("Find Project");a.addCancelAction("Cancel");let i=await a.presentAlert();return i<0?null:a.textFieldValue(0).trim()}
 async function gh(path,method="GET",body=null){
   if(!GITHUB_TOKEN||GITHUB_TOKEN==="token-here")throw new Error("Paste your GitHub token into GITHUB_TOKEN first.");
   let r=new Request(api(path)+(method==="GET"?`?ref=${BRANCH}&_=${Date.now()}`:""));r.method=method;
@@ -39,9 +40,22 @@ async function selectExistingBlock(){
   let live=await getLibrary();
   let blocks=live.json.blocks.slice().sort((a,b)=>String(a.title||"").localeCompare(String(b.title||"")));
   if(!blocks.length){await alertMsg("No Image Blocks","Create the project block first, then upload photos to it.");return null}
-  let items=blocks.map(b=>({label:`${b.title||b.id}  ·  ${(b.images||[]).length} photos`,block:b}));
-  let pick=await choose("Select Existing Project",items,"Choose exactly where these photos belong. Attachment uses the permanent block ID.");
-  return pick?pick.block:null;
+  while(true){
+    let q=await askText("Project / Image Block","Example: Freeman Barn","Enter any part of the destination project name. Leave it blank to browse every existing block.");
+    if(q===null)return null;
+    let needle=slug(q),words=needle.split("-").filter(w=>w.length>1);
+    let matches=q?blocks.filter(b=>{
+      let hay=slug(`${b.title||""} ${b.id||""} ${b.slug||""}`);
+      return hay.includes(needle)||words.some(w=>hay.includes(w));
+    }):blocks;
+    if(!matches.length){
+      await alertMsg("No Matching Project",`No existing image block matched “${q}.”\n\nTry a shorter name. Nothing was uploaded.`);
+      continue;
+    }
+    let items=matches.map(b=>({label:`${b.title||b.id}  ·  ${(b.images||[]).length} photos`,block:b}));
+    let pick=await choose("Confirm Destination",items,matches.length===1?"Confirm this block before choosing the photo.":"Choose the exact block before selecting photos.");
+    return pick?pick.block:null;
+  }
 }
 
 function uniqueName(i){return `photo-${stamp()}-${String(i+1).padStart(2,"0")}.jpg`}
@@ -121,7 +135,7 @@ async function uploadBulk(){
 
 async function main(){
   while(true){
-    let a=await choose("Spray GenX Image Uploader v4.0 SAFE",[{label:"Upload One Photo → Existing Block",id:"one"},{label:"Bulk Upload → Existing Block",id:"bulk"},{label:"Done",id:"done"}],"Large photos are resized automatically. Select the existing block first; attachment is by permanent block ID.");
+    let a=await choose("Spray GenX Image Uploader v4.0 SAFE",[{label:"Upload One Photo → Choose Block First",id:"one"},{label:"Bulk Upload → Choose Block First",id:"bulk"},{label:"Done",id:"done"}],"Choose the project block first. Large photos are resized automatically.");
     if(!a||a.id==="done")break;if(a.id==="one")await uploadOne();if(a.id==="bulk")await uploadBulk();
   }
 }
