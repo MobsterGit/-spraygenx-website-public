@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://spraygenx.com/</loc>
-    <lastmod>2026-08-02</lastmod>
+    <lastmod>2026-09-12</lastmod>
   </url>
   <url>
     <loc>https://spraygenx.com/about.html</loc>
@@ -25,8 +25,24 @@
     <lastmod>2026-08-07</lastmod>
   </url>
   <url>
-    <loc>https://spraygenx.com/journal/westfield-control-room-floor-repaint/</loc>
+    <loc>https://spraygenx.com/journal/[ENTRY-SLUG]/</loc>
     <lastmod>2026-08-07</lastmod>
+  </url>
+  <url>
+    <loc>https://spraygenx.com/journal/five39-church-akron/</loc>
+    <lastmod>2026-08-07</lastmod>
+  </url>
+  <url>
+    <loc>https://spraygenx.com/journal/flat-black-open-deck-ceilings/</loc>
+    <lastmod>2026-08-07</lastmod>
+  </url>
+  <url>
+    <loc>https://spraygenx.com/journal/twinsburg-historical-society/</loc>
+    <lastmod>2026-09-10</lastmod>
+  </url>
+  <url>
+    <loc>https://spraygenx.com/journal/westfield-control-room-floor-repaint/</loc>
+    <lastmod>2026-08-08</lastmod>
   </url>
   <url>
     <loc>https://spraygenx.com/latest.html</loc>
@@ -34,7 +50,7 @@
   </url>
   <url>
     <loc>https://spraygenx.com/photo-library.html</loc>
-    <lastmod>2026-08-02</lastmod>
+    <lastmod>2026-09-12</lastmod>
   </url>
   <url>
     <loc>https://spraygenx.com/regional-updates.html</loc>
@@ -50,7 +66,11 @@
   </url>
   <url>
     <loc>https://spraygenx.com/restoration-projects/</loc>
-    <lastmod>2026-08-02</lastmod>
+    <lastmod>2026-09-08</lastmod>
+  </url>
+  <url>
+    <loc>https://spraygenx.com/restoration-projects/freeman-barn-twinsburg/</loc>
+    <lastmod>2026-09-08</lastmod>
   </url>
   <url>
     <loc>https://spraygenx.com/restoration-projects/riley-house-twinsburg/</loc>
@@ -63,5 +83,9 @@
   <url>
     <loc>https://spraygenx.com/services.html</loc>
     <lastmod>2026-08-02</lastmod>
+  </url>
+  <url>
+    <loc>https://spraygenx.com/windham-whole-home-renovation.html</loc>
+    <lastmod>2026-09-04</lastmod>
   </url>
 </urlset>
