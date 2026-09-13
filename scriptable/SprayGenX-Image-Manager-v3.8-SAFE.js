@@ -1,153 +1,104 @@
-// Spray GenX Image Manager — v3.8 SAFE
-// Add your GitHub token below. Every mutation starts from the CURRENT GitHub JSON
-// and is read back/verified before success is reported.
+// Spray GenX Image Manager — v3.6 FULL (large-photo fix)
+// Single-page mobile Image Block editor + explicit Draft / Publish controls.
+// Private Scriptable control panel. Replace only GITHUB_TOKEN yourself.
 
-const OWNER="MobsterGit";
-const REPO="-spraygenx-website-public";
-const BRANCH="main";
-const GITHUB_TOKEN="token-here";
+const OWNER="MobsterGit", REPO="-spraygenx-website-public", BRANCH="main";
+const KEYCHAIN_KEY = "SprayGenX_GitHub";
+
+if (!Keychain.contains(KEYCHAIN_KEY)) {
+  throw new Error(
+    "GitHub credential not found. Run Spray GenX Credentials first."
+  );
+}
+
+const GITHUB_TOKEN = Keychain.get(KEYCHAIN_KEY);
 const LIBRARY_PATH="data/image-library.json";
+const CONVERTED_PATH="data/converted-images.json";
 const INBOX_ROOT="images/inbox";
+const MAX_BATCH=24;
+const RAW_ALLOWED=["heic","heif","jpg","jpeg","png","webp","tif","tiff","bmp","gif"];
 const DEFAULT_VIEWS=["library","latest","search"];
 const api=p=>`https://api.github.com/repos/${OWNER}/${REPO}/contents/${p}`;
 const rawUrl=p=>`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${String(p||"").split("/").map(encodeURIComponent).join("/")}`;
 let LIB=null;
-
 function today(){return new Date().toISOString().slice(0,10)}
-function nowTime(){return new Date().toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})}
 function stamp(){return new Date().toISOString().replace(/[-:T.Z]/g,"").slice(0,14)}
 function slug(v){return String(v||"block").toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,80)||"block"}
 function csv(v){return String(v||"").split(",").map(x=>x.trim()).filter(Boolean)}
-function unique(a){return [...new Set((a||[]).filter(Boolean))]}
 function imgPath(i){return typeof i==="string"?i:(i&&i.path?i.path:"")}
+function ext(path){let m=String(path||"").toLowerCase().match(/\.([a-z0-9]+)$/);return m?m[1]:""}
+function base(path){return String(path||"").split("/").pop().replace(/\.[^.]+$/,"" )||"image"}
+function folderOf(p){let parts=String(p||"").split("/");return parts.length>2?parts.slice(2,-1).join("/")||"converted":"converted"}
+function titleCase(v){return String(v||"").replace(/[-_]/g," ").replace(/\b\w/g,c=>c.toUpperCase())}
+function unique(a){return [...new Set((a||[]).filter(Boolean))]}
 function b64(s){return Data.fromString(s).toBase64String()}
 function decode(s){return Data.fromBase64String(String(s||"").replace(/\n/g,"")).toRawString()}
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
-function sleep(ms){return new Promise(resolve=>Timer.schedule(ms/1000,false,resolve))}
-
-async function alertMsg(title,msg){let a=new Alert();a.title=title;a.message=msg||"";a.addAction("OK");await a.presentAlert()}
+async function alertMsg(title,msg){let a=new Alert();a.title=title;a.message=msg||"";a.addAction("OK");await a.present()}
 async function confirm(title,msg,yes="Yes"){let a=new Alert();a.title=title;a.message=msg||"";a.addDestructiveAction(yes);a.addCancelAction("Cancel");return await a.presentAlert()===0}
-async function ask(title,placeholder,value=""){let a=new Alert();a.title=title;a.addTextField(placeholder,value);a.addAction("OK");a.addCancelAction("Cancel");let r=await a.presentAlert();return r<0?null:a.textFieldValue(0).trim()}
+async function ask(title,placeholder,value=""){let a=new Alert();a.title=title;a.addTextField(placeholder,value);a.addAction("OK");a.addCancelAction("Cancel");let r=await a.presentAlert();if(r<0)return null;return a.textFieldValue(0).trim()}
 async function choose(title,items,msg=""){let a=new Alert();a.title=title;if(msg)a.message=msg;items.forEach(x=>a.addAction(x.label||String(x)));a.addCancelAction("Cancel");let i=await a.presentSheet();return i<0?null:items[i]}
-
-async function gh(path,method="GET",body=null){
-  if(!GITHUB_TOKEN||GITHUB_TOKEN==="token-here")throw new Error("Paste your GitHub token into GITHUB_TOKEN first.");
-  let r=new Request(api(path)+(method==="GET"?`?ref=${BRANCH}&_=${Date.now()}`:""));
-  r.method=method;
-  r.headers={Authorization:`Bearer ${GITHUB_TOKEN}`,Accept:"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
-  if(body){r.headers["Content-Type"]="application/json";r.body=JSON.stringify(body)}
-  let j=await r.loadJSON();
-  if(r.response.statusCode<200||r.response.statusCode>299)throw new Error(`${method} ${path}\nHTTP ${r.response.statusCode}\n${JSON.stringify(j,null,2)}`);
-  return j;
-}
+async function gh(path,method="GET",body=null){if(!GITHUB_TOKEN||GITHUB_TOKEN==="token-here"||GITHUB_TOKEN==="PASTE_NEW_TOKEN_HERE")throw new Error("Paste your GitHub token into GITHUB_TOKEN first.");let url=api(path)+(method==="GET"?`?ref=${BRANCH}`:"");let r=new Request(url);r.method=method;r.headers={Authorization:`Bearer ${GITHUB_TOKEN}`,Accept:"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};if(body){r.headers["Content-Type"]="application/json";r.body=JSON.stringify(body)}let j=await r.loadJSON();if(r.response.statusCode<200||r.response.statusCode>299)throw new Error(`${method} ${path}\n${r.response.statusCode}\n${JSON.stringify(j,null,2)}`);return j}
 async function getJson(path){let f=await gh(path);return{json:JSON.parse(decode(f.content)),sha:f.sha}}
 async function putJson(path,obj,sha,msg){return await gh(path,"PUT",{message:msg,content:b64(JSON.stringify(obj,null,2)+"\n"),sha,branch:BRANCH})}
 async function putBinary(path,data,msg){return await gh(path,"PUT",{message:msg,content:data.toBase64String(),branch:BRANCH})}
-function categoryLabel(id,lib=LIB&&LIB.json){let c=((lib&&lib.categories)||[]).find(x=>x.id===id);return c?c.label:(id||"Uncategorized")}
-async function load(){LIB=await getJson(LIBRARY_PATH);if(!Array.isArray(LIB.json.blocks))throw new Error("Live library has no blocks array.");if(!Array.isArray(LIB.json.categories))LIB.json.categories=[];return LIB}
-async function ensureLoaded(){try{await load();return true}catch(e){await alertMsg("Library Unavailable",String(e.message||e));return false}}
-function findBlock(lib,id){return (lib.blocks||[]).find(b=>b.id===id)}
-
-async function safeMutateBlock(blockId,mutator,message,verifyFn=null){
-  let live=await getJson(LIBRARY_PATH);
-  if(!Array.isArray(live.json.blocks))throw new Error("SAFETY STOP: live image-library.json has no blocks array.");
-  const beforeCount=live.json.blocks.length;
-  const idx=live.json.blocks.findIndex(b=>b.id===blockId);
-  if(idx<0)throw new Error(`SAFETY STOP: block ${blockId} was not found in the current GitHub library.`);
-  let changed=JSON.parse(JSON.stringify(live.json.blocks[idx]));
-  await mutator(changed,live.json);
-  live.json.blocks[idx]=changed;
-  live.json.updated=today();
-  if(live.json.blocks.length!==beforeCount)throw new Error("SAFETY STOP: block count changed unexpectedly. Nothing was saved.");
-  await putJson(LIBRARY_PATH,live.json,live.sha,message);
-  let check=await getJson(LIBRARY_PATH),saved=findBlock(check.json,blockId);
-  if(!saved)throw new Error("SAVE FAILED VERIFICATION: block was not read back from GitHub.");
-  if((check.json.blocks||[]).length!==beforeCount)throw new Error("SAVE FAILED VERIFICATION: library block count changed.");
-  if(verifyFn&&!verifyFn(saved))throw new Error("SAVE FAILED VERIFICATION: saved values do not match.");
-  LIB=check;
-  return saved;
+function normalizeLibrary(l){l=l||{};l.categories=Array.isArray(l.categories)?l.categories:[];l.blocks=Array.isArray(l.blocks)?l.blocks:[];l.blocks=l.blocks.map((b,n)=>{let cats=Array.isArray(b.categories)?b.categories.filter(Boolean):[];let cat=b.category||cats[0]||(l.categories[0]&&l.categories[0].id)||"uncategorized";cats=unique([cat,...cats]);let locs=unique([...(Array.isArray(b.siteLocations)?b.siteLocations:[]),...Object.keys(b.views||{}).filter(k=>b.views[k])]);if(!locs.length)locs=DEFAULT_VIEWS.slice();let imgs=(b.images||[]).map(i=>typeof i==="string"?{path:i,caption:"",visible:true,alt:b.title||""}:{path:i.path||"",caption:i.caption||"",alt:i.alt||i.caption||b.title||"",visible:i.visible===false?false:true,role:i.role||""}).filter(i=>i.path);let weight=Number.isFinite(Number(b.weight))?Number(b.weight):25;return{id:b.id||`${slug(b.title||"image-block")}-${n+1}`,slug:b.slug||slug(b.title||"image-block"),title:b.title||"Untitled Image Block",summary:b.summary||b.description||"Completed Spray GenX project.",customer:b.customer||"",location:b.location||"",date:b.date||today(),category:cat,categories:cats,tags:Array.isArray(b.tags)?b.tags:csv(b.tags),status:b.status||(b.visible===false?"hidden":"published"),visible:b.visible===false?false:true,weight,priority:weight,views:Object.fromEntries(locs.map(x=>[x,true])),siteLocations:locs,fallback:b.fallback||"latest",cover:b.cover||(imgs[0]&&imgs[0].path)||"",images:imgs}});return l}
+async function load(){LIB=await getJson(LIBRARY_PATH);LIB.json=normalizeLibrary(LIB.json)}
+async function ensureLoaded(){if(LIB&&LIB.json)return true;try{await load();return true}catch(e){await alertMsg("Library Unavailable",String(e.message||e));return false}}
+async function saveLibrary(msg){LIB.json.updated=today();await putJson(LIBRARY_PATH,LIB.json,LIB.sha,msg);LIB=await getJson(LIBRARY_PATH);LIB.json=normalizeLibrary(LIB.json)}
+function categoryLabel(id){let c=(LIB.json.categories||[]).find(x=>x.id===id);return c?c.label:id}
+function health(b){let w=[];if(!b.title||/^untitled/i.test(b.title))w.push("title");if(!b.summary)w.push("summary");if(!b.tags.length)w.push("tags");if(!b.images.length)w.push("images");if(!b.cover)w.push("cover");return w}
+async function progressPing(done,total,project){if(done%5!==0&&done!==total)return;try{let n=new Notification();n.title=`Spray GenX Upload: ${done}/${total}`;n.body=`${project}: ${done} image${done===1?"":"s"} uploaded.`;n.sound="default";await n.schedule()}catch(_){}}
+async function attachUploadedToBlock(projectName,paths){if(!paths.length||!await ensureLoaded())return null;let projectSlug=slug(projectName);let b=(LIB.json.blocks||[]).find(x=>x.slug===projectSlug||slug(x.title)===projectSlug);if(!b){b={id:`${projectSlug}-${stamp()}`,slug:projectSlug,title:titleCase(projectName),summary:"Completed Spray GenX project.",customer:"",location:"",date:today(),category:"uncategorized",categories:["uncategorized","jobsite-process"],tags:[],status:"published",visible:true,weight:25,priority:25,views:{library:true,latest:true,search:true},siteLocations:DEFAULT_VIEWS.slice(),fallback:"latest",cover:"",images:[]};LIB.json.blocks.unshift(b)}let existing=new Set((b.images||[]).map(imgPath));for(let p of paths)if(!existing.has(p)){b.images.push({path:p,caption:"",alt:b.title,visible:true,role:""});existing.add(p)}if(!b.cover&&b.images.length){b.cover=imgPath(b.images[0]);b.images[0].role="cover"}b.status="published";b.visible=true;b.date=today();await saveLibrary(`Attach ${paths.length} uploaded image(s) to ${b.title}`);return b}
+function resizeForUpload(img,maxEdge){
+  let w=img.size.width,h=img.size.height,longest=Math.max(w,h);
+  if(longest<=maxEdge)return img;
+  let scale=maxEdge/longest,nw=Math.max(1,Math.round(w*scale)),nh=Math.max(1,Math.round(h*scale));
+  let dc=new DrawContext();dc.size=new Size(nw,nh);dc.opaque=true;dc.respectScreenScale=false;
+  dc.drawImageInRect(img,new Rect(0,0,nw,nh));return dc.getImage()
 }
-async function safeCreateBlock(block,message){
-  let live=await getJson(LIBRARY_PATH);
-  if(!Array.isArray(live.json.blocks))throw new Error("SAFETY STOP: live library has no blocks array.");
-  if(findBlock(live.json,block.id))throw new Error("SAFETY STOP: block ID already exists.");
-  let before=live.json.blocks.length;
-  live.json.blocks.unshift(block);live.json.updated=today();
-  await putJson(LIBRARY_PATH,live.json,live.sha,message);
-  let check=await getJson(LIBRARY_PATH);
-  if((check.json.blocks||[]).length!==before+1||!findBlock(check.json,block.id))throw new Error("CREATE FAILED VERIFICATION.");
-  LIB=check;return findBlock(check.json,block.id);
+function jpegForUpload(img){
+  let edge=2400,work=resizeForUpload(img,edge),data=Data.fromJPEG(work);
+  while(data.length>8*1024*1024&&edge>900){edge=Math.max(900,Math.floor(edge*0.8));work=resizeForUpload(img,edge);data=Data.fromJPEG(work)}
+  if(data.length>8*1024*1024)throw new Error("Photo is still too large after resizing. Crop it slightly in Photos and try again.");
+  return data
 }
-async function safeDeleteBlock(blockId,title){
-  let live=await getJson(LIBRARY_PATH);
-  if(!Array.isArray(live.json.blocks))throw new Error("SAFETY STOP: live library has no blocks array.");
-  let before=live.json.blocks.length;
-  if(!findBlock(live.json,blockId))throw new Error("SAFETY STOP: block no longer exists.");
-  live.json.blocks=live.json.blocks.filter(b=>b.id!==blockId);live.json.updated=today();
-  if(live.json.blocks.length!==before-1)throw new Error("SAFETY STOP: delete affected an unexpected number of blocks.");
-  await putJson(LIBRARY_PATH,live.json,live.sha,`Delete image block: ${title}`);
-  let check=await getJson(LIBRARY_PATH);
-  if(findBlock(check.json,blockId)||(check.json.blocks||[]).length!==before-1)throw new Error("DELETE FAILED VERIFICATION.");
-  LIB=check;
-}
+async function uploadImageObjects(images,sourceLabel="Photos",projectInput=null){images=(images||[]).filter(Boolean).slice(0,MAX_BATCH);if(!images.length){await alertMsg("No Photos","No photos were received.");return}let project=projectInput;if(project===null)project=await ask("Project / Image Block","Example: Freeman Barn","");if(project===null)return;project=slug(project);let run=stamp(),uploaded=[];for(let i=0;i<images.length;i++){let n=String(i+1).padStart(3,"0"),safe=`photo-${run}-${n}.jpg`,repoPath=`${INBOX_ROOT}/${project}/${safe}`,data=jpegForUpload(images[i]);await putBinary(repoPath,data,`Inbox upload: ${safe}`);uploaded.push(repoPath);await progressPing(i+1,images.length,titleCase(project))}let b=await attachUploadedToBlock(project,uploaded);await alertMsg("Upload Complete",`${uploaded.length} photo(s) resized and uploaded from ${sourceLabel}.\n\n${b?`Added to image block: ${b.title}`:"Images uploaded, but library attachment could not be completed."}`)}
+async function uploadOnePhoto(){let project=await ask("Project / Image Block","Example: Freeman Barn","");if(project===null)return;let img;try{img=await Photos.fromLibrary()}catch(e){return}if(img)await uploadImageObjects([img],"Photo Library",project)}
+async function uploadSharedPhotos(){let images=Array.isArray(args.images)?args.images.filter(Boolean):[];if(!images.length){await alertMsg("No Shared Photos","Photos → Select → choose multiple photos → Share → Scriptable → this Image Manager.");return false}await uploadImageObjects(images,`Share Sheet (${images.length} selected)`);return true}
+async function uploadMultipleFiles(){let project=await ask("Upload Batch / Project","Example: industrial-floor-painting",today());if(project===null)return;project=slug(project);let paths=[];try{paths=await DocumentPicker.open(["public.image"])}catch(e){await alertMsg("File Picker Error",String(e.message||e));return}if(!Array.isArray(paths))paths=paths?[paths]:[];paths=unique(paths).slice(0,MAX_BATCH);if(!paths.length){await alertMsg("No Files","No files selected.");return}let bad=paths.filter(p=>!RAW_ALLOWED.includes(ext(p)));if(bad.length){await alertMsg("Unsupported File",`Detected: ${unique(bad.map(p=>ext(p)||"(no extension)")).join(", ")}`);return}let fm=FileManager.local(),run=stamp(),uploaded=[];for(let i=0;i<paths.length;i++){let p=paths[i],n=String(i+1).padStart(3,"0"),safe=`${slug(base(p))}-${run}-${n}.${ext(p)}`,repoPath=`${INBOX_ROOT}/${project}/${safe}`;await putBinary(repoPath,fm.read(p),`Inbox upload: ${safe}`);uploaded.push(repoPath);await progressPing(i+1,paths.length,titleCase(project))}let b=await attachUploadedToBlock(project,uploaded);await alertMsg("Batch Upload Complete",`${uploaded.length} file(s) uploaded.\n\n${b?`Added to image block: ${b.title}`:"Images uploaded, but library attachment could not be completed."}`)}
+async function uploadMenu(){let shared=Array.isArray(args.images)&&args.images.length,items=[];if(shared)items.push({label:`Import ${Math.min(args.images.length,MAX_BATCH)} Shared Photos Now`,id:"shared"});items.push({label:"Import Multiple Photos — Share Sheet",id:"sharehelp"},{label:`Select Multiple Files — Files (up to ${MAX_BATCH})`,id:"files"},{label:"Choose One Photo — Photo Library",id:"one"});let a=await choose("Upload Images",items,"Uploads attach directly to the matching image block.");if(!a)return;if(a.id==="shared")await uploadSharedPhotos();if(a.id==="sharehelp")await alertMsg("Multiple Photos","Photos → Select → choose photos → Share → Scriptable → this Image Manager.");if(a.id==="files")await uploadMultipleFiles();if(a.id==="one")await uploadOnePhoto()}
 
 async function editBlockPage(b){
-  let cats=((LIB&&LIB.json.categories)||[]).slice().sort((a,z)=>(a.sort||999)-(z.sort||999));
-  if(!cats.some(c=>c.id===b.category))cats.push({id:b.category||"uncategorized",label:categoryLabel(b.category)});
+  let cats=(LIB.json.categories||[]).slice().sort((a,z)=>(a.sort||999)-(z.sort||999));
+  if(!cats.some(c=>c.id===b.category))cats.push({id:b.category||"uncategorized",label:categoryLabel(b.category||"uncategorized")});
   let options=cats.map(c=>`<option value="${esc(c.id)}" ${c.id===b.category?"selected":""}>${esc(c.label)}</option>`).join("");
-  let ps=b.projectStatus||(b.status==="draft"?"draft":"work-in-progress");
-  let html=`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><style>*{box-sizing:border-box}body{margin:0;background:#0b1724;color:#f5f8fb;font-family:-apple-system;padding:18px 16px 42px}h1{font-size:24px;margin:4px 0 5px}.sub{color:#91a4b8;font-size:13px;margin-bottom:20px}.field{margin-bottom:16px}label{display:block;font-weight:700;font-size:13px;margin-bottom:7px;color:#dbe8f3}input,textarea,select{width:100%;border:1px solid #31465a;border-radius:11px;background:#122638;color:#fff;padding:12px;font-size:16px}textarea{min-height:100px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;position:sticky;bottom:10px}.btn{border:0;border-radius:12px;padding:14px 8px;font-size:15px;font-weight:800}.draft{background:#263b4e;color:#fff}.publish{background:#1486d9;color:#fff}.cancel{width:100%;margin-top:10px;background:transparent;color:#9fb3c5;border:1px solid #31465a;border-radius:12px;padding:12px}.saving{display:none;text-align:center;padding:12px;font-weight:800;color:#8ed0ff}@media(max-width:390px){.row{grid-template-columns:1fr}}</style></head><body><h1>Edit Image Block</h1><div class="sub">SAFE v3.8 · Save buttons now return directly to Scriptable.</div><div class="field"><label>Project Title</label><input id="title" value="${esc(b.title||"")}"></div><div class="field"><label>Description / Summary</label><textarea id="summary">${esc(b.summary||"")}</textarea></div><div class="row"><div class="field"><label>Customer</label><input id="customer" value="${esc(b.customer||"")}"></div><div class="field"><label>Location</label><input id="location" value="${esc(b.location||"")}"></div></div><div class="field"><label>Category</label><select id="category">${options}</select></div><div class="field"><label>Tags (comma separated)</label><input id="tags" value="${esc((b.tags||[]).join(", "))}"></div><div class="field"><label>Project Status</label><select id="projectStatus"><option value="work-in-progress" ${ps==="work-in-progress"?"selected":""}>Work in Progress</option><option value="completed" ${ps==="completed"?"selected":""}>Completed</option><option value="draft" ${ps==="draft"?"selected":""}>Draft</option></select></div><div class="field"><label>Website Visibility</label><select id="visibility"><option value="visible" ${b.visible!==false?"selected":""}>Visible</option><option value="hidden" ${b.visible===false?"selected":""}>Hidden</option></select></div><div id="saving" class="saving">Saving… return to Scriptable</div><div class="buttons"><button class="btn draft" onclick="finish('draft')">Save Draft</button><button class="btn publish" onclick="finish('publish')">Save & Publish</button></div><button class="cancel" onclick="finish('cancel')">Cancel</button><script>window.__sgxResult=null;function val(id){return document.getElementById(id).value}function finish(action){if(window.__sgxResult)return;window.__sgxResult={action:action,title:val('title').trim(),summary:val('summary').trim(),customer:val('customer').trim(),location:val('location').trim(),category:val('category'),tags:val('tags').trim(),projectStatus:val('projectStatus'),visibility:val('visibility')};document.getElementById('saving').style.display='block';document.querySelectorAll('button').forEach(x=>x.disabled=true)}</script></body></html>`;
-  let w=new WebView();await w.loadHTML(html);let presentation=w.present(true),result=null;while(true){await sleep(200);try{let raw=await w.evaluateJavaScript("JSON.stringify(window.__sgxResult || null)");if(raw&&raw!=="null"){result=JSON.parse(raw);break}}catch(_){break}}try{w.dismiss()}catch(_){}try{await presentation}catch(_){}return result||{action:"cancel"};
+  let status=b.status==="draft"?"draft":(b.visible===false?"hidden":"published");
+  let html=`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><style>
+  *{box-sizing:border-box}body{margin:0;background:#0b1724;color:#f5f8fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:18px 16px 40px}h1{font-size:24px;margin:4px 0 5px}.sub{color:#91a4b8;font-size:13px;margin-bottom:22px}.field{margin:0 0 17px}label{display:block;font-weight:700;font-size:13px;margin:0 0 7px;color:#dbe8f3}input,textarea,select{width:100%;border:1px solid #31465a;border-radius:11px;background:#122638;color:#fff;padding:12px;font-size:16px;outline:none}textarea{min-height:96px;resize:vertical}select{height:48px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.status{padding:10px 12px;background:#102131;border-radius:10px;color:#a9bdd0;font-size:13px;margin-bottom:18px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px;position:sticky;bottom:10px}.btn{border:0;border-radius:12px;padding:14px 8px;font-size:15px;font-weight:800}.draft{background:#263b4e;color:#fff}.publish{background:#1486d9;color:#fff}.cancel{width:100%;margin-top:10px;background:transparent;color:#9fb3c5;border:1px solid #31465a;border-radius:12px;padding:12px;font-size:15px}@media(max-width:390px){.row{grid-template-columns:1fr}}
+  </style></head><body><h1>Edit Image Block</h1><div class="sub">Everything for this project is on one page.</div><div class="status">Current status: <b>${esc(status.toUpperCase())}</b> · ${(b.images||[]).length} image${(b.images||[]).length===1?"":"s"}</div>
+  <div class="field"><label>Project Title</label><input id="title" value="${esc(b.title)}"></div>
+  <div class="field"><label>Description / Summary</label><textarea id="summary">${esc(b.summary)}</textarea></div>
+  <div class="row"><div class="field"><label>Customer</label><input id="customer" value="${esc(b.customer)}"></div><div class="field"><label>Location</label><input id="location" value="${esc(b.location)}"></div></div>
+  <div class="field"><label>Category</label><select id="category">${options}</select></div>
+  <div class="field"><label>Tags <span style="font-weight:400;color:#8298aa">(comma separated)</span></label><input id="tags" value="${esc((b.tags||[]).join(", "))}"></div>
+  <div class="field"><label>Project Status</label><select id="projectStatus"><option value="work-in-progress" ${b.projectStatus==="work-in-progress"?"selected":""}>Work in Progress</option><option value="completed" ${b.projectStatus==="completed"?"selected":""}>Completed</option><option value="draft" ${b.projectStatus==="draft"?"selected":""}>Draft</option></select></div>
+  <div class="field"><label>Website Visibility</label><select id="visibility"><option value="visible" ${b.visible!==false?"selected":""}>Visible</option><option value="hidden" ${b.visible===false?"selected":""}>Hidden</option></select></div>
+  <div class="buttons"><button class="btn draft" onclick="finish('draft')">Save Draft</button><button class="btn publish" onclick="finish('publish')">Save & Publish</button></div><button class="cancel" onclick="finish('cancel')">Cancel</button>
+  <script>function finish(action){let payload={action,title:document.getElementById('title').value.trim(),summary:document.getElementById('summary').value.trim(),customer:document.getElementById('customer').value.trim(),location:document.getElementById('location').value.trim(),category:document.getElementById('category').value,tags:document.getElementById('tags').value.trim(),projectStatus:document.getElementById('projectStatus').value,visibility:document.getElementById('visibility').value};window.location.href='scriptable:///image-block-editor?data='+encodeURIComponent(JSON.stringify(payload))}</script></body></html>`;
+  let w=new WebView();w.shouldAllowRequest=req=>{let u=req.url;if(u.startsWith("scriptable:///image-block-editor?data=")){try{w.__result=JSON.parse(decodeURIComponent(u.split("?data=")[1]))}catch(_){w.__result={action:"cancel"}};return false}return true};await w.loadHTML(html);await w.present(true);return w.__result||{action:"cancel"};
 }
-function expectedFromResult(b,r){let x=JSON.parse(JSON.stringify(b));x.title=r.title||b.title;x.summary=r.summary||"";x.customer=r.customer||"";x.location=r.location||"";x.category=r.category||"uncategorized";x.categories=unique([x.category,...(b.categories||[]).filter(c=>c!=="uncategorized"&&c!==x.category)]);x.tags=csv(r.tags);x.slug=slug(x.title);x.projectStatus=r.projectStatus||"work-in-progress";if(r.action==="draft"){x.status="draft";x.visible=false}else{x.status="published";x.visible=r.visibility!=="hidden";x.date=today()}return x}
-function verifyFields(saved,expected){return saved&&saved.title===expected.title&&saved.summary===expected.summary&&saved.customer===expected.customer&&saved.location===expected.location&&saved.category===expected.category&&JSON.stringify(saved.tags||[])===JSON.stringify(expected.tags||[])&&saved.projectStatus===expected.projectStatus&&saved.status===expected.status&&saved.visible===expected.visible}
-async function saveEditor(b,r){if(!r||r.action==="cancel")return;let expected=expectedFromResult(b,r);try{let saved=await safeMutateBlock(b.id,x=>Object.assign(x,expected),`${r.action==="draft"?"Save draft":"Publish"} image block: ${expected.title}`,x=>verifyFields(x,expected));await alertMsg(r.action==="draft"?"✓ DRAFT SAVED & VERIFIED":"✓ PUBLISHED & VERIFIED",`${saved.title}\n\nCategory: ${categoryLabel(saved.category,LIB.json)}\nStatus: ${saved.projectStatus||saved.status}\nWebsite: ${saved.visible===false?"Hidden":"Visible"}\nVerified from GitHub: ${nowTime()}`)}catch(e){await alertMsg("✕ SAVE FAILED — NOT VERIFIED",`${String(e.message||e)}\n\nNothing should be assumed published.`)}}
-async function newBlock(){if(!await ensureLoaded())return null;let id=`new-${stamp()}`;let b={id,slug:id,title:"New Project",summary:"",customer:"",location:"",date:today(),category:(LIB.json.categories[0]&&LIB.json.categories[0].id)||"uncategorized",categories:[],tags:[],projectStatus:"work-in-progress",status:"draft",visible:false,weight:25,priority:25,views:{library:true,latest:true,search:true},siteLocations:DEFAULT_VIEWS.slice(),fallback:"latest",cover:"",images:[]};let r=await editBlockPage(b);if(!r||r.action==="cancel")return null;let expected=expectedFromResult(b,r);try{let saved=await safeCreateBlock(expected,`${r.action==="draft"?"Create draft":"Publish new"} image block: ${expected.title}`);await alertMsg("✓ CREATED & VERIFIED",`${saved.title}\n\n${saved.visible===false?"Saved as draft/hidden":"Published and visible"}\nVerified from GitHub: ${nowTime()}`);return saved}catch(e){await alertMsg("✕ CREATE FAILED",String(e.message||e));return null}}
-async function viewImages(b){let images=(b.images||[]).filter(im=>imgPath(im));if(!images.length){await alertMsg("No Images",`${b.title} has no images.`);return}let cards=images.map((im,i)=>{let p=imgPath(im);return `<figure><a href="${esc(rawUrl(p))}"><img src="${esc(rawUrl(p))}"></a><figcaption>${i+1}${p===b.cover||im.role==="cover"?" · COVER":""}</figcaption></figure>`}).join("");let w=new WebView();await w.loadHTML(`<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{background:#0d1824;color:#fff;font-family:-apple-system;padding:14px}.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}figure{margin:0;background:#142638;border-radius:10px;overflow:hidden}img{width:100%;aspect-ratio:1;object-fit:cover}figcaption{padding:8px}</style><h2>${esc(b.title)}</h2><div class="g">${cards}</div>`);await w.present(true)}
-async function blockActions(b){let a=await choose(b.title,[{label:"Edit Project — Single Page",id:"edit"},{label:"View Images",id:"view"},{label:"Save as Draft",id:"draft"},{label:b.visible===false?"Publish / Show":"Hide from Website",id:"toggle"},{label:"Delete Block",id:"delete"}],`${b.status||"published"} · ${categoryLabel(b.category)}`);if(!a)return;if(a.id==="edit"){let r=await editBlockPage(b);await saveEditor(b,r)}if(a.id==="view")await viewImages(b);if(a.id==="draft"){try{let saved=await safeMutateBlock(b.id,x=>{x.status="draft";x.visible=false},`Save draft image block: ${b.title}`,x=>x.status==="draft"&&x.visible===false);await alertMsg("✓ DRAFT SAVED & VERIFIED",`${saved.title}\nVerified from GitHub: ${nowTime()}`)}catch(e){await alertMsg("✕ SAVE FAILED",String(e.message||e))}}if(a.id==="toggle"){let makeVisible=b.visible===false;try{let saved=await safeMutateBlock(b.id,x=>{x.visible=makeVisible;x.status=makeVisible?"published":"hidden"},`${makeVisible?"Publish":"Hide"} image block: ${b.title}`,x=>x.visible===makeVisible);await alertMsg(makeVisible?"✓ PUBLISHED & VERIFIED":"✓ HIDDEN & VERIFIED",`${saved.title}\nVerified from GitHub: ${nowTime()}`)}catch(e){await alertMsg("✕ UPDATE FAILED",String(e.message||e))}}if(a.id==="delete"){if(!await confirm("Delete Image Block?",`${b.title}\n\nImage files remain in GitHub.`,"Delete Block"))return;try{await safeDeleteBlock(b.id,b.title);await alertMsg("✓ DELETED & VERIFIED",`${b.title}\nVerified from GitHub: ${nowTime()}`)}catch(e){await alertMsg("✕ DELETE FAILED",String(e.message||e))}}}
-async function manageBlocks(){if(!await ensureLoaded())return;let t=new UITable();t.showSeparators=true;let h=new UITableRow();h.isHeader=true;h.addText("Image Blocks",`${LIB.json.blocks.length} total · SAFE v3.8`);t.addRow(h);for(let b of LIB.json.blocks){let r=new UITableRow();r.height=62;r.dismissOnSelect=false;let state=b.status==="draft"?"DRAFT":(b.visible===false?"HIDDEN":"LIVE");r.addText(b.title,`${state} · ${categoryLabel(b.category)} · ${(b.images||[]).length} images`);r.onSelect=async()=>{await blockActions(b);t.dismiss()};t.addRow(r)}await t.present(true)}
-
-// Upload destination selector: current GitHub blocks + Create New Image Block.
-async function chooseUploadBlock(){
-  if(!await ensureLoaded())return null;
-  let items=(LIB.json.blocks||[]).map(b=>({label:`${b.title} · ${(b.images||[]).length} images`,id:b.id,block:b}));
-  items.push({label:"＋ Create New Image Block",id:"__new__"});
-  let pick=await choose("Select Project / Image Block",items,"Choose where the uploaded photo(s) belong.");
-  if(!pick)return null;
-  if(pick.id==="__new__")return await newBlock();
-  return pick.block;
-}
-async function attachPathsToBlockId(blockId,paths){
-  if(!paths.length)return null;
-  let live=await getJson(LIBRARY_PATH),b=findBlock(live.json,blockId);
-  if(!b)throw new Error("Selected image block no longer exists in GitHub.");
-  let before=(b.images||[]).length;
-  return await safeMutateBlock(blockId,x=>{x.images=Array.isArray(x.images)?x.images:[];let existing=new Set(x.images.map(imgPath));for(let p of paths)if(!existing.has(p))x.images.push({path:p,caption:"",alt:x.title||"Project image",visible:true,role:""});if(!x.cover&&x.images.length){x.cover=imgPath(x.images[0]);x.images[0].role="cover"}},`Attach ${paths.length} image(s) to ${b.title}`,x=>paths.every(p=>(x.images||[]).some(im=>imgPath(im)===p)))
-}
-async function uploadImagesToSelectedBlock(images){
-  if(!images||!images.length)return;
-  let block=await chooseUploadBlock();if(!block)return;
-  let fm=FileManager.local(),paths=[],temps=[];
-  try{
-    for(let i=0;i<images.length;i++){
-      let name=`photo-${stamp()}-${String(i+1).padStart(2,"0")}.jpg`,tmp=fm.joinPath(fm.temporaryDirectory(),name);fm.writeImage(tmp,images[i]);temps.push(tmp);
-      let path=`${INBOX_ROOT}/${slug(block.title)}/${name}`;await putBinary(path,fm.read(tmp),`Inbox upload: ${name}`);paths.push(path);
-    }
-    let saved=await attachPathsToBlockId(block.id,paths);
-    await alertMsg(images.length===1?"✓ IMAGE UPLOADED & VERIFIED":"✓ BULK UPLOAD VERIFIED",`${saved.title}\n\n${paths.length} image${paths.length===1?"":"s"} uploaded and attached to the selected block.\nVerified from GitHub: ${nowTime()}`);
-  }catch(e){await alertMsg("✕ UPLOAD FAILED",`${String(e.message||e)}\n\n${paths.length} file(s) reached GitHub before the failure.`)}
-  for(let tmp of temps)try{fm.remove(tmp)}catch(_){}
-}
-async function uploadOnePhoto(){let img;try{img=await Photos.fromLibrary()}catch(_){return}if(!img)return;await uploadImagesToSelectedBlock([img])}
-async function bulkUpload(){
-  let imgs=[];
-  while(true){
-    let img;try{img=await Photos.fromLibrary()}catch(_){break}if(!img)break;imgs.push(img);
-    let more=await choose("Bulk Upload",[{label:"Add Another Photo",id:"add"},{label:`Upload ${imgs.length} Photo${imgs.length===1?"":"s"}`,id:"go"}],`${imgs.length} photo${imgs.length===1?"":"s"} selected.`);
-    if(!more)return;if(more.id==="go")break;
-  }
-  if(imgs.length)await uploadImagesToSelectedBlock(imgs);
-}
-async function counts(){if(!await ensureLoaded())return;let b=LIB.json.blocks||[];await alertMsg("Studio Counts",`Blocks: ${b.length}\nLive: ${b.filter(x=>x.status==="published"&&x.visible!==false).length}\nDrafts: ${b.filter(x=>x.status==="draft").length}\nCategories: ${(LIB.json.categories||[]).length}`)}
-async function main(){while(true){let a=await choose("Spray GenX Image Manager v3.8 SAFE",[{label:"Image Blocks — Edit / Publish",id:"manage"},{label:"Upload One Photo",id:"upload"},{label:"Bulk Upload Photos",id:"bulk"},{label:"+ New Image Block",id:"new"},{label:"Counts",id:"counts"},{label:"Reload from GitHub",id:"reload"},{label:"Done",id:"done"}],"Full manager + existing-block upload selector. Every write is verified from GitHub.");if(!a||a.id==="done")break;if(a.id==="manage")await manageBlocks();if(a.id==="upload")await uploadOnePhoto();if(a.id==="bulk")await bulkUpload();if(a.id==="new")await newBlock();if(a.id==="counts")await counts();if(a.id==="reload"){await ensureLoaded();await alertMsg("Reloaded","Fresh image library loaded from GitHub.")}}}
-main().catch(async e=>await alertMsg("Studio Error",String(e.message||e)));
+async function applyEditorResult(b,r){if(!r||r.action==="cancel")return;b.title=r.title||b.title;b.summary=r.summary||"Completed Spray GenX project.";b.customer=r.customer||"";b.location=r.location||"";b.category=r.category||"uncategorized";b.categories=unique([b.category,...(b.categories||[]).filter(x=>x!=="uncategorized"&&x!==b.category)]);b.tags=csv(r.tags);b.slug=slug(b.title);b.projectStatus=r.projectStatus||"work-in-progress";if(r.action==="draft"){b.status="draft";b.visible=false;await saveLibrary(`Save draft image block: ${b.title}`);await alertMsg("Draft Saved",`${b.title}\n\nSaved as Draft. It is not live on the website.`);return}b.status="published";b.visible=r.visibility!=="hidden";b.date=today();await saveLibrary(`Publish image block: ${b.title}`);await alertMsg("✓ Published to Website",`${b.title}\n\nSaved to GitHub${b.visible?" and visible on the website.":" but currently hidden from the website."}`)}
+async function newBlock(){if(!await ensureLoaded())return;let b={id:`new-${stamp()}`,slug:`new-${stamp()}`,title:"New Project",summary:"",customer:"",location:"",date:today(),category:(LIB.json.categories[0]&&LIB.json.categories[0].id)||"uncategorized",categories:[],tags:[],projectStatus:"work-in-progress",status:"draft",visible:false,weight:25,priority:25,views:{library:true,latest:true,search:true},siteLocations:DEFAULT_VIEWS.slice(),fallback:"latest",cover:"",images:[]};let r=await editBlockPage(b);if(!r||r.action==="cancel")return;LIB.json.blocks.unshift(b);await applyEditorResult(b,r)}
+async function viewBlockImages(b){let images=(b.images||[]).filter(im=>imgPath(im));if(!images.length){await alertMsg("No Images",`${b.title} has no images.`);return}let cards=images.map((im,i)=>{let p=imgPath(im),cover=p===b.cover||im.role==="cover";return `<figure><a href="${esc(rawUrl(p))}"><img src="${esc(rawUrl(p))}" loading="lazy"></a><figcaption>${i+1}${cover?" · COVER":""}</figcaption></figure>`}).join("");let html=`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#0d1824;color:#fff;font-family:-apple-system;padding:16px}h1{font-size:22px}.sub{opacity:.65;margin-bottom:16px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}figure{margin:0;background:#142638;border-radius:12px;overflow:hidden}img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}figcaption{padding:9px 10px;font-size:12px}</style></head><body><h1>${esc(b.title)}</h1><div class="sub">${images.length} image${images.length===1?"":"s"} · tap for full size</div><div class="grid">${cards}</div></body></html>`;let w=new WebView();await w.loadHTML(html);await w.present(true)}
+async function deleteBlock(b){let ok=await confirm("Delete Image Block?",`${b.title}\n\nThis removes the block from the library. The underlying image files remain on GitHub.`,"Delete Block");if(!ok)return false;LIB.json.blocks=(LIB.json.blocks||[]).filter(x=>x.id!==b.id);await saveLibrary(`Delete image block: ${b.title}`);return true}
+async function blockActions(b){let act=await choose(b.title,[{label:"Edit Project — Single Page",id:"edit"},{label:"View Images",id:"view"},{label:"Save Draft",id:"draft"},{label:"Save & Publish",id:"publish"},{label:"Hide / Show",id:"toggle"},{label:"Delete Block",id:"delete"},{label:"Health",id:"health"}],`${b.status||"published"} · ${categoryLabel(b.category)}`);if(!act)return;if(act.id==="edit"){let r=await editBlockPage(b);await applyEditorResult(b,r)}if(act.id==="view")await viewBlockImages(b);if(act.id==="draft"){b.status="draft";b.visible=false;await saveLibrary(`Save draft image block: ${b.title}`);await alertMsg("Draft Saved",`${b.title}\n\nNot live on the website.`)}if(act.id==="publish"){b.status="published";b.visible=true;b.date=today();await saveLibrary(`Publish image block: ${b.title}`);await alertMsg("✓ Published to Website",`${b.title}\n\nThe Image Block is live.`)}if(act.id==="toggle"){b.visible=b.visible===false?true:false;b.status=b.visible?"published":"hidden";await saveLibrary(`Studio toggle image block: ${b.title}`);await alertMsg(b.visible?"✓ Published to Website":"Hidden",`${b.title}\n\n${b.visible?"The Image Block is visible.":"The Image Block is hidden."}`)}if(act.id==="delete")await deleteBlock(b);if(act.id==="health"){let h=health(b);await alertMsg("Health",h.length?`Needs: ${h.join(", ")}`:"Looks good.")}}
+async function manageBlocks(){if(!await ensureLoaded())return;let table=new UITable();table.showSeparators=true;let header=new UITableRow();header.isHeader=true;header.addText("Image Blocks",`${LIB.json.blocks.length} total · tap a project to edit`);table.addRow(header);for(let b of LIB.json.blocks){let row=new UITableRow();row.height=64;row.dismissOnSelect=false;let state=b.status==="draft"?"DRAFT":(b.visible===false?"HIDDEN":"LIVE");let text=row.addText(b.title,`${state} · ${categoryLabel(b.category)} · ${(b.images||[]).length} image${(b.images||[]).length===1?"":"s"}`);text.widthWeight=78;let del=row.addButton("Delete");del.widthWeight=22;row.onSelect=async()=>{await blockActions(b)};del.onTap=async()=>{if(await deleteBlock(b)){table.removeRow(row);table.reload()}};table.addRow(row)}await table.present(true)}
+function convertedImages(c){return(c.images||[]).filter(x=>x.converted&&x.status!=="ignored")}
+function usedPaths(){let s=new Set();(LIB.json.blocks||[]).forEach(b=>(b.images||[]).forEach(im=>{let p=imgPath(im);if(p)s.add(p)}));return s}
+async function publishConverted(){let cf;try{cf=await getJson(CONVERTED_PATH)}catch(e){await alertMsg("No converted index","data/converted-images.json was not found yet.");return}if(!await ensureLoaded())return;let used=usedPaths(),avail=convertedImages(cf.json).filter(x=>!used.has(x.converted));if(!avail.length){await alertMsg("Nothing New","No unpublished converted images found.");return}let groups={};avail.forEach(x=>{let f=folderOf(x.converted);(groups[f]=groups[f]||[]).push(x)});let keys=Object.keys(groups).sort().reverse(),pick=await choose("Converted Batch",keys.map(k=>({label:`${k} — ${groups[k].length}`,id:k})).concat([{label:`All unpublished — ${avail.length}`,id:"__all"}]));if(!pick)return;let batch=pick.id==="__all"?avail:groups[pick.id],title=await ask("Block Title","Project title",titleCase(pick.id==="__all"?folderOf(batch[0].converted):pick.id));if(!title)return;await attachUploadedToBlock(title,batch.map(x=>x.converted));await alertMsg("✓ Published to Website",`${title}\n${batch.length} converted image(s) attached and published.`)}
+async function healthCheck(){if(!await ensureLoaded())return;let rows=[];LIB.json.blocks.forEach(b=>{let h=health(b);if(h.length)rows.push(`${b.title}: ${h.join(", ")}`)});await alertMsg("Health Check",rows.length?rows.join("\n\n"):"No obvious issues found.")}
+async function counts(){if(!await ensureLoaded())return;let blocks=LIB.json.blocks||[],imgs=blocks.reduce((n,b)=>n+(b.images||[]).filter(i=>i.visible!==false).length,0),drafts=blocks.filter(b=>b.status==="draft").length,live=blocks.filter(b=>b.status==="published"&&b.visible!==false).length;await alertMsg("Studio Counts",`Blocks: ${blocks.length}\nLive: ${live}\nDrafts: ${drafts}\nVisible images: ${imgs}\nCategories: ${(LIB.json.categories||[]).length}`)}
+async function exportJson(){if(!await ensureLoaded())return;Pasteboard.copy(JSON.stringify(LIB.json,null,2));await alertMsg("Exported","Current image-library.json copied to clipboard.")}
+async function main(){if(Array.isArray(args.images)&&args.images.length){await uploadSharedPhotos();return}while(true){let a=await choose("Spray GenX Image Manager v3.6",[{label:"Upload Images",id:"upload"},{label:"Image Blocks — View / Edit / Publish / Delete",id:"manage"},{label:"Publish Converted Images",id:"converted"},{label:"+ New Image Block",id:"new"},{label:"Health Check",id:"health"},{label:"Counts",id:"counts"},{label:"Export JSON",id:"export"},{label:"Reload Library",id:"reload"},{label:"Done",id:"done"}]);if(!a||a.id==="done")break;if(a.id==="upload"){await uploadMenu();continue}if(a.id==="reload"){LIB=null;await ensureLoaded();continue}if(a.id==="manage")await manageBlocks();if(a.id==="converted")await publishConverted();if(a.id==="new")await newBlock();if(a.id==="health")await healthCheck();if(a.id==="counts")await counts();if(a.id==="export")await exportJson()}}
+main().catch(async e=>{await alertMsg("Studio Error",String(e.message||e))});
