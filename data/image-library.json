@@ -57,6 +57,11 @@
       "id": "commercial-soecial",
       "label": "Commercial Special",
       "sort": 1019
+    },
+    {
+      "id": "commercial-exterior",
+      "label": "Commercial Exterior",
+      "sort": 1029
     }
   ],
   "blocks": [
