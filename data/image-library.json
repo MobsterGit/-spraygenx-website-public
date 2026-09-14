@@ -752,14 +752,14 @@
         "search"
       ],
       "fallback": "latest",
-      "cover": "images/converted/batch-3/2022-05-24-23-45-57-20260629061948-009-7fcb4cc340.jpg",
+      "cover": "images/converted/batch-3/qvzmeurlbte3zlytnedicw-20260629061948-004-f84e40f657.jpg",
       "images": [
         {
           "path": "images/converted/batch-3/2022-05-24-23-45-57-20260629061948-009-7fcb4cc340.jpg",
           "caption": "Cleveland, Ohio 001",
           "alt": "Cleveland, Ohio 001",
           "visible": true,
-          "role": "cover"
+          "role": ""
         },
         {
           "path": "images/converted/batch-3/img-1377-2-20260629061948-010-6a055fc1a9.jpg",
@@ -815,7 +815,7 @@
           "caption": "Cleveland, Ohio 009",
           "alt": "Cleveland, Ohio 009",
           "visible": true,
-          "role": ""
+          "role": "cover"
         },
         {
           "path": "images/converted/batch-3/qvzmndbda2zoejbvavd1rq-20260629061948-001-8b489c54bc.jpg",
