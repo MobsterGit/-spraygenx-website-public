@@ -216,14 +216,14 @@
         "search"
       ],
       "fallback": "latest",
-      "cover": "images/inbox/2026-08-08/img-4370-20260808142105-001.jpg",
+      "cover": "images/inbox/2026-08-08/img-4407-20260808142105-004.jpg",
       "images": [
         {
           "path": "images/inbox/2026-08-08/img-4370-20260808142105-001.jpg",
           "caption": "",
           "alt": "2026 08 08",
           "visible": true,
-          "role": "cover"
+          "role": ""
         },
         {
           "path": "images/inbox/2026-08-08/img-4377-20260808142105-002.jpg",
@@ -244,7 +244,7 @@
           "caption": "",
           "alt": "2026 08 08",
           "visible": true,
-          "role": ""
+          "role": "cover"
         },
         {
           "path": "images/inbox/2026-08-08/img-4399-20260808142105-005.jpg",
