@@ -633,7 +633,7 @@
         "search"
       ],
       "fallback": "latest",
-      "cover": "images/converted/2026-06-27/2026-06-19-15-22-35-20260627192932-014-b07e41dd1f.jpg",
+      "cover": "images/converted/2026-06-27/fe1ad99f-d1f2-4c37-9ab3-57101bd666d1-20260627192932-002-9ba808cbca.jpg",
       "images": [
         {
           "path": "images/converted/2026-06-27/2026-06-19-15-22-35-20260627192932-014-b07e41dd1f.jpg",
@@ -647,7 +647,7 @@
           "caption": "Residential Interior 002",
           "alt": "Residential Interior 002",
           "visible": true,
-          "role": ""
+          "role": "cover"
         },
         {
           "path": "images/converted/2026-06-27/img-0018-20260627192932-011-0cdc133e42.jpg",
