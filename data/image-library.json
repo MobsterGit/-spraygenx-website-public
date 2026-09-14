@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-09-13",
+  "updated": "2026-09-14",
   "notes": "Bulk image library for Spray GenX job photos. Scriptable/AI uploads will add image blocks here and the public photo-library.html page will render them.",
   "categories": [
     {
@@ -372,7 +372,8 @@
           "visible": true,
           "role": ""
         }
-      ]
+      ],
+      "projectStatus": "work-in-progress"
     },
     {
       "id": "commercial-black-ceiling-20260627162306",
