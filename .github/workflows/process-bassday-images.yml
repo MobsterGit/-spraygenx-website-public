@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'bassday/images/source/**'
+      - 'bassday/images/**'
+      - '!bassday/images/web/**'
       - 'tools/process_bassday_images.mjs'
       - '.github/workflows/process-bassday-images.yml'
   workflow_dispatch:
