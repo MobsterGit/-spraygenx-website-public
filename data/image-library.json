@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-09-14",
+  "updated": "2026-09-16",
   "notes": "Bulk image library for Spray GenX job photos. Scriptable/AI uploads will add image blocks here and the public photo-library.html page will render them.",
   "categories": [
     {
@@ -65,6 +65,38 @@
     }
   ],
   "blocks": [
+    {
+      "id": "freeman-documentation-20260916205319170",
+      "slug": "freeman-documentation",
+      "title": "Freeman Documentation",
+      "summary": "",
+      "customer": "",
+      "location": "",
+      "date": "2026-09-16",
+      "category": "commercial-ceilings",
+      "categories": [
+        "commercial-ceilings"
+      ],
+      "tags": [],
+      "projectStatus": "work-in-progress",
+      "status": "draft",
+      "visible": false,
+      "weight": 25,
+      "priority": 25,
+      "views": {
+        "library": true,
+        "latest": true,
+        "search": true
+      },
+      "siteLocations": [
+        "library",
+        "latest",
+        "search"
+      ],
+      "fallback": "latest",
+      "cover": "",
+      "images": []
+    },
     {
       "id": "freeman-barn-20260912134221",
       "slug": "freeman-barn",
