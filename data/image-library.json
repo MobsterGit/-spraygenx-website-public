@@ -94,8 +94,79 @@
         "search"
       ],
       "fallback": "latest",
-      "cover": "",
-      "images": []
+      "cover": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-001.jpg",
+      "images": [
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-001.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": "cover"
+        },
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-002.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-003.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-004.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-005.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-006.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-007.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-008.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-009.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": ""
+        },
+        {
+          "path": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-010.jpg",
+          "caption": "",
+          "alt": "Freeman Documentation",
+          "visible": true,
+          "role": ""
+        }
+      ]
     },
     {
       "id": "freeman-barn-20260912134221",
