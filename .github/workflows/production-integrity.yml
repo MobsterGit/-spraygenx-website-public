@@ -1,0 +1,70 @@
+name: Production integrity
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  merge_group:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-production-tree:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out proposed tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha || github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install metadata inspection support
+        run: python -m pip install --disable-pip-version-check pillow pillow-heif
+
+      - name: Compare complete base and proposed trees
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          MERGE_BASE_SHA: ${{ github.event.merge_group.base_sha }}
+          MERGE_HEAD_SHA: ${{ github.event.merge_group.head_sha }}
+          PUSH_BASE_SHA: ${{ github.event.before }}
+          PUSH_HEAD_SHA: ${{ github.sha }}
+          HEAD_BRANCH: ${{ github.head_ref }}
+          EVENT_NAME: ${{ github.event_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            BASE_SHA="$PR_BASE_SHA"
+            HEAD_SHA="$PR_HEAD_SHA"
+            SCOPE_ARGS=(--branch "$HEAD_BRANCH")
+          elif [[ "$EVENT_NAME" == "merge_group" ]]; then
+            BASE_SHA="$MERGE_BASE_SHA"
+            HEAD_SHA="$MERGE_HEAD_SHA"
+            SCOPE_ARGS=(--skip-scope)
+          elif [[ "$EVENT_NAME" == "push" ]]; then
+            BASE_SHA="$PUSH_BASE_SHA"
+            HEAD_SHA="$PUSH_HEAD_SHA"
+            SCOPE_ARGS=(--skip-scope)
+          else
+            BASE_SHA="$(git rev-parse origin/main)"
+            HEAD_SHA="$(git rev-parse HEAD)"
+            SCOPE_ARGS=(--skip-scope)
+          fi
+
+          git fetch --no-tags origin "$BASE_SHA" "$HEAD_SHA"
+          python tools/production_integrity.py \
+            --base "$BASE_SHA" \
+            --head "$HEAD_SHA" \
+            "${SCOPE_ARGS[@]}"
