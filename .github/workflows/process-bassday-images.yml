@@ -1,0 +1,71 @@
+name: Process Bass Day Ever images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'bassday/images/**'
+      - '!bassday/images/web/**'
+      - 'tools/process_bassday_images.mjs'
+      - '.github/workflows/process-bassday-images.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: bassday-image-pipeline
+  cancel-in-progress: true
+
+jobs:
+  optimize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Sharp
+        run: npm install --no-save --no-package-lock sharp@0.34.4
+
+      - name: Generate responsive WebP assets
+        run: node tools/process_bassday_images.mjs
+
+      - name: Commit generated web assets to review branch
+        id: commit
+        shell: bash
+        run: |
+          if [[ -z "$(git status --porcelain -- bassday/images/web)" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No image changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BRANCH="automation/bassday-images-${GITHUB_RUN_ID}"
+          git switch -c "$BRANCH"
+          git add bassday/images/web
+          git commit -m "Generate Bass Day Ever web-ready images"
+          git push --set-upstream origin "$BRANCH"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Open review pull request
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.commit.outputs.branch }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "Generate Bass Day Ever web-ready images" \
+            --body "Generated assets only. Automatic merge is disabled; human review and required production-integrity checks are required."

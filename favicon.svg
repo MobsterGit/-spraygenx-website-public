@@ -1,5 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="10" fill="#061325"/>
-  <path d="M18 16 46 48M46 16 18 48" fill="none" stroke="#1f8dff" stroke-width="8" stroke-linecap="round"/>
-  <path d="M14 48h36" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".92"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Spray GenX X logo">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.72" stop-color="#fbfbfb"/>
+      <stop offset="1" stop-color="#eeeeee"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0.18" y1="0.08" x2="0.85" y2="0.92">
+      <stop offset="0" stop-color="#062d89"/>
+      <stop offset="0.48" stop-color="#0a43a5"/>
+      <stop offset="1" stop-color="#07327e"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0.1" y1="0.8" x2="0.9" y2="0.15">
+      <stop offset="0" stop-color="#f8f8f8"/>
+      <stop offset="0.22" stop-color="#d8d8d8"/>
+      <stop offset="0.48" stop-color="#8c8c8c"/>
+      <stop offset="0.7" stop-color="#f5f5f5"/>
+      <stop offset="1" stop-color="#747474"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#000000" flood-opacity="0.20"/>
+    </filter>
+  </defs>
+  <rect x="34" y="26" width="444" height="452" rx="84" fill="url(#tile)" filter="url(#shadow)"/>
+  <rect x="35" y="27" width="442" height="450" rx="83" fill="none" stroke="#ededed" stroke-width="2"/>
+  <path fill="url(#blue)" d="M119 157h88l53 74 63-74h87L303 275l92 123h-91l-53-77-69 77H91l118-124z"/>
+  <path d="M111 390C198 331 289 265 380 186c42-36 73-52 95-53 10 0 15 4 17 11 5 18-28 63-81 108-76 65-164 126-248 168-44 22-77 29-93 21-9-5-8-14 0-27 8-13 22-28 41-43" fill="none" stroke="#ffffff" stroke-width="27" stroke-linecap="round"/>
+  <path d="M111 390C198 331 289 265 380 186c42-36 73-52 95-53 10 0 15 4 17 11 5 18-28 63-81 108-76 65-164 126-248 168-44 22-77 29-93 21-9-5-8-14 0-27 8-13 22-28 41-43" fill="none" stroke="url(#silver)" stroke-width="17" stroke-linecap="round"/>
+  <path d="M142 423c27 5 54 1 84-10-20 17-47 28-81 31z" fill="#0a3e9b"/>
 </svg>

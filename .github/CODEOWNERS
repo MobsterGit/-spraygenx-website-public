@@ -1,0 +1,10 @@
+# Production ownership. Enforce this file through a main-branch ruleset that
+# requires code-owner review; the file alone does not turn that setting on.
+* @MobsterGit
+
+/.github/ @MobsterGit
+/tools/production_integrity.py @MobsterGit
+/CNAME @MobsterGit
+/index.html @MobsterGit
+/data/manager/ @MobsterGit
+/freeman-barn/2026-field-record/ @MobsterGit
