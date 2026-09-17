@@ -1,10 +1,16 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
+// icon-color: deep-brown; icon-glyph: magic;
+// Variables used by Scriptable.
+// These must be at the very top of the file. Do not edit.
 // icon-color: blue; icon-glyph: images;
 // Spray GenX Image Manager v4.1 PRODUCTION
 // Project-first mobile CMS with permanent Block IDs and verified GitHub writes.
 
 const OWNER="MobsterGit", REPO="-spraygenx-website-public", BRANCH="main";
+const WORK_BRANCH_PREFIX="work/image-manager/";
+const REQUIRED_CHECK="verify-production-tree";
+const CHECK_WAIT_SECONDS=180;
 const KEYCHAIN_KEY="SprayGenX_GitHub";
 if(!Keychain.contains(KEYCHAIN_KEY)){
   throw new Error("GitHub credential is unavailable. Run Spray GenX Credentials.");
@@ -18,9 +24,11 @@ const MAX_UPLOAD_BYTES=8*1024*1024;
 const MAX_IMAGE_EDGE=2400;
 const RAW_ALLOWED=["heic","heif","jpg","jpeg","png","webp","tif","tiff","bmp","gif"];
 const DEFAULT_VIEWS=["library","latest","search"];
-const api=p=>`https://api.github.com/repos/${OWNER}/${REPO}/contents/${p}`;
+const repoApi=p=>`https://api.github.com/repos/${OWNER}/${REPO}${p}`;
+const api=p=>repoApi(`/contents/${p}`);
 const rawUrl=p=>`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${String(p||"").split("/").map(encodeURIComponent).join("/")}`;
 let SORT="az", SHARED_IMAGES_USED=false, BUSY=false;
+let ACTIVE_REF=BRANCH, WORK_BRANCH=null, WORK_BASE_SHA=null, WORK_PR=null;
 
 function today(){return new Date().toISOString().slice(0,10)}
 function stamp(){return new Date().toISOString().replace(/[^0-9]/g,"").slice(0,17)}
@@ -60,13 +68,13 @@ async function ask(title,placeholder,value=""){let a=new Alert();a.title=title;a
 async function askFields(title,message,fields){let a=new Alert();a.title=title;a.message=message;fields.forEach(f=>a.addTextField(f.label,f.value||""));a.addAction("Save");a.addCancelAction("Cancel");let i=await a.presentAlert();return i<0?null:fields.map((_,n)=>a.textFieldValue(n).trim())}
 async function confirm(title,message,yes="Confirm"){let a=new Alert();a.title=title;a.message=message;a.addDestructiveAction(yes);a.addCancelAction("Cancel");return await a.presentAlert()===0}
 async function notify(title,body){try{let n=new Notification();n.title=title;n.body=body;n.sound="default";await n.schedule()}catch(_){}}
-async function runBusy(fn){if(BUSY){await alertMsg("Please Wait","A save, upload, publish, or delete operation is already running.");return null}BUSY=true;try{return await fn()}finally{BUSY=false}}
+async function runBusy(fn){if(BUSY){await alertMsg("Please Wait","A save, upload, publish, or delete operation is already running.");return null}BUSY=true;try{let result=await fn();if(WORK_BRANCH)await finalizeProtectedWrite();return result}catch(e){let pending=WORK_PR&&WORK_PR.html_url?`\n\nProtected pull request: ${WORK_PR.html_url}`:(WORK_BRANCH?`\n\nUnmerged working branch: ${WORK_BRANCH}`:"");resetProtectedWrite();throw new Error(`${String(e.message||e)}${pending}`)}finally{BUSY=false}}
 
 function statusCode(error){let m=String(error&&error.message||error).match(/HTTP\s+(\d{3})/i);return m?Number(m[1]):0}
 function retryable(error){let s=statusCode(error);return !s||s===408||s===409||s===429||s>=500}
 async function github(path,method="GET",body=null){
   if(!GITHUB_TOKEN)throw new Error("GitHub credential is unavailable. Run Spray GenX Credentials.");
-  let r=new Request(api(path)+(method==="GET"?`?ref=${BRANCH}&_=${Date.now()}`:""));
+  let r=new Request(api(path)+(method==="GET"?`?ref=${encodeURIComponent(ACTIVE_REF)}&_=${Date.now()}`:""));
   r.method=method;r.timeoutInterval=45;
   r.headers={Authorization:`Bearer ${GITHUB_TOKEN}`,Accept:"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};
   if(body){r.headers["Content-Type"]="application/json";r.body=JSON.stringify(body)}
@@ -76,16 +84,52 @@ async function github(path,method="GET",body=null){
   if(code<200||code>299)throw new Error(`${method} ${path}\nHTTP ${code}\n${j.message||text||"Request failed"}`);
   return j;
 }
+async function repoRequest(path,method="GET",body=null,accept="application/vnd.github+json"){
+  let r=new Request(repoApi(path));r.method=method;r.timeoutInterval=45;
+  r.headers={Authorization:`Bearer ${GITHUB_TOKEN}`,Accept:accept,"X-GitHub-Api-Version":"2022-11-28"};
+  if(body){r.headers["Content-Type"]="application/json";r.body=JSON.stringify(body)}
+  let text;try{text=await r.loadString()}catch(e){throw new Error(`${method} ${path}\nNetwork/timeout: ${String(e.message||e)}`)}
+  let j={};try{j=text?JSON.parse(text):{}}catch(_){j={message:text||"Non-JSON response"}}
+  let code=r.response&&r.response.statusCode||0;if(code<200||code>299)throw new Error(`${method} ${path}\nHTTP ${code}\n${j.message||text||"Request failed"}`);return j;
+}
+async function ensureProtectedWrite(){
+  if(WORK_BRANCH)return WORK_BRANCH;
+  let main=await repoRequest(`/git/ref/heads/${BRANCH}`),sha=main&&main.object&&main.object.sha;
+  if(!sha)throw new Error("Could not resolve the current protected main SHA.");
+  WORK_BASE_SHA=sha;WORK_BRANCH=`${WORK_BRANCH_PREFIX}${Date.now()}`;
+  await repoRequest("/git/refs","POST",{ref:`refs/heads/${WORK_BRANCH}`,sha});ACTIVE_REF=WORK_BRANCH;return WORK_BRANCH;
+}
+function resetProtectedWrite(){ACTIVE_REF=BRANCH;WORK_BRANCH=null;WORK_BASE_SHA=null;WORK_PR=null}
+async function waitForRequiredCheck(headSha){
+  let deadline=Date.now()+CHECK_WAIT_SECONDS*1000,last="waiting";
+  while(Date.now()<deadline){
+    let result=await repoRequest(`/commits/${headSha}/check-runs`,"GET",null,"application/vnd.github+json"),runs=Array.isArray(result.check_runs)?result.check_runs:[];
+    let check=runs.find(x=>String(x.name||"").toLowerCase()===REQUIRED_CHECK)||runs.find(x=>String(x.name||"").toLowerCase().includes(REQUIRED_CHECK));
+    if(check){last=check.status==="completed"?(check.conclusion||"completed"):check.status;if(check.status==="completed"){if(check.conclusion==="success")return true;throw new Error(`${REQUIRED_CHECK} ${check.conclusion||"failed"}. Nothing was merged.`)}}
+    await sleep(4000);
+  }
+  throw new Error(`${REQUIRED_CHECK} did not finish within ${CHECK_WAIT_SECONDS} seconds (${last}). Nothing was merged.`);
+}
+async function finalizeProtectedWrite(){
+  let branch=WORK_BRANCH,head=await repoRequest(`/git/ref/heads/${branch}`),headSha=head&&head.object&&head.object.sha;
+  if(!headSha)throw new Error("Could not resolve the Image Manager working branch.");
+  WORK_PR=await repoRequest("/pulls","POST",{title:"Publish Image Manager update",head:branch,base:BRANCH,body:`Automated mobile Image Manager update.\n\nBase: ${WORK_BASE_SHA}\nScope: Image Manager project data and sanitized upload derivatives only.`});
+  await waitForRequiredCheck(headSha);
+  let merged=await repoRequest(`/pulls/${WORK_PR.number}/merge`,"PUT",{sha:headSha,merge_method:"merge",commit_title:`Merge Image Manager update (#${WORK_PR.number})`});
+  if(!merged.merged)throw new Error(`GitHub did not merge the verified pull request: ${merged.message||"merge rejected"}`);
+  resetProtectedWrite();
+}
 async function getContent(path,quiet404=false){try{let f=await github(path);return f}catch(e){if(quiet404&&statusCode(e)===404)return null;throw e}}
 async function getJson(path){let f=await getContent(path);return{json:JSON.parse(decode(f.content)),sha:f.sha}}
 async function liveLibrary(){let f=await getJson(LIBRARY_PATH);if(!Array.isArray(f.json.blocks))throw new Error("SAFETY STOP: live image-library.json has no blocks array.");if(!Array.isArray(f.json.categories))f.json.categories=[];return f}
 async function fileExists(path){return !!(await getContent(path,true))}
-async function putLibraryOnce(json,sha,message){json.updated=today();return github(LIBRARY_PATH,"PUT",{message,content:b64(JSON.stringify(json,null,2)+"\n"),sha,branch:BRANCH})}
+async function putLibraryOnce(json,sha,message){json.updated=today();await ensureProtectedWrite();return github(LIBRARY_PATH,"PUT",{message,content:b64(JSON.stringify(json,null,2)+"\n"),sha,branch:ACTIVE_REF})}
 async function putBinaryVerified(path,data,message){
   if(await fileExists(path))return path;
+  await ensureProtectedWrite();
   let last=null;
   for(let attempt=1;attempt<=2;attempt++){
-    try{await github(path,"PUT",{message,content:data.toBase64String(),branch:BRANCH});if(await fileExists(path))return path;last=new Error("Upload returned normally but the file was not found during verification.")}
+    try{await github(path,"PUT",{message,content:data.toBase64String(),branch:ACTIVE_REF});if(await fileExists(path))return path;last=new Error("Upload returned normally but the file was not found during verification.")}
     catch(e){last=e;await notify("Upload timed out",`Checking GitHub before retrying ${nameOf(path)}.`);if(await fileExists(path))return path;if(!retryable(e))throw e}
     if(attempt<2)await sleep(1200*attempt);
   }
