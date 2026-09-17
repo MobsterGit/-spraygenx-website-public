@@ -1,12 +1,48 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in" viewBox="0 0 850 1100">
-<rect width="850" height="1100" fill="white"/><g fill="none" stroke="#000" stroke-width="2"><rect x="24" y="24" width="802" height="1052"/><rect x="34" y="34" width="782" height="1032"/></g>
+<rect width="850" height="1100" fill="white"/>
+<g fill="none" stroke="#000" stroke-width="2"><rect x="24" y="24" width="802" height="1052"/><rect x="34" y="34" width="782" height="1032"/></g>
 <g font-family="Arial,Helvetica,sans-serif" fill="#000"><text x="55" y="70" font-size="25" font-weight="700">FREEMAN BARN — MEASURED EXISTING CONDITIONS</text><text x="55" y="94" font-size="12">2026 FIELD RECORD • TWINSBURG HISTORICAL SOCIETY • TWINSBURG, OHIO</text><text x="55" y="114" font-size="10">FIELD MEASUREMENTS CONTROL • CALCULATED VALUES ARE IDENTIFIED AS CALCULATED</text></g>
-<g font-family="Arial" fill="#000"><text x="55" y="160" font-size="16" font-weight="700">UPPER ROOF — FIELD-MEASURED SURFACE</text></g>
-<!-- Equal roof planes. Centerline is visual datum only; no derived half-span dimension is stated. -->
-<g fill="none" stroke="#000" stroke-width="2.5"><path d="M120 350 L425 175 L730 350"/><line x1="425" y1="175" x2="425" y2="420" stroke-dasharray="8 6" stroke-width="1.5"/><line x1="120" y1="380" x2="730" y2="380" stroke-width="1"/></g>
-<g font-family="Arial" fill="#000"><text x="235" y="245" font-size="15" font-weight="700" transform="rotate(-30 235 245)">21'-0&quot; RIDGE TO EAVE — FIELD MEASURED</text><text x="545" y="245" font-size="15" font-weight="700" transform="rotate(30 545 245)">21'-0&quot; RIDGE TO EAVE — FIELD MEASURED</text><text x="438" y="250" font-size="13" font-weight="700">13'-0&quot; GABLE RISE</text><text x="438" y="270" font-size="10">FIELD MEASURED</text><text x="425" y="405" text-anchor="middle" font-size="12" font-weight="700">RIDGE / PEAK CENTERLINE</text></g>
-<g fill="#000" font-family="Arial"><text x="55" y="465" font-size="14" font-weight="700">ROOF LENGTH — NORTH END TO SOUTH END: 54'-6&quot; — FIELD MEASURED</text><text x="55" y="492" font-size="13">One roof plane: 21'-0&quot; × 54'-6&quot; = 1,144.5 sq ft — CALCULATED FROM FIELD MEASUREMENTS</text><text x="55" y="517" font-size="13">Two equal roof planes: 1,144.5 × 2 = 2,289 sq ft — CALCULATED FROM FIELD MEASUREMENTS</text><text x="55" y="542" font-size="12">Soffit projection: 2'-0&quot; — FIELD MEASURED</text></g>
-<g fill="none" stroke="#000" stroke-width="1"><rect x="55" y="580" width="740" height="165"/></g><g font-family="Arial" fill="#000"><text x="75" y="610" font-size="15" font-weight="700">FIELD-MEASURED BUILDING GEOMETRY — SEPARATE FROM ROOF-SURFACE AREA</text><text x="75" y="642" font-size="13">Building-wall length ................................ 50'-6&quot;</text><text x="75" y="668" font-size="13">Main barn depth ..................................... 30'-0&quot;</text><text x="75" y="694" font-size="13">Rear lean-to depth .................................. 10'-0&quot;</text><text x="75" y="720" font-size="13">Overall depth ....................................... 40'-0&quot;</text></g>
-<g fill="none" stroke="#000" stroke-width="1"><rect x="55" y="775" width="740" height="150"/></g><g font-family="Arial" fill="#000"><text x="75" y="805" font-size="15" font-weight="700">ORIENTATION</text><text x="75" y="837" font-size="13">NORTH — Mail Pouch lettering gable</text><text x="75" y="862" font-size="13">EAST — Front / main entrance</text><text x="75" y="887" font-size="13">SOUTH — Opposite Mail Pouch</text><text x="425" y="837" font-size="13">WEST — Opposite front / main entrance</text></g>
-<g font-family="Arial" fill="#000"><text x="55" y="970" font-size="12" font-weight="700">ARCHIVAL NOTE</text><text x="55" y="994" font-size="11">No horizontal half-span or roof-width value is presented as a field measurement on this sheet.</text><text x="55" y="1016" font-size="11">Roof-area calculations use the actual measured roof-surface dimensions: 21'-0&quot; × 54'-6&quot; per plane.</text><text x="55" y="1050" font-size="9">DOCUMENTED BY DENNY SMITH • SPRAY GENX LLC • FOR TWINSBURG HISTORICAL SOCIETY • SHEET R-01</text></g>
+
+<!-- EAST / FRONT ELEVATION. Photographic appearance controls; measured dimensions control labels. -->
+<g font-family="Arial" fill="#000"><text x="55" y="158" font-size="16" font-weight="700">EAST / FRONT — MAIN ENTRANCE</text></g>
+<g fill="none" stroke="#000" stroke-width="2.5">
+  <path d="M120 330 L425 155 L730 330 V565 H120 Z"/>
+  <line x1="425" y1="155" x2="425" y2="565" stroke-dasharray="8 6" stroke-width="1.5"/>
+  <rect x="340" y="420" width="170" height="145"/>
+  <line x1="425" y1="420" x2="425" y2="565" stroke-width="1.5"/>
+  <line x1="340" y1="420" x2="510" y2="565" stroke-width="1"/>
+  <line x1="510" y1="420" x2="340" y2="565" stroke-width="1"/>
+  <rect x="190" y="445" width="55" height="90"/>
+  <rect x="585" y="445" width="55" height="90"/>
+  <rect x="660" y="445" width="55" height="90"/>
+</g>
+<g font-family="Arial" fill="#000">
+  <text x="425" y="350" text-anchor="middle" font-size="11" font-weight="700">RIDGE / PEAK CENTERLINE</text>
+  <text x="425" y="590" text-anchor="middle" font-size="13" font-weight="700">BARN DOOR — 10'-0&quot; W × 9'-0&quot; H — FIELD MEASURED</text>
+  <text x="425" y="612" text-anchor="middle" font-size="12">TALL WINDOWS — 3'-0&quot; W × 6'-0&quot; H — FIELD MEASURED</text>
+  <text x="425" y="632" text-anchor="middle" font-size="11">ONE SOUTH OF DOOR • TWO NORTH OF DOOR</text>
+  <text x="425" y="652" text-anchor="middle" font-size="11">GABLE RISE — 13'-0&quot; FROM REVEAL / EAVE LINE TO PEAK — FIELD MEASURED</text>
+</g>
+
+<!-- ROOF AREA: actual tape measurements only. -->
+<g fill="none" stroke="#000" stroke-width="1"><rect x="55" y="690" width="740" height="170"/></g>
+<g font-family="Arial" fill="#000">
+  <text x="75" y="720" font-size="15" font-weight="700">UPPER ROOF — FIELD-MEASURED SURFACE AREA</text>
+  <text x="75" y="752" font-size="13">Ridge / peak to gutter / eave along roof surface ........ 21'-0&quot; — FIELD MEASURED</text>
+  <text x="75" y="778" font-size="13">North end to south end along roof ........................ 54'-6&quot; — FIELD MEASURED</text>
+  <text x="75" y="810" font-size="13" font-weight="700">One plane: 21'-0&quot; × 54'-6&quot; = 1,144.5 sq ft — CALCULATED FROM FIELD MEASUREMENTS</text>
+  <text x="75" y="838" font-size="13" font-weight="700">Two equal planes: 1,144.5 × 2 = 2,289 sq ft — CALCULATED FROM FIELD MEASUREMENTS</text>
+</g>
+
+<g fill="none" stroke="#000" stroke-width="1"><rect x="55" y="885" width="740" height="105"/></g>
+<g font-family="Arial" fill="#000">
+  <text x="75" y="914" font-size="14" font-weight="700">FIELD-MEASURED BUILDING GEOMETRY — NOT USED TO SUBSTITUTE FOR ROOF-SURFACE MEASUREMENTS</text>
+  <text x="75" y="942" font-size="12">Building-wall length 50'-6&quot; • Main barn depth 30'-0&quot; • Rear lean-to depth 10'-0&quot; • Overall depth 40'-0&quot;</text>
+  <text x="75" y="968" font-size="12">Soffit projection 2'-0&quot; • Bottom of woodwork to reveal / eave line 17'-0&quot;</text>
+</g>
+
+<g font-family="Arial" fill="#000">
+  <text x="55" y="1024" font-size="10" font-weight="700">ORIENTATION: NORTH = MAIL POUCH GABLE • EAST = FRONT / MAIN ENTRANCE • SOUTH = OPPOSITE MAIL POUCH • WEST = OPPOSITE FRONT</text>
+  <text x="55" y="1052" font-size="9">DOCUMENTED BY DENNY SMITH • SPRAY GENX LLC • FOR TWINSBURG HISTORICAL SOCIETY • 2026 FIELD RECORD</text>
+</g>
 </svg>
