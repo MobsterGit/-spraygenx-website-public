@@ -64,6 +64,7 @@
       "allowed_paths": [
         "data/image-library.json",
         "data/converted-images.json",
+        "images/inbox/**",
         "scriptable/SprayGenX-Image-Manager-*.js",
         "scriptable/SprayGenX-Image-Uploader-*.js",
         "scriptable/SprayGenXImageLibrary.js",
