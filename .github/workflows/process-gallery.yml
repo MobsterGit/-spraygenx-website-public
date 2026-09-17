@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   process-gallery:
@@ -30,8 +31,34 @@ jobs:
       - name: Process gallery images
         run: python tools/process_gallery.py
 
-      - name: Commit processed gallery files
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Process uploaded gallery images
-          file_pattern: images/projects/** projects/projects.json
+      - name: Commit processed gallery files to review branch
+        id: commit
+        shell: bash
+        run: |
+          if [[ -z "$(git status --porcelain -- images/projects projects/projects.json)" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No gallery changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BRANCH="automation/gallery-${GITHUB_RUN_ID}"
+          git switch -c "$BRANCH"
+          git add images/projects projects/projects.json
+          git commit -m "Process uploaded gallery images"
+          git push --set-upstream origin "$BRANCH"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Open review pull request
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.commit.outputs.branch }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "Process uploaded gallery images" \
+            --body "Generated gallery assets only. Automatic merge is disabled; human review and required production-integrity checks are required."
