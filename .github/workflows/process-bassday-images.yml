@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: bassday-image-pipeline
@@ -38,15 +39,33 @@ jobs:
       - name: Generate responsive WebP assets
         run: node tools/process_bassday_images.mjs
 
-      - name: Commit generated web assets
+      - name: Commit generated web assets to review branch
+        id: commit
         shell: bash
         run: |
           if [[ -z "$(git status --porcelain -- bassday/images/web)" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No image changes to commit."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BRANCH="automation/bassday-images-${GITHUB_RUN_ID}"
+          git switch -c "$BRANCH"
           git add bassday/images/web
           git commit -m "Generate Bass Day Ever web-ready images"
-          git push
+          git push --set-upstream origin "$BRANCH"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Open review pull request
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.commit.outputs.branch }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "Generate Bass Day Ever web-ready images" \
+            --body "Generated assets only. Automatic merge is disabled; human review and required production-integrity checks are required."
