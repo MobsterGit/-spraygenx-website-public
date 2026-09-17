@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1269" height="864" viewBox="0 0 1269 864" role="img" aria-labelledby="title desc">
 <title id="title">Freeman Barn corrected 2026 measured East elevation</title>
-<desc id="desc">Corrected field record showing the East front elevation, North Mail Pouch gable, three front windows, centered barn door, and verified roof measurements.</desc>
+<desc id="desc">Corrected field record showing the East front elevation, North Mail Pouch gable, three front windows, centered barn door, field-measured footprint geometry, verified roof measurements, and the North, South, and West opening schedule.</desc>
 <defs>
   <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#000"/></marker>
   <style>.serif{font-family:Georgia,'Times New Roman',serif;fill:#000}.row{font-size:11px}.small{font-size:9px}.rule{stroke:#000;stroke-width:1.3;fill:none}</style>
@@ -27,27 +27,30 @@
 </g>
 <rect x="692" y="650" width="286" height="180" fill="#fff"/><rect x="690" y="648" width="290" height="183" class="rule"/>
 <g class="serif">
-<text x="705" y="665" font-size="12" font-weight="700" text-decoration="underline">UPPER ROOF — BOTH PLANES</text>
-<text x="705" y="683" class="row">Roof length, north–south: <tspan font-weight="700">54′-6″</tspan></text>
-<text x="705" y="700" class="row">Ridge to eave on surface: <tspan font-weight="700">21′-0″</tspan></text>
-<text x="705" y="717" class="row">One plane: <tspan font-weight="700">1,144.5 sq ft</tspan> (calculated)</text>
-<text x="705" y="734" class="row">Both planes: <tspan font-weight="700">2,289 sq ft</tspan> (calculated)</text>
-<line x1="705" y1="747" x2="965" y2="747" class="rule"/>
-<text x="705" y="764" font-size="11" font-weight="700" text-decoration="underline">WEST BAND ABOVE SHINGLED ROOF</text>
-<text x="705" y="781" class="row">Length: <tspan font-weight="700">50′-6″</tspan> • Height: <tspan font-weight="700">1′-0″</tspan></text>
-<text x="705" y="798" class="row">Gross surface: <tspan font-weight="700">50.5 sq ft</tspan> (calculated)</text>
-<text x="705" y="818" class="small">Field measurements control; calculations are identified.</text>
+<text x="705" y="665" font-size="12" font-weight="700" text-decoration="underline">SIDE / FOOTPRINT GEOMETRY</text>
+<text x="705" y="683" class="row">Main barn depth: <tspan font-weight="700">30′-0″</tspan></text>
+<text x="705" y="700" class="row">Full-length rear lean-to: <tspan font-weight="700">10′-0″</tspan></text>
+<text x="705" y="717" class="row">Overall side depth: <tspan font-weight="700">40′-0″</tspan></text>
+<line x1="705" y1="731" x2="965" y2="731" class="rule"/>
+<text x="705" y="748" font-size="11" font-weight="700" text-decoration="underline">UPPER ROOF — BOTH PLANES</text>
+<text x="705" y="765" class="row">North–south length: <tspan font-weight="700">54′-6″</tspan></text>
+<text x="705" y="782" class="row">Ridge to eave surface: <tspan font-weight="700">21′-0″</tspan></text>
+<text x="705" y="799" class="row">One plane: <tspan font-weight="700">1,144.5 sq ft</tspan> (calculated)</text>
+<text x="705" y="816" class="row">Both planes: <tspan font-weight="700">2,289 sq ft</tspan> (calculated)</text>
 </g>
-<rect x="992" y="666" width="273" height="134" fill="#fff"/><rect x="990" y="664" width="276" height="137" class="rule"/>
+<rect x="992" y="650" width="273" height="180" fill="#fff"/><rect x="990" y="648" width="276" height="183" class="rule"/>
 <g class="serif">
-<text x="1008" y="681" font-size="12" font-weight="700" text-decoration="underline">NOTES</text>
-<text x="1008" y="696" class="small">• Measurements are field verified where noted.</text>
-<text x="1008" y="709" class="small">• Lower shingled-roof dimensions are not included.</text>
-<text x="1008" y="722" class="small">• H.W. / 87 location is not field dimensioned.</text>
-<text x="1008" y="735" class="small">• Field measurements control over illustration.</text>
-<text x="1008" y="748" class="small">• North is right; south is left on this elevation.</text>
-<text x="1008" y="761" class="small">• All three front windows are 3′-0″ W × 6′-0″ H.</text>
-<text x="1008" y="774" class="small">• One window is south/left of the door;</text>
-<text x="1018" y="787" class="small">two windows are north/right of the door.</text>
+<text x="1008" y="665" font-size="12" font-weight="700" text-decoration="underline">OTHER ELEVATION OPENINGS</text>
+<text x="1008" y="682" class="small">NORTH • 2 small windows:</text>
+<text x="1018" y="695" class="small" font-weight="700">3′-4″ W × 2′-0″ H each</text>
+<text x="1008" y="712" class="small">SOUTH • 3 small windows:</text>
+<text x="1018" y="725" class="small" font-weight="700">3′-4″ W × 2′-0″ H each</text>
+<text x="1008" y="742" class="small">SOUTH • 1 upper-gable window:</text>
+<text x="1018" y="755" class="small" font-weight="700">5′-0″ W × 5′-7″ H</text>
+<text x="1008" y="772" class="small">WEST • 3 small windows:</text>
+<text x="1018" y="785" class="small" font-weight="700">3′-4″ W × 2′-0″ H each</text>
+<text x="1008" y="802" class="small">WEST • 1 double opening:</text>
+<text x="1018" y="815" class="small" font-weight="700">5′-7″ W × 2′-0″ H</text>
+<text x="1008" y="827" font-size="8">FIELD MEASURED • FIELD RECORD CONTROLS</text>
 </g>
 </svg>
