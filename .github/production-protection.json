@@ -1,0 +1,97 @@
+{
+  "critical_files": [
+    "index.html",
+    "CNAME",
+    "README.md"
+  ],
+  "critical_directories": [
+    ".github",
+    "data",
+    "images",
+    "freeman-barn/2026-field-record"
+  ],
+  "maximum_deletions": 0,
+  "large_deletion_count": 25,
+  "large_file_reduction_percent": 5.0,
+  "public_image_roots": [
+    "images",
+    "bassday/images",
+    "upload-inbox"
+  ],
+  "public_manager_record_paths": [
+    "data/manager/customers/**",
+    "data/manager/jobs/**",
+    "data/manager/proposals/**",
+    "data/manager/invoices/**",
+    "data/manager/mileage/**",
+    "data/manager/media/**",
+    "data/manager/tasks/**",
+    "data/manager/backups/**",
+    "data/manager/exports/**",
+    "data/manager/imports/**",
+    "data/manager/document_index.json"
+  ],
+  "branch_scopes": [
+    {
+      "branches": ["security/protect-main-phase1"],
+      "allowed_paths": [
+        ".github/CODEOWNERS",
+        ".github/pull_request_template.md",
+        ".github/production-protection.json",
+        ".github/workflows/production-integrity.yml",
+        ".github/workflows/convert-inbox-images.yml",
+        ".github/workflows/process-bassday-images.yml",
+        ".github/workflows/process-gallery.yml",
+        "tools/production_integrity.py"
+      ]
+    },
+    {
+      "branches": ["security/protection-policy-*"],
+      "allowed_paths": [
+        ".github/CODEOWNERS",
+        ".github/production-protection.json",
+        ".github/pull_request_template.md",
+        ".github/workflows/production-integrity.yml",
+        "tools/production_integrity.py"
+      ]
+    },
+    {
+      "branches": ["work/freeman-barn", "work/freeman-barn/**", "feature/freeman-barn-*", "fix/freeman-barn-*"],
+      "allowed_paths": ["freeman-barn/2026-field-record/**"]
+    },
+    {
+      "branches": ["work/image-manager", "work/image-manager/**", "feature/image-manager-*", "fix/image-manager-*"],
+      "allowed_paths": [
+        "data/image-library.json",
+        "data/converted-images.json",
+        "scriptable/SprayGenX-Image-Manager-*.js",
+        "scriptable/SprayGenX-Image-Uploader-*.js",
+        "scriptable/SprayGenXImageLibrary.js",
+        "scriptable/SprayGenXImagePreviewer.js",
+        "scriptable/SprayGenXInboxUploader.js",
+        "studio.html",
+        "photo-library.html"
+      ]
+    },
+    {
+      "branches": ["automation/converted-images-*"],
+      "allowed_paths": ["images/converted/**", "data/converted-images.json"]
+    },
+    {
+      "branches": ["automation/update-sitemap"],
+      "allowed_paths": ["sitemap.xml"]
+    },
+    {
+      "branches": ["automation/bassday-images-*"],
+      "allowed_paths": ["bassday/images/web/**"]
+    },
+    {
+      "branches": ["automation/gallery-*"],
+      "allowed_paths": ["images/projects/**", "projects/projects.json"]
+    },
+    {
+      "branches": ["automated/industry-insights-*"],
+      "allowed_paths": ["data/regional-updates/**"]
+    }
+  ]
+}
