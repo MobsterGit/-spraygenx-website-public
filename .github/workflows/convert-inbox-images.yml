@@ -78,17 +78,10 @@ jobs:
           echo "url=$PR_URL" >> "$GITHUB_OUTPUT"
           echo "Created $PR_URL"
 
-      - name: Merge conversion pull request when allowed
+      - name: Require human review
         if: steps.pr.outputs.url != ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ steps.pr.outputs.url }}
-        shell: bash
         run: |
-          if gh pr merge "$PR_URL" --squash --delete-branch; then
-            echo "Conversion pull request merged."
-          elif gh pr merge "$PR_URL" --squash --auto --delete-branch; then
-            echo "Auto-merge enabled; the pull request will merge when repository requirements are satisfied."
-          else
-            echo "The pull request was created successfully but requires manual merge approval."
-          fi
+          echo "Conversion pull request created: $PR_URL"
+          echo "Automatic merge is intentionally disabled. Review and required checks must pass before merge."
