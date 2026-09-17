@@ -12,7 +12,7 @@
   ],
   "maximum_deletions": 0,
   "large_deletion_count": 25,
-  "large_file_reduction_percent": 5.0,
+  "large_file_reduction_percent": 5,
   "public_image_roots": [
     "images",
     "bassday/images",
@@ -33,7 +33,9 @@
   ],
   "branch_scopes": [
     {
-      "branches": ["security/protect-main-phase1"],
+      "branches": [
+        "security/protect-main-phase1"
+      ],
       "allowed_paths": [
         ".github/CODEOWNERS",
         ".github/pull_request_template.md",
@@ -46,7 +48,9 @@
       ]
     },
     {
-      "branches": ["security/protection-policy-*"],
+      "branches": [
+        "security/protection-policy-*"
+      ],
       "allowed_paths": [
         ".github/CODEOWNERS",
         ".github/production-protection.json",
@@ -56,14 +60,27 @@
       ]
     },
     {
-      "branches": ["work/freeman-barn", "work/freeman-barn/**", "feature/freeman-barn-*", "fix/freeman-barn-*"],
-      "allowed_paths": ["freeman-barn/2026-field-record/**"]
+      "branches": [
+        "work/freeman-barn",
+        "work/freeman-barn/**",
+        "feature/freeman-barn-*",
+        "fix/freeman-barn-*"
+      ],
+      "allowed_paths": [
+        "freeman-barn/2026-field-record/**"
+      ]
     },
     {
-      "branches": ["work/image-manager", "work/image-manager/**", "feature/image-manager-*", "fix/image-manager-*"],
+      "branches": [
+        "work/image-manager",
+        "work/image-manager/**",
+        "feature/image-manager-*",
+        "fix/image-manager-*"
+      ],
       "allowed_paths": [
         "data/image-library.json",
         "data/converted-images.json",
+        "images/inbox/**",
         "scriptable/SprayGenX-Image-Manager-*.js",
         "scriptable/SprayGenX-Image-Uploader-*.js",
         "scriptable/SprayGenXImageLibrary.js",
@@ -74,24 +91,46 @@
       ]
     },
     {
-      "branches": ["automation/converted-images-*"],
-      "allowed_paths": ["images/converted/**", "data/converted-images.json"]
+      "branches": [
+        "automation/converted-images-*"
+      ],
+      "allowed_paths": [
+        "images/converted/**",
+        "data/converted-images.json"
+      ]
     },
     {
-      "branches": ["automation/update-sitemap"],
-      "allowed_paths": ["sitemap.xml"]
+      "branches": [
+        "automation/update-sitemap"
+      ],
+      "allowed_paths": [
+        "sitemap.xml"
+      ]
     },
     {
-      "branches": ["automation/bassday-images-*"],
-      "allowed_paths": ["bassday/images/web/**"]
+      "branches": [
+        "automation/bassday-images-*"
+      ],
+      "allowed_paths": [
+        "bassday/images/web/**"
+      ]
     },
     {
-      "branches": ["automation/gallery-*"],
-      "allowed_paths": ["images/projects/**", "projects/projects.json"]
+      "branches": [
+        "automation/gallery-*"
+      ],
+      "allowed_paths": [
+        "images/projects/**",
+        "projects/projects.json"
+      ]
     },
     {
-      "branches": ["automated/industry-insights-*"],
-      "allowed_paths": ["data/regional-updates/**"]
+      "branches": [
+        "automated/industry-insights-*"
+      ],
+      "allowed_paths": [
+        "data/regional-updates/**"
+      ]
     }
   ]
 }
