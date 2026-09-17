@@ -1,0 +1,283 @@
+{
+  "version": 2,
+  "generated": "2026-09-17T13:08:10.963Z",
+  "widths": [
+    480,
+    960,
+    1600
+  ],
+  "images": [
+    {
+      "source": "bassday/images/bass-day-ever-fishing-photo.png",
+      "width": 466,
+      "height": 381,
+      "aspectRatio": 1.2231,
+      "variants": [
+        {
+          "width": 466,
+          "src": "images/web/bass-day-ever-fishing-photo-0d24128cbf-466.webp",
+          "bytes": 21760
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/bass-day-ever-tee.png",
+      "width": 361,
+      "height": 424,
+      "aspectRatio": 0.8514,
+      "variants": [
+        {
+          "width": 361,
+          "src": "images/web/bass-day-ever-tee-d470f3bb04-361.webp",
+          "bytes": 15530
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/bde-dog-gear.png",
+      "width": 360,
+      "height": 425,
+      "aspectRatio": 0.8471,
+      "variants": [
+        {
+          "width": 360,
+          "src": "images/web/bde-dog-gear-9655c6391b-360.webp",
+          "bytes": 19060
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/classic-bde-hat.png",
+      "width": 360,
+      "height": 424,
+      "aspectRatio": 0.8491,
+      "variants": [
+        {
+          "width": 360,
+          "src": "images/web/classic-bde-hat-c8c7a5007b-360.webp",
+          "bytes": 21098
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/lake-life-hoodie.png",
+      "width": 361,
+      "height": 425,
+      "aspectRatio": 0.8494,
+      "variants": [
+        {
+          "width": 361,
+          "src": "images/web/lake-life-hoodie-280832f898-361.webp",
+          "bytes": 15160
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/Neon_Pink_Beanie.webp",
+      "width": 1946,
+      "height": 1946,
+      "aspectRatio": 1,
+      "variants": [
+        {
+          "width": 480,
+          "src": "images/web/neon-pink-beanie-8c1a6d3c0d-480.webp",
+          "bytes": 5952
+        },
+        {
+          "width": 960,
+          "src": "images/web/neon-pink-beanie-8c1a6d3c0d-960.webp",
+          "bytes": 31154
+        },
+        {
+          "width": 1600,
+          "src": "images/web/neon-pink-beanie-8c1a6d3c0d-1600.webp",
+          "bytes": 79930
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/Patch_Family.webp",
+      "width": 1946,
+      "height": 1946,
+      "aspectRatio": 1,
+      "variants": [
+        {
+          "width": 480,
+          "src": "images/web/patch-family-d19eb8a519-480.webp",
+          "bytes": 16736
+        },
+        {
+          "width": 960,
+          "src": "images/web/patch-family-d19eb8a519-960.webp",
+          "bytes": 49092
+        },
+        {
+          "width": 1600,
+          "src": "images/web/patch-family-d19eb8a519-1600.webp",
+          "bytes": 97028
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/Patch_Father_Daughter.webp",
+      "width": 1946,
+      "height": 1946,
+      "aspectRatio": 1,
+      "variants": [
+        {
+          "width": 480,
+          "src": "images/web/patch-father-daughter-d5d13fe943-480.webp",
+          "bytes": 14682
+        },
+        {
+          "width": 960,
+          "src": "images/web/patch-father-daughter-d5d13fe943-960.webp",
+          "bytes": 36200
+        },
+        {
+          "width": 1600,
+          "src": "images/web/patch-father-daughter-d5d13fe943-1600.webp",
+          "bytes": 63236
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/Patch_Father_Son.webp",
+      "width": 1946,
+      "height": 1946,
+      "aspectRatio": 1,
+      "variants": [
+        {
+          "width": 480,
+          "src": "images/web/patch-father-son-b6a87d8667-480.webp",
+          "bytes": 14610
+        },
+        {
+          "width": 960,
+          "src": "images/web/patch-father-son-b6a87d8667-960.webp",
+          "bytes": 35860
+        },
+        {
+          "width": 1600,
+          "src": "images/web/patch-father-son-b6a87d8667-1600.webp",
+          "bytes": 62746
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/Patch_Happy_Couple.webp",
+      "width": 1946,
+      "height": 1946,
+      "aspectRatio": 1,
+      "variants": [
+        {
+          "width": 480,
+          "src": "images/web/patch-happy-couple-6b685713fa-480.webp",
+          "bytes": 13756
+        },
+        {
+          "width": 960,
+          "src": "images/web/patch-happy-couple-6b685713fa-960.webp",
+          "bytes": 33984
+        },
+        {
+          "width": 1600,
+          "src": "images/web/patch-happy-couple-6b685713fa-1600.webp",
+          "bytes": 59866
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/Patch_Husband_Wife.webp",
+      "width": 1946,
+      "height": 1946,
+      "aspectRatio": 1,
+      "variants": [
+        {
+          "width": 480,
+          "src": "images/web/patch-husband-wife-6b685713fa-480.webp",
+          "bytes": 13756
+        },
+        {
+          "width": 960,
+          "src": "images/web/patch-husband-wife-6b685713fa-960.webp",
+          "bytes": 33984
+        },
+        {
+          "width": 1600,
+          "src": "images/web/patch-husband-wife-6b685713fa-1600.webp",
+          "bytes": 59866
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/Patch_Male.webp",
+      "width": 1946,
+      "height": 1946,
+      "aspectRatio": 1,
+      "variants": [
+        {
+          "width": 480,
+          "src": "images/web/patch-male-02f26f444e-480.webp",
+          "bytes": 12052
+        },
+        {
+          "width": 960,
+          "src": "images/web/patch-male-02f26f444e-960.webp",
+          "bytes": 30606
+        },
+        {
+          "width": 1600,
+          "src": "images/web/patch-male-02f26f444e-1600.webp",
+          "bytes": 54806
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/Patch_Mother_Daughter.webp",
+      "width": 1946,
+      "height": 1946,
+      "aspectRatio": 1,
+      "variants": [
+        {
+          "width": 480,
+          "src": "images/web/patch-mother-daughter-56e6ae4a9d-480.webp",
+          "bytes": 14874
+        },
+        {
+          "width": 960,
+          "src": "images/web/patch-mother-daughter-56e6ae4a9d-960.webp",
+          "bytes": 37284
+        },
+        {
+          "width": 1600,
+          "src": "images/web/patch-mother-daughter-56e6ae4a9d-1600.webp",
+          "bytes": 66026
+        }
+      ]
+    },
+    {
+      "source": "bassday/images/Patch_Mother_Son.webp",
+      "width": 1946,
+      "height": 1946,
+      "aspectRatio": 1,
+      "variants": [
+        {
+          "width": 480,
+          "src": "images/web/patch-mother-son-22c957c1d5-480.webp",
+          "bytes": 13784
+        },
+        {
+          "width": 960,
+          "src": "images/web/patch-mother-son-22c957c1d5-960.webp",
+          "bytes": 44068
+        },
+        {
+          "width": 1600,
+          "src": "images/web/patch-mother-son-22c957c1d5-1600.webp",
+          "bytes": 93448
+        }
+      ]
+    }
+  ]
+}
