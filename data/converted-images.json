@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-09-08T14:39:11+00:00",
+  "updated": "2026-09-17T19:19:50+00:00",
   "images": [
     {
       "source": "images/inbox/2026-06-27/2026-03-16-08-42-27-1-20260627184528-004.png",
@@ -504,6 +504,168 @@
       "source_ext": "heic",
       "converted_ext": "jpg",
       "converted_at": "2026-09-08T14:39:11+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/2026-06-27/photo-20260912133707-01.jpg",
+      "converted": "images/converted/2026-06-27/photo-20260912133707-01-e2ad26a7d4.jpg",
+      "sha256": "e2ad26a7d477c194207676c94af454b66f585859c9ed7b6fa6f722e5da0b8cd8",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:48+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-001.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-001-d39bc05f95.jpg",
+      "sha256": "d39bc05f951b4267ef58f9de69fe087ba6ee308f0b53bc40df8df3995d12df9b",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:48+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-002.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-002-60e141cac7.jpg",
+      "sha256": "60e141cac78cbc739b61e407bee2d65fe12be1dfb82af74eb1f141c4c3fc396a",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:48+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-003.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-003-7d0efbe2c9.jpg",
+      "sha256": "7d0efbe2c9804584558e699cb48f2a6c8b82f5f3595c97b37bfc992a8b10c3b0",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:48+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-004.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-004-eb6f9e7394.jpg",
+      "sha256": "eb6f9e739458771c872fcc6400b1baecbb95f7f9a8365006961f8888dbef18fa",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:48+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-005.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-005-1835a6d781.jpg",
+      "sha256": "1835a6d781b194862159b2612e711c87b6bdd68d35f5c72505247c30fb9edbc9",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:49+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-006.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-006-ec8ccf852b.jpg",
+      "sha256": "ec8ccf852b26151dc30f3b41d720b7618bede3732ac589cef67cd9381980f45f",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:49+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-007.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-007-c7a5fd1445.jpg",
+      "sha256": "c7a5fd1445776bacc7cac41925411686f154caf93d17e6dcd22ab56185499c7c",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:49+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-008.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-008-fb1dfd6414.jpg",
+      "sha256": "fb1dfd64145b2d505ec0d8148e3a5ee07e3446f60657dedd990d9dbd55eec40c",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:49+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-009.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-009-829c047125.jpg",
+      "sha256": "829c047125adc77b949ee08268c17e61cf1a6304d130695a0e7936463ed90511",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:49+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-010.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916210151074-010-6481949a56.jpg",
+      "sha256": "6481949a560d236df22fc5f39aea1648064ea83f4fa5df9d7b683953e1404132",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:50+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916221347722-001.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916221347722-001-e742c65342.jpg",
+      "sha256": "e742c65342ae8b72ca2d361e2d7e84b435d98429e3b79dc57a84b4e098f8cecf",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:50+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916224919828-001.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916224919828-001-8b1e99baf4.jpg",
+      "sha256": "8b1e99baf4d66038eed1301bb4d0fe562d0edb3622741d33b5ccda139bac1e53",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:50+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260916232051135-001.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260916232051135-001-3838e1e2f4.jpg",
+      "sha256": "3838e1e2f40095f6933bde98b45283c1510292038cf437cb664127b6eafac17d",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:50+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260917044743963-001.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260917044743963-001-08a619c80a.jpg",
+      "sha256": "08a619c80affc23fadaa2c280e4d344b1caa60647832e6be6d93062aa2526e43",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:50+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260917171626357-001.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260917171626357-001-984524bb0d.jpg",
+      "sha256": "984524bb0d6ee2cb15dd5a57f9b477f81ea3be61c1c173e2e84c4870e721329f",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:50+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260917171626357-002.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260917171626357-002-a2e8b00ce9.jpg",
+      "sha256": "a2e8b00ce9f5f144de2d04dd9befb7e9fb0e4553f337beba412945e1ab7daf59",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:50+00:00",
+      "status": "converted"
+    },
+    {
+      "source": "images/inbox/freeman-documentation-20260916205319170/photo-20260917183045348-001.jpg",
+      "converted": "images/converted/freeman-documentation-20260916205319170/photo-20260917183045348-001-7cc945e130.jpg",
+      "sha256": "7cc945e13047c5b6e6186aaf77aa1ffa7387749c68548d03bdddf5770b1d8ed9",
+      "source_ext": "jpg",
+      "converted_ext": "jpg",
+      "converted_at": "2026-09-17T19:19:50+00:00",
       "status": "converted"
     }
   ]
