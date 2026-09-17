@@ -1,0 +1,36 @@
+{
+  "task_id": "TASK-YYYY-0001",
+  "task_title": "",
+  "task_type": "general_follow_up",
+  "status": "open",
+  "priority": "normal",
+  "links": {
+    "job_id": "",
+    "customer_id": "",
+    "proposal_id": "",
+    "invoice_id": "",
+    "photo_group_id": "",
+    "mileage_id": ""
+  },
+  "dates": {
+    "created_date": "",
+    "due_date": "",
+    "scheduled_date": "",
+    "completed_date": "",
+    "snoozed_until": ""
+  },
+  "details": {
+    "description": "",
+    "assigned_to": "owner",
+    "communication_method": "none",
+    "customer_facing": false,
+    "private_notes": ""
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "",
+    "updated_at": "",
+    "archived": false,
+    "archive_reason": ""
+  }
+}

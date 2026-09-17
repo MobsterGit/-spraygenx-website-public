@@ -1,0 +1,13 @@
+// Spray GenX Image Previewer v1.0
+// Optional helper: previews public image-library blocks inside Scriptable.
+// Replace only GITHUB_TOKEN.
+const OWNER="MobsterGit",REPO="-spraygenx-website-public",BRANCH="main",GITHUB_TOKEN="PASTE_NEW_TOKEN_HERE",LIBRARY_PATH="data/image-library.json";
+const api=p=>`https://api.github.com/repos/${OWNER}/${REPO}/contents/${p}`;
+const raw=p=>`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/`+String(p||"").split('/').map(encodeURIComponent).join('/');
+function imgPath(i){return typeof i==="string"?i:(i&&i.path?i.path:"")}
+function catLabel(lib,id){let c=(lib.categories||[]).find(x=>x.id===id);return c?c.label:id}
+async function gh(url){let r=new Request(url);r.headers={Authorization:`Bearer ${GITHUB_TOKEN}`,Accept:"application/vnd.github+json"};let j=await r.loadJSON();if(j.message&&j.documentation_url)throw new Error(JSON.stringify(j,null,2));return j}
+async function getJson(path){let j=await gh(`${api(path)}?ref=${BRANCH}`);let txt=Data.fromBase64String(j.content.replace(/\n/g,"")).toRawString();return JSON.parse(txt)}
+async function chooseBlock(lib){let blocks=lib.blocks||[];let a=new Alert();a.title="Preview Image Block";blocks.forEach(b=>a.addAction(`${b.title||"Untitled"} — ${catLabel(lib,b.category)} — ${(b.images||[]).length} images`));a.addCancelAction("Cancel");let i=await a.presentSheet();return i<0?null:blocks[i]}
+async function preview(title,paths){let cards=paths.map((p,i)=>`<figure><img src="${raw(p)}"><figcaption>${String(i+1).padStart(2,"0")} · ${p.split('/').pop()}</figcaption></figure>`).join('');let html=`<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#061325;color:white;font-family:-apple-system,Arial}header{position:sticky;top:0;background:#061325;padding:14px;border-bottom:1px solid #244}h1{font-size:20px;margin:0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px}figure{margin:0;background:#10243f;border-radius:10px;overflow:hidden}img{width:100%;height:190px;object-fit:cover;display:block}figcaption{font-size:11px;padding:7px;color:#d8e7f7;word-break:break-word}</style><header><h1>${title}</h1></header><div class="grid">${cards}</div>`;let w=new WebView();await w.loadHTML(html);await w.present(true)}
+try{if(!GITHUB_TOKEN||GITHUB_TOKEN==="PASTE_NEW_TOKEN_HERE")throw new Error("Paste your GitHub token into GITHUB_TOKEN first.");let lib=await getJson(LIBRARY_PATH);let b=await chooseBlock(lib);if(b)await preview(b.title,(b.images||[]).map(imgPath).filter(Boolean))}catch(e){let a=new Alert();a.title="Error";a.message=String(e);a.addAction("OK");await a.present()}

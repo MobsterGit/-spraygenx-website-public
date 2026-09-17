@@ -1,0 +1,26 @@
+[
+  {
+    "id": "canton-car-wash-brick-exterior",
+    "title": "Canton Car Wash Brick Exterior",
+    "city": "Canton",
+    "state": "OH",
+    "category": "Commercial Exterior",
+    "year": 2026,
+    "featured": true,
+    "status": "planned",
+    "coverImage": "images/projects/canton-car-wash-brick-exterior/gallery/01.jpg",
+    "thumbImage": "images/projects/canton-car-wash-brick-exterior/thumbs/01.jpg"
+  },
+  {
+    "id": "twinsburg-historical-society-barn",
+    "title": "Twinsburg Historical Society Barn",
+    "city": "Twinsburg",
+    "state": "OH",
+    "category": "Historic Restoration",
+    "year": 2026,
+    "featured": true,
+    "status": "planned",
+    "coverImage": "images/projects/twinsburg-historical-society-barn/gallery/01.jpg",
+    "thumbImage": "images/projects/twinsburg-historical-society-barn/thumbs/01.jpg"
+  }
+]

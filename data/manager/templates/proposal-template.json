@@ -1,0 +1,44 @@
+{
+  "docType": "proposal",
+  "docNo": "SGX-YYYY-001",
+  "date": "",
+  "client": "",
+  "project": "",
+  "price": "$0.00",
+  "scope": "",
+  "notes": "",
+  "manager": {
+    "proposal_id": "PROP-YYYY-0001",
+    "job_id": "",
+    "customer_id": "",
+    "status": "draft",
+    "revision_number": 0,
+    "converted_to_invoice_id": "",
+    "html_file": "",
+    "pdf_file": "",
+    "json_path": ""
+  },
+  "scriptable_compatibility": {
+    "current_record_fields": [
+      "docType",
+      "docNo",
+      "date",
+      "client",
+      "project",
+      "price",
+      "scope",
+      "notes"
+    ],
+    "numbering_rule": "SGX-YYYY-001 based on existing proposal HTML files",
+    "html_builder": "buildDocumentHTML(record)",
+    "save_function": "saveProposalRecord(record, originalDocNo, existingJsonPath)",
+    "pdf_export_method": "QuickLook preview, Share, Print, pinch out preview, Save to Files"
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "",
+    "updated_at": "",
+    "archived": false,
+    "archive_reason": ""
+  }
+}

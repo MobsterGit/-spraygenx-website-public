@@ -1,0 +1,47 @@
+{
+  "mileage_id": "MILE-2026-0001",
+  "trip_date": "2026-07-02",
+  "status": "needs_review",
+  "classification": "business",
+  "trip": {
+    "origin_name": "Home Office",
+    "origin_address": "",
+    "destination_name": "Canton Car Wash",
+    "destination_address": "",
+    "city": "Canton",
+    "state": "OH",
+    "miles": 0.00,
+    "round_trip": false
+  },
+  "purpose": {
+    "purpose": "Estimate or site visit",
+    "trip_category": "job_site",
+    "business_percent": 100,
+    "deductible_miles": 0.00
+  },
+  "links": {
+    "job_id": "JOB-2026-0001",
+    "customer_id": "CUST-2026-0001",
+    "proposal_id": "PROP-2026-0001",
+    "invoice_id": "",
+    "supplier_id": ""
+  },
+  "source": {
+    "source": "manual",
+    "source_file": "",
+    "source_row_id": "",
+    "confidence": "manual",
+    "import_notes": ""
+  },
+  "notes": {
+    "notes": "Sample mileage record for manager MVP data structure testing.",
+    "private_notes": ""
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "2026-07-02T00:00:00-04:00",
+    "updated_at": "2026-07-02T00:00:00-04:00",
+    "archived": false,
+    "archive_reason": ""
+  }
+}

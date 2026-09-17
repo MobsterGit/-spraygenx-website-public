@@ -1,0 +1,80 @@
+name: Generate sitemap
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'sitemap.xml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: generate-sitemap-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generate and validate sitemap
+        run: python tools/generate_sitemap.py
+
+      - name: Stage sitemap update safely
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SITEMAP_BRANCH: automation/update-sitemap
+        run: |
+          if git diff --quiet -- sitemap.xml; then
+            echo "sitemap.xml is already current."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$SITEMAP_BRANCH"
+          git add sitemap.xml
+          git commit -m "Automatically update sitemap"
+          git push --force origin "HEAD:$SITEMAP_BRANCH"
+
+          EXISTING_PR=$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --head "$SITEMAP_BRANCH" \
+            --base main \
+            --state open \
+            --json number \
+            --jq '.[0].number // empty' 2>/dev/null || true)
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "Updated existing sitemap pull request #$EXISTING_PR."
+            exit 0
+          fi
+
+          if gh pr create \
+            --repo "$GITHUB_REPOSITORY" \
+            --base main \
+            --head "$SITEMAP_BRANCH" \
+            --title "Automatically update sitemap" \
+            --body "Automated sitemap refresh generated from the current indexable pages."; then
+            echo "Created sitemap pull request."
+          else
+            echo "::warning::The sitemap branch was updated, but repository settings prevent GitHub Actions from creating pull requests."
+            echo "### Sitemap update staged" >> "$GITHUB_STEP_SUMMARY"
+            echo "The generated sitemap is available on branch \`$SITEMAP_BRANCH\`." >> "$GITHUB_STEP_SUMMARY"
+            echo "Open a pull request from that branch to \`main\` when convenient." >> "$GITHUB_STEP_SUMMARY"
+          fi

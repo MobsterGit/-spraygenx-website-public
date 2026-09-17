@@ -1,0 +1,43 @@
+{
+  "portfolio_project_id": "PORT-YYYY-0001",
+  "source_media_id": "",
+  "job_id": "",
+  "customer_id": "",
+  "status": "draft",
+  "visibility": "hidden",
+  "publish_target": "data/portfolio.json",
+  "category": "",
+  "title": "",
+  "description": "",
+  "location_label": "",
+  "service_type": "",
+  "tags": [],
+  "cover_image": "",
+  "images": [],
+  "before_after": {
+    "enabled": false,
+    "before_image": "",
+    "after_image": "",
+    "caption": ""
+  },
+  "customer_facing": {
+    "headline": "",
+    "short_description": "",
+    "long_description": "",
+    "caption_notes": ""
+  },
+  "publishing": {
+    "approved_for_website": false,
+    "approved_date": "",
+    "published_date": "",
+    "portfolio_json_path": "data/portfolio.json",
+    "public_url": ""
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "",
+    "updated_at": "",
+    "archived": false,
+    "archive_reason": ""
+  }
+}

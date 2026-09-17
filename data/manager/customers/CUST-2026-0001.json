@@ -1,0 +1,74 @@
+{
+  "customer_id": "CUST-2026-0001",
+  "display_name": "Example General Contractor",
+  "company_name": "Example General Contractor LLC",
+  "primary_contact_name": "John Smith",
+  "contact_type": "general_contractor",
+  "status": "active",
+  "contact": {
+    "phone_primary": "",
+    "phone_secondary": "",
+    "email_primary": "",
+    "email_secondary": "",
+    "preferred_contact_method": "text",
+    "best_time_to_contact": ""
+  },
+  "billing_address": {
+    "billing_name": "Example General Contractor LLC",
+    "address_line_1": "",
+    "address_line_2": "",
+    "city": "",
+    "state": "OH",
+    "zip": "",
+    "county": "",
+    "tax_exempt": false,
+    "tax_exempt_certificate_on_file": false
+  },
+  "business_details": {
+    "relationship_type": "general_contractor",
+    "source": "referral",
+    "default_pricing_type": "fixed_price",
+    "payment_terms": "due_on_completion",
+    "requires_po_number": false,
+    "requires_w9": true,
+    "requires_insurance_certificate": true
+  },
+  "links": {
+    "job_ids": [
+      "JOB-2026-0001"
+    ],
+    "proposal_ids": [
+      "PROP-2026-0001"
+    ],
+    "invoice_ids": [],
+    "task_ids": [
+      "TASK-2026-0001"
+    ],
+    "mileage_ids": [],
+    "photo_group_ids": []
+  },
+  "financials": {
+    "lifetime_estimated_value": 15750.00,
+    "lifetime_approved_value": 0.00,
+    "lifetime_invoiced": 0.00,
+    "lifetime_paid": 0.00,
+    "current_balance_due": 0.00,
+    "open_proposal_count": 1,
+    "open_invoice_count": 0
+  },
+  "follow_up": {
+    "next_action": "Follow up on proposal approval.",
+    "next_action_due": "",
+    "priority": "normal",
+    "follow_up_required": true,
+    "relationship_notes": "Prefers short text updates before phone calls.",
+    "private_notes": "Sample customer record for manager MVP data structure testing."
+  },
+  "audit": {
+    "created_by": "owner",
+    "created_at": "2026-07-02T00:00:00-04:00",
+    "updated_at": "2026-07-02T00:00:00-04:00",
+    "archived": false,
+    "archive_reason": ""
+  }
+}
