@@ -1,0 +1,7 @@
+Protected source copied from:
+scriptable/SprayGenX-WRA-Manager-GOOD-LAYOUT-DO-NOT-EDIT.js
+
+Source blob SHA:
+ace9888db9ccb23fe34e55e470d20e6c731ee699
+
+This production folder was created on a separate branch so the protected layout file remains untouched.
