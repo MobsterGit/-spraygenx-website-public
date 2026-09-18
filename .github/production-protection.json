@@ -56,6 +56,14 @@
       ]
     },
     {
+      "branches": ["fix/seo-technical-containment"],
+      "allowed_paths": [
+        "archive/index-2026-06-23-working-homepage.html",
+        "dev/responsive.html",
+        "journal/entry-template.html"
+      ]
+    },
+    {
       "branches": ["work/freeman-barn", "work/freeman-barn/**", "feature/freeman-barn-*", "fix/freeman-barn-*"],
       "allowed_paths": ["freeman-barn/2026-field-record/**"]
     },
