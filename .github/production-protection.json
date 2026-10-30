@@ -143,6 +143,14 @@
       ]
     },
     {
+     "branches": [
+    "add-timeline-review-map-20261030"
+  ],
+  "allowed_paths": [
+    "timeline-review/**"
+  ]
+   },
+    {
       "branches": [
         "fix/rollback-june27-20261013"
       ],
