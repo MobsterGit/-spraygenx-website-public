@@ -163,6 +163,14 @@
         "amplify-redirects.json",
         "amplify-redirects-recovery.json"
       ]
+    },
+    {
+      "branches": [
+        "add-timeline-review-map-20261030"
+      ],
+      "allowed_paths": [
+        "timeline-review/**"
+      ]
     }
   ]
 }
