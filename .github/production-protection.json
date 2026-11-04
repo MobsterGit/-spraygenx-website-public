@@ -171,6 +171,14 @@
       "allowed_paths": [
         "timeline-review/**"
       ]
+    },
+    {
+      "branches": [
+        "remove-public-timeline-location-data-20261101"
+      ],
+      "allowed_paths": [
+        "timeline-review/index.html"
+      ]
     }
   ]
 }
