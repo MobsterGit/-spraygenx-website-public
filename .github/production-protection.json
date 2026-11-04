@@ -169,7 +169,7 @@
         "add-timeline-review-map-20261030"
       ],
       "allowed_paths": [
-        "timeline-review/**"
+         "timeline-review/index.html"
       ]
     }
   ]
