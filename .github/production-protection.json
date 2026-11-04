@@ -169,7 +169,15 @@
         "add-timeline-review-map-20261030"
       ],
       "allowed_paths": [
-         "timeline-review/index.html"
+        "timeline-review/**"
+      ]
+    },
+    {
+      "branches": [
+        "remove-public-timeline-location-data-20261101"
+      ],
+      "allowed_paths": [
+        "timeline-review/index.html"
       ]
     }
   ]
