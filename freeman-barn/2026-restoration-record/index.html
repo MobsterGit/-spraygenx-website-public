@@ -37,6 +37,54 @@
  .chapter h2{font-size:clamp(1.65rem,7.1vw,2rem)}
  .chapter .jump a{font-size:.84rem}
 }
+
+/* Print-only: preserve the archival palette without fixed-height chapter clipping. */
+@media print {
+ @page { size: letter portrait; margin: .62in .58in; }
+ html,body { width:auto!important; max-width:none!important; margin:0!important; padding:0!important; overflow:visible!important; background:#f8edd3!important; -webkit-print-color-adjust:exact!important; print-color-adjust:exact!important; }
+ .book { width:100%!important; max-width:none!important; margin:0!important; padding:0!important; box-shadow:none!important; background:transparent!important; }
+ .chapter,.chapter.hero {
+  display:block!important; position:relative!important; isolation:auto!important;
+  width:100%!important; min-width:0!important; max-width:none!important;
+  height:auto!important; min-height:0!important; max-height:none!important;
+  margin:0!important; padding:.38in .34in .44in!important;
+  overflow:visible!important; break-after:auto!important; page-break-after:auto!important;
+  background:#f8edd3!important; border:0!important;
+  box-shadow:none!important; filter:none!important;
+ }
+ .chapter + .chapter { break-before:page!important; page-break-before:always!important; }
+ .chapter:before,.chapter:after { display:none!important; content:none!important; }
+ .chapter * { max-width:100%; box-sizing:border-box; }
+ .chapter h1,.chapter h2,.chapter h3,.chapter p,.chapter .kicker,.chapter .recordTitle {
+  position:static!important; transform:none!important; text-shadow:none!important;
+  overflow-wrap:break-word!important; word-break:normal!important;
+ }
+ .chapter h1 { font-size:46pt!important; line-height:1!important; margin:14pt 0!important; padding:0!important; }
+ .chapter h1:before,.chapter h1:after { content:none!important; display:none!important; }
+ .chapter h2 { font-size:27pt!important; line-height:1.08!important; letter-spacing:0!important; margin:13pt 0!important; }
+ .chapter h3 { font-size:12pt!important; line-height:1.22!important; letter-spacing:.025em!important; margin:14pt 0 6pt!important; }
+ .chapter p,.chapter .lede { font-size:10.5pt!important; line-height:1.48!important; margin:8pt 0!important; }
+ .chapter .society { font-size:16pt!important; letter-spacing:.05em!important; }
+ .chapter .sub,.chapter .kicker { font-size:9pt!important; line-height:1.3!important; letter-spacing:.06em!important; }
+ .chapter .recordTitle { font-size:12pt!important; line-height:1.4!important; margin:12pt auto!important; }
+ .chapter .status { font-size:8pt!important; padding:7pt 10pt!important; }
+ .chapter .ornament { height:25pt!important; max-width:280pt!important; margin:8pt auto!important; background-size:contain!important; }
+ .chapter .heroPhoto,.chapter .photo { display:block!important; width:100%!important; max-height:3.1in!important; height:auto!important; object-fit:contain!important; filter:none!important; box-shadow:none!important; }
+ .chapter .heroPhoto { max-height:3.4in!important; }
+ .chapter .gallery { display:grid!important; grid-template-columns:repeat(2,minmax(0,1fr))!important; gap:10pt!important; }
+ .chapter figure { margin:6pt 0!important; break-inside:avoid!important; page-break-inside:avoid!important; }
+ .chapter figcaption,.chapter .caption,.chapter .smallprint { font-size:8pt!important; line-height:1.35!important; }
+ .chapter .numbers { display:grid!important; grid-template-columns:repeat(3,minmax(0,1fr))!important; gap:8pt!important; }
+ .chapter .numbers div { padding:8pt!important; break-inside:avoid!important; }
+ .chapter .numbers strong { font-size:18pt!important; }
+ .chapter .numbers span { font-size:8pt!important; }
+ .chapter .jump { display:flex!important; justify-content:center!important; gap:7pt!important; margin:10pt auto!important; }
+ .chapter .jump a { padding:5pt 7pt!important; font-size:8pt!important; }
+ .chapter .archiveCredit,.chapter .footerline { font-size:8pt!important; }
+ .chapter h2,.chapter h3,.chapter .kicker { break-after:avoid!important; page-break-after:avoid!important; }
+ .chapter p { orphans:3; widows:3; }
+ .chapter .gallery,.chapter .numbers,.chapter .jump { break-inside:avoid!important; page-break-inside:avoid!important; }
+}
 </style></head><body><main class="book">
 <section class="chapter hero"><div class="mast"><div class="society">Twinsburg Historical Society</div><div class="sub">Historic Restoration • Twinsburg, Ohio</div></div><div class="kicker">Preservation Work Record • September–November 2026</div><h1>Freeman<br>Barn</h1><div class="recordTitle">2026 Restoration &amp; Preservation Record</div><p class="lede">From weathered siding and deteriorated window assemblies to a renewed red exterior and the vivid historic Mail Pouch advertisement, this restoration was undertaken to protect the barn's original character and extend its service life.</p><p><span class="status">At the finish line — flower boxes remaining</span></p><img class="heroPhoto" src="/images/inbox/freeman-documentation-20260916205319170/Wide_Angle.JPEG" alt="Freeman Barn north gable with historic Mail Pouch advertisement, documented before restoration"><div class="caption">ARCHIVAL FIELD PHOTOGRAPH • HISTORIC MAIL POUCH GABLE • SEPTEMBER 2026</div><p class="smallprint">The photograph above is an existing-condition archival image, not a representation of the completed finish.</p><nav class="jump" aria-label="Page sections"><a href="#work">Restoration work</a><a href="#mail-pouch">Historic lettering</a><a href="#activity">Project record</a><a href="#survey">Measured survey</a></nav></section>
 <section class="chapter"><div class="kicker">Project Summary</div><h2>Renewing the Barn.<br>Preserving Its Story.</h2><div class="ornament"><span></span></div><p class="lede">The restoration addressed structural deterioration at the lower siding, failed exterior coatings, vulnerable window openings, a binding original sliding door, loose roof panels and weathered historic signage. Where practical, original wood and operating features were retained and repaired rather than discarded.</p><div class="gallery"><figure><img class="photo" src="/images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-001.jpg" alt="Freeman Barn documented exterior condition in September 2026"><figcaption>Exterior field documentation before restoration.</figcaption></figure><figure><img class="photo" src="/images/inbox/freeman-documentation-20260916205319170/photo-20260916210151074-003.jpg" alt="Original historic HW 87 painter inscription before preservation"><figcaption>Original historic painter's inscription before careful retracing.</figcaption></figure></div></section>
