@@ -77,7 +77,8 @@
         "fix/freeman-barn-*"
       ],
       "allowed_paths": [
-        "freeman-barn/2026-field-record/**"
+        "freeman-barn/2026-field-record/**",
+        "freeman-barn/2026-restoration-record/**"
       ]
     },
     {
