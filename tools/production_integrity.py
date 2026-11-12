@@ -147,9 +147,18 @@ def check(base: str, head: str, branch: str | None, skip_scope: bool) -> list[st
         else:
             allowed = branch_scope(policy, branch)
             if allowed is None:
-                failures.append(
-                    f"branch '{branch}' has no approved path scope; add a reviewed scope policy first"
+                # Routine content branches do not need an individual allow-list.
+                # Sensitive configuration and security paths remain restricted.
+                protected = policy["protected_review_paths"]
+                restricted = sorted(
+                    path for _, path in changes
+                    if any(path_matches(path, pattern) for pattern in protected)
                 )
+                if restricted:
+                    failures.append(
+                        f"branch '{branch}' modifies protected paths requiring a "
+                        "dedicated approved scope: " + ", ".join(restricted)
+                    )
             else:
                 outside = sorted(
                     path for _, path in changes
