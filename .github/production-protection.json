@@ -180,5 +180,12 @@
         "timeline-review/index.html"
       ]
     }
+  ],
+  "protected_review_paths": [
+    ".github/**",
+    "tools/production_integrity.py",
+    "CNAME",
+    "amplify-redirects.json",
+    "amplify-redirects-recovery.json"
   ]
 }
